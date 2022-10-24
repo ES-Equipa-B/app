@@ -19,8 +19,7 @@ class _MainPageState extends State<MainPage> {
         name: "Braga", temperature: 32.0, wind: 15, humidity: 79.0),
     StationCardData(
         name: "Lisboa", temperature: 30.9, wind: 8, humidity: 31.5),
-    StationCardData(
-        name: "Fafe", temperature: 31.2, wind: 6, humidity: 42.3)
+    
   ];
 
   List<StationCardData> stations = dummyData;
