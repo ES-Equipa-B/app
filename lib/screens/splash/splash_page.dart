@@ -11,7 +11,7 @@ class _SplashPageState extends State<SplashPageState> {
   void initializeSplash() async {
     await Future.delayed(const Duration(seconds: 2));
     if (!mounted) return;
-    Navigator.pushReplacementNamed(context, "/home");
+    Navigator.pushReplacementNamed(context, "/main");
   }
 
   @override

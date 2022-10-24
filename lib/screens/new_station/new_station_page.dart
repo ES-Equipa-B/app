@@ -1,4 +1,4 @@
-import 'package:app_sys_eng/home/container/insert_station.dart';
+import 'package:app_sys_eng/screens/new_station/container/insert_station.dart';
 import 'package:flutter/material.dart';
 
 class NewStationPage extends StatelessWidget {
