@@ -23,8 +23,6 @@ class NewStationPage extends StatelessWidget {
               color: Colors.black,
             ),
             onTap: () {
-              //TROCAR SPLASH PELO ROUTE DO MAIN DO PEDRO
-              //Navigator.pushReplacementNamed(context, "/splash");
               Navigator.pushReplacementNamed(context, "/main");
             },
           ),

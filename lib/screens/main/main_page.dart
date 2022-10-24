@@ -27,6 +27,8 @@ class _MainPageState extends State<MainPage> {
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         title: TextField(
           decoration: const InputDecoration(
+            hintText: "Search Station",
+            hintStyle: TextStyle(fontSize: 15),
             border: OutlineInputBorder(),
             isDense: true,
             prefixIcon: Icon(Icons.search),
@@ -39,33 +41,42 @@ class _MainPageState extends State<MainPage> {
           }),
         ),
         actions: [
-          IconButton(
-              color: Theme.of(context).iconTheme.color,
-              onPressed: () =>
-                  {Navigator.pushReplacementNamed(context, "/settings")},
-              icon: const Icon(Icons.settings_outlined))
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: IconButton(
+                color: Theme.of(context).iconTheme.color,
+                onPressed: () =>
+                    {Navigator.pushReplacementNamed(context, "/settings")},
+                icon: const Icon(Icons.settings)),
+          )
         ],
       ),
       body: RefreshIndicator(
-        child: GridView.count(
-            crossAxisCount: 2,
-            mainAxisSpacing: 16,
-            crossAxisSpacing: 16,
-            childAspectRatio: 1.6,
-            padding: const EdgeInsets.all(16),
-            children: stations.map((e) => StationCard(data: e)).toList()),
+        child: Padding(
+          padding: const EdgeInsets.only(top: 30.0),
+          child: GridView.count(
+              crossAxisCount: 2,
+              mainAxisSpacing: 16,
+              crossAxisSpacing: 16,
+              childAspectRatio: 1.6,
+              padding: const EdgeInsets.all(16),
+              children: stations.map((e) => StationCard(data: e)).toList()),
+        ),
         onRefresh: () => Future.sync(() => setState(() => {
               stations.add(const StationCardData(
                   name: "Setubal", temperature: 20, wind: 3, humidity: 14))
             })),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.pushReplacementNamed(context, "/newstation");
-        },
-        backgroundColor: const Color.fromARGB(188, 255, 218, 212),
-        foregroundColor: const Color.fromARGB(255, 54, 6, 6),
-        child: const Icon(Icons.add),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(right: 10, bottom: 55),
+        child: FloatingActionButton(
+          onPressed: () {
+            Navigator.pushReplacementNamed(context, "/newstation");
+          },
+          backgroundColor: const Color.fromARGB(255, 255, 192, 192),
+          foregroundColor: const Color.fromARGB(255, 54, 6, 6),
+          child: const Icon(Icons.add),
+        ),
       ),
     );
   }
