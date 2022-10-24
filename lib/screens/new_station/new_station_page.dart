@@ -25,7 +25,7 @@ class NewStationPage extends StatelessWidget {
             onTap: () {
               //TROCAR SPLASH PELO ROUTE DO MAIN DO PEDRO
               //Navigator.pushReplacementNamed(context, "/splash");
-              Navigator.pushReplacementNamed(context, "/settings");
+              Navigator.pushReplacementNamed(context, "/main");
             },
           ),
         ),

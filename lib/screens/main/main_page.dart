@@ -39,14 +39,16 @@ class _MainPageState extends State<MainPage> {
           onChanged: (value) => setState(() {
             stations = dummyData
                 .where((element) =>
-                    element.name.toLowerCase().startsWith(value.toLowerCase()))
+                    element.name.toLowerCase().contains(value.toLowerCase()))
                 .toList();
           }),
         )),
         actions: [
           IconButton(
               color: Theme.of(context).iconTheme.color,
-              onPressed: () => {},
+              onPressed: () => {
+                Navigator.pushReplacementNamed(context, "/settings")
+              },
               icon: const Icon(Icons.settings_outlined))
         ],
       ),
@@ -65,6 +67,7 @@ class _MainPageState extends State<MainPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
+          Navigator.pushReplacementNamed(context, "/newstation");
           // Add your onPressed code here!
         },
         child: const Icon(Icons.add),
