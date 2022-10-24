@@ -25,8 +25,7 @@ class _MainPageState extends State<MainPage> {
       appBar: AppBar(
         shadowColor: Colors.transparent,
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        title: Container(
-            child: TextField(
+        title: TextField(
           decoration: const InputDecoration(
             border: OutlineInputBorder(),
             isDense: true,
@@ -38,11 +37,12 @@ class _MainPageState extends State<MainPage> {
                     element.name.toLowerCase().startsWith(value.toLowerCase()))
                 .toList();
           }),
-        )),
+        ),
         actions: [
           IconButton(
               color: Theme.of(context).iconTheme.color,
-              onPressed: () => {},
+              onPressed: () =>
+                  {Navigator.pushReplacementNamed(context, "/settings")},
               icon: const Icon(Icons.settings_outlined))
         ],
       ),
@@ -55,17 +55,17 @@ class _MainPageState extends State<MainPage> {
             padding: const EdgeInsets.all(16),
             children: stations.map((e) => StationCard(data: e)).toList()),
         onRefresh: () => Future.sync(() => setState(() => {
-              stations.add(StationCardData(
+              stations.add(const StationCardData(
                   name: "Setubal", temperature: 20, wind: 3, humidity: 14))
             })),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // Add your onPressed code here!
+          Navigator.pushReplacementNamed(context, "/newstation");
         },
+        backgroundColor: const Color.fromARGB(188, 255, 218, 212),
+        foregroundColor: const Color.fromARGB(255, 54, 6, 6),
         child: const Icon(Icons.add),
-        backgroundColor: Color.fromARGB(188, 255, 218, 212),
-        foregroundColor: Color.fromARGB(255, 54, 6, 6),
       ),
     );
   }
