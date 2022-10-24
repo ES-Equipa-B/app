@@ -23,9 +23,13 @@ class HomePage extends StatelessWidget {
               color: Colors.black,
             ),
             onTap: () {
+<<<<<<< HEAD:lib/home/home_page.dart
               //TROCAR SPLASH PELO ROUTE DO MAIN DO PEDRO
               //Navigator.pushReplacementNamed(context, "/splash");
               Navigator.pushReplacementNamed(context, "/settings");
+=======
+              Navigator.pushReplacementNamed(context, "/main");
+>>>>>>> 6d38e98 (Colors and paddings fixed):lib/screens/new_station/new_station_page.dart
             },
           ),
         ),

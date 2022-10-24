@@ -82,6 +82,14 @@ packages:
     source: sdk
     version: "0.0.0"
   flutter_web_plugins:
+<<<<<<< HEAD
+=======
+    dependency: transitive
+    description: flutter
+    source: sdk
+    version: "0.0.0"
+  intl:
+>>>>>>> 6d38e98 (Colors and paddings fixed)
     dependency: transitive
     description: flutter
     source: sdk
@@ -177,6 +185,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.3"
+<<<<<<< HEAD
   percent_indicator:
     dependency: "direct main"
     description:
@@ -184,6 +193,8 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.2.2"
+=======
+>>>>>>> 6d38e98 (Colors and paddings fixed)
   pie_chart:
     dependency: "direct main"
     description:

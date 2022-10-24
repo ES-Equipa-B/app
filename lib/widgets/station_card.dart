@@ -45,6 +45,7 @@ class StationCard extends StatelessWidget {
                 )
               ]),
           onTap: () {
+<<<<<<< HEAD
             Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -52,6 +53,9 @@ class StationCard extends StatelessWidget {
                     id: data.id,
                   ),
                 ));
+=======
+            // MANDAR PARA OUTRA PÁGINA
+>>>>>>> 6d38e98 (Colors and paddings fixed)
           }, // Handle your callback
         ));
   }
