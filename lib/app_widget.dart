@@ -1,5 +1,7 @@
 import 'package:app_sys_eng/home/home_page.dart';
+import 'package:app_sys_eng/settings/settings.dart';
 import 'package:app_sys_eng/splash/splash_page.dart';
+import 'package:app_sys_eng/main/main_page.dart';
 import 'package:flutter/material.dart';
 
 class AppWidget extends StatelessWidget {
@@ -11,9 +13,10 @@ class AppWidget extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: "/splash",
       routes: {
-        "/splash": (context) => const SplashPage(),
-        "/home": (context) => const HomePage(),
-        //FAZER AQUI A ROTA PARA A MAIN PAGE DO PEDRO
+        "/splash": (context) => const SplashPageState(),
+        "/main": (context) => const MainPage(),
+        "/newstation": (context) => const NewStationPage(),
+        "/settings": (context) => const Settings(),
       },
       theme: ThemeData(useMaterial3: true),
     );
