@@ -40,7 +40,7 @@ class StationCard extends StatelessWidget {
                 )
               ]),
           onTap: () {
-            //print("Clicaste no container"); // MANDAR PARA OUTRA PÁGINA
+            // MANDAR PARA OUTRA PÁGINA
           }, // Handle your callback
         ));
   }
