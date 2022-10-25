@@ -1,9 +1,14 @@
 import 'package:app_sys_eng/screens/data_screen.dart';
 import 'package:flutter/material.dart';
 
-import '../models/station_card_data.dart';
-
 //FAZER UMA CLASSE PARA GUARDAR AS INFORMAÇÔES DA»O CARD SELECIONADO
+
+class Dummy {
+  String name = 'Porto';
+  int hum = 0;
+  int temp = 0;
+  int wind = 0;
+}
 
 class StationCard extends StatelessWidget {
   final StationCardData data;
@@ -55,7 +60,7 @@ class StationCard extends StatelessWidget {
                 ));
 =======
             // MANDAR PARA OUTRA PÁGINA
->>>>>>> 6d38e98 (Colors and paddings fixed)
+            Navigator.pushReplacementNamed(context, "/data");
           }, // Handle your callback
         ));
   }
