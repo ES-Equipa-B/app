@@ -36,6 +36,7 @@ class StationCard extends StatelessWidget {
                 Text(data.name, textAlign: TextAlign.left),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     ValueIndicator(
                         icon: Icons.thermostat,
