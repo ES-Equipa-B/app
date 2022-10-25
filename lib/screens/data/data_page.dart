@@ -1,3 +1,5 @@
+import 'dart:async';
+import 'package:percent_indicator/percent_indicator.dart';
 import 'package:app_sys_eng/widgets/station_card.dart';
 import 'package:flutter/material.dart';
 
@@ -12,10 +14,12 @@ class DataPage extends StatefulWidget {
 //VER O REFRESH E OS VALORES P DATA/
 ///////////////////////////////////
 class _DataPageState extends State<DataPage> {
-  //MUDAR ISSOOOOOOOOOOOO
+  //MUDAR ISSOOOOOOOOOOOO, UMA MERDA
   final StationCardData data = const StationCardData(
       name: "Porto", temperature: 37.1, wind: 21, humidity: 58.7);
-  int i = 1;
+
+  var time = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,82 +66,121 @@ class _DataPageState extends State<DataPage> {
           ],
         ),
         body: RefreshIndicator(
-            onRefresh: () => Future.sync(() => setState(() => {i = i + 1})),
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Container(
-                height: 230,
-                width: 390,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    color: const Color.fromARGB(255, 255, 242, 240)),
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Padding(
-                        padding: EdgeInsets.all(10.0),
-                        child: Text("Current Weather Information",
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold)),
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.only(left: 10.0),
-                        child: Text("Updated 30 s ago",
-                            style: TextStyle(
-                              color: Color(0xff534341),
-                              fontSize: 11,
-                            )),
-                      ),
-                      Padding(
-                        padding:
-                            const EdgeInsets.only(top: 15.0, right: 8, left: 8),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: const [
-                            Text("Temperature",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.bold)),
-                            Text("Wind Speed",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.bold)),
-                            Text("Humidity",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.bold))
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding:
-                            const EdgeInsets.only(top: 5.0, right: 8, left: 8),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+            triggerMode: RefreshIndicatorTriggerMode.anywhere,
+            onRefresh: () => Future.sync(() => setState(() => {time = 2})),
+            child: Stack(children: [
+              ListView(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Container(
+                      height: 240,
+                      width: 390,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          color: const Color.fromARGB(255, 255, 242, 240)),
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            ValueIndicator(
-                                icon: Icons.thermostat,
-                                value:
-                                    "${StationCard(data: data).data.temperature.toStringAsFixed(0)} ºC"),
-                            ValueIndicator(
-                                icon: Icons.air,
-                                value:
-                                    "${StationCard(data: data).data.wind.toStringAsFixed(0)} m/s"),
-                            ValueIndicator(
-                                icon: Icons.water_drop_outlined,
-                                value:
-                                    "${StationCard(data: data).data.humidity.toStringAsFixed(0)}%")
-                          ],
-                        ),
-                      )
-                    ]),
+                            const Padding(
+                              padding: EdgeInsets.all(10.0),
+                              child: Text("Current Weather Information",
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold)),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 10.0),
+                              child: Text("Updated $time s ago",
+                                  style: const TextStyle(
+                                    color: Color(0xff534341),
+                                    fontSize: 11,
+                                  )),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  top: 15.0, right: 8, left: 8),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: const [
+                                  Text("Temperature",
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.bold)),
+                                  Text("Wind Speed",
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.bold)),
+                                  Text("Humidity",
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.bold))
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  top: 5.0, right: 8, left: 8),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: const [
+                                  Icon(Icons.thermostat),
+                                  Icon(Icons.air),
+                                  Icon(Icons.water_drop_outlined)
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 10.0),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  CircularPercentIndicator(
+                                    radius: 43.0,
+                                    lineWidth: 5.0,
+                                    percent: 1.0,
+                                    center: Text(
+                                        "${data.temperature.toStringAsFixed(0)} ºC"),
+                                    progressColor:
+                                        const Color.fromARGB(255, 247, 94, 94),
+                                  ),
+                                  CircularPercentIndicator(
+                                    radius: 43.0,
+                                    lineWidth: 5.0,
+                                    percent: 1.0,
+                                    center: Text(
+                                        "${StationCard(data: data).data.wind.toStringAsFixed(0)} m/s"),
+                                    progressColor: const Color.fromARGB(
+                                        255, 122, 222, 126),
+                                  ),
+                                  CircularPercentIndicator(
+                                    radius: 43.0,
+                                    lineWidth: 5.0,
+                                    percent: 1.0,
+                                    center: Text(
+                                        "${StationCard(data: data).data.humidity.toStringAsFixed(0)}%"),
+                                    progressColor:
+                                        const Color.fromARGB(255, 58, 66, 183),
+                                  ),
+                                ],
+                              ),
+                            )
+                          ]),
+                    ),
+                  )
+                ],
               ),
-            )));
+            ])));
   }
 
   selecteditem(BuildContext context, int item) {

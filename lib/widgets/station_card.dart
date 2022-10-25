@@ -18,7 +18,7 @@ class StationCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         decoration: BoxDecoration(
-            color: const Color.fromARGB(255, 243, 226, 243),
+            color: const Color.fromARGB(255, 255, 242, 240),
             borderRadius: BorderRadius.circular(10),
             boxShadow: [
               BoxShadow(
@@ -35,6 +35,7 @@ class StationCard extends StatelessWidget {
                 Text(data.name, textAlign: TextAlign.left),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     ValueIndicator(
                         icon: Icons.thermostat,
