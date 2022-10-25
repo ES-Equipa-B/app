@@ -10,7 +10,7 @@ class ContainerNewStation extends StatefulWidget {
   const ContainerNewStation({Key? key}) : super(key: key);
 
   @override
-  _ContainerNewStation createState() {
+  State<ContainerNewStation> createState() {
     return _ContainerNewStation();
   }
 }

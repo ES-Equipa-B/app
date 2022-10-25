@@ -43,7 +43,7 @@ class _SettingsState extends State<Settings> {
             onTap: () {
               //TROCAR SPLASH PELO ROUTE DO MAIN DO PEDRO
               //Navigator.pushReplacementNamed(context, "/splash");
-              Navigator.pushReplacementNamed(context, "/home");
+              Navigator.pushReplacementNamed(context, "/main");
             },
           ),
         ),
@@ -116,30 +116,33 @@ Widget customSwitch(
     String text, String def, bool val, Function onChangedMethod) {
   return Padding(
     padding: const EdgeInsets.only(left: 16, right: 16),
-    child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-      Column(
+    child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            text,
-            style: const TextStyle(
-              fontSize: 20,
-              color: Colors.black,
-            ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                text,
+                style: const TextStyle(
+                  fontSize: 20,
+                  color: Colors.black,
+                ),
+              ),
+              Text(
+                def,
+                style: const TextStyle(color: Color(0xff534341), fontSize: 12),
+              ),
+            ],
           ),
-          Text(
-            def,
-            style: const TextStyle(color: Color(0xff534341), fontSize: 12),
-          ),
-        ],
-      ),
-      const Spacer(),
-      Switch(
-          activeColor: const Color.fromARGB(255, 255, 192, 192),
-          value: val,
-          onChanged: (newValue) {
-            onChangedMethod(newValue);
-          }),
-    ]),
+          const Spacer(),
+          Switch(
+              activeColor: const Color.fromARGB(255, 255, 192, 192),
+              value: val,
+              onChanged: (newValue) {
+                onChangedMethod(newValue);
+              }),
+        ]),
   );
 }
