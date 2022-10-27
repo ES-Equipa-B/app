@@ -23,7 +23,7 @@ class NewStationPage extends StatelessWidget {
               color: Colors.black,
             ),
             onTap: () {
-              Navigator.pushReplacementNamed(context, "/main");
+              Navigator.pushNamed(context, "/main");
             },
           ),
         ),

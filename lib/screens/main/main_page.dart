@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:app_sys_eng/widgets/station_card.dart';
+import 'package:http/http.dart' as http;
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -9,14 +12,13 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  static const List<StationCardData> dummyData = [
-    StationCardData(name: "Porto", temperature: 37.1, wind: 21, humidity: 58.7),
-    StationCardData(name: "Braga", temperature: 32.0, wind: 15, humidity: 79.0),
-    StationCardData(name: "Lisboa", temperature: 30.9, wind: 8, humidity: 31.5),
-    StationCardData(name: "Fafe", temperature: 31.2, wind: 6, humidity: 42.3)
-  ];
-
-  List<StationCardData> stations = dummyData;
+  late Future<StationCardData> futureStation;
+  late List<StationCardData> stations;
+  @override
+  void initState() {
+    super.initState();
+    futureStation = getData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +35,7 @@ class _MainPageState extends State<MainPage> {
             prefixIcon: Icon(Icons.search),
           ),
           onChanged: (value) => setState(() {
-            stations = dummyData
+            stations = stations
                 .where((element) =>
                     element.name.toLowerCase().startsWith(value.toLowerCase()))
                 .toList();
@@ -44,33 +46,40 @@ class _MainPageState extends State<MainPage> {
             padding: const EdgeInsets.all(8.0),
             child: IconButton(
                 color: Theme.of(context).iconTheme.color,
-                onPressed: () =>
-                    {Navigator.pushReplacementNamed(context, "/settings")},
+                onPressed: () => {Navigator.pushNamed(context, "/settings")},
                 icon: const Icon(Icons.settings)),
           )
         ],
       ),
-      body: RefreshIndicator(
-        child: Padding(
-          padding: const EdgeInsets.only(top: 30.0),
-          child: GridView.count(
-              crossAxisCount: 2,
-              mainAxisSpacing: 16,
-              crossAxisSpacing: 16,
-              childAspectRatio: 1.6,
-              padding: const EdgeInsets.all(16),
-              children: stations.map((e) => StationCard(data: e)).toList()),
-        ),
-        onRefresh: () => Future.sync(() => setState(() => {
-              stations.add(const StationCardData(
-                  name: "Setubal", temperature: 20, wind: 3, humidity: 14))
-            })),
+      body: FutureBuilder<StationCardData>(
+        future: futureStation,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return RefreshIndicator(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 30.0),
+                child: GridView.count(
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 16,
+                    crossAxisSpacing: 16,
+                    childAspectRatio: 1.6,
+                    padding: const EdgeInsets.all(16),
+                    children:
+                        stations.map((e) => StationCard(data: e)).toList()),
+              ),
+              onRefresh: () => Future.sync(() => setState(() => {})),
+            );
+          } else if (snapshot.hasError) {
+            return Text('${snapshot.error}');
+          }
+          return const CircularProgressIndicator();
+        },
       ),
       floatingActionButton: Padding(
         padding: const EdgeInsets.only(right: 10, bottom: 55),
         child: FloatingActionButton(
           onPressed: () {
-            Navigator.pushReplacementNamed(context, "/newstation");
+            Navigator.pushNamed(context, "/newstation");
           },
           backgroundColor: const Color.fromARGB(255, 255, 192, 192),
           foregroundColor: const Color.fromARGB(255, 54, 6, 6),
@@ -78,5 +87,24 @@ class _MainPageState extends State<MainPage> {
         ),
       ),
     );
+  }
+
+  Future<StationCardData> getData() async {
+    final response =
+        await http.get(Uri.http('campheimdall.ddns.net:5000', '/stations'));
+
+    if (response.statusCode == 200) {
+      // If the server did return a 200 OK response,
+      // then parse the JSON.
+      List<dynamic> body = jsonDecode(response.body);
+      stations =
+          body.map((dynamic item) => StationCardData.fromJson(item)).toList();
+      setState(() {});
+      return StationCardData.fromJson(body[0]);
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to load album');
+    }
   }
 }

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:app_sys_eng/widgets/station_card.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class DataPage extends StatefulWidget {
   const DataPage({super.key});
@@ -15,8 +16,14 @@ class DataPage extends StatefulWidget {
 ///////////////////////////////////
 class _DataPageState extends State<DataPage> {
   //MUDAR ISSOOOOOOOOOOOO, UMA MERDA
-  final StationCardData data = const StationCardData(
-      name: "Porto", temperature: 37.1, wind: 21, humidity: 58.7);
+  final StationCardData data = StationCardData(
+      id: 1,
+      name: "Porto",
+      temperature: 37,
+      wind: 21,
+      humidity: 58.7,
+      phone: '123456789',
+      timestamp: "a");
 
   var time = 0;
 
@@ -39,7 +46,7 @@ class _DataPageState extends State<DataPage> {
               color: Colors.black,
             ),
             onTap: () {
-              Navigator.pushReplacementNamed(context, "/main");
+              Navigator.pushNamed(context, "/main");
             },
           ),
           actions: [
@@ -186,7 +193,7 @@ class _DataPageState extends State<DataPage> {
   selecteditem(BuildContext context, int item) {
     switch (item) {
       case 0:
-        Navigator.pushReplacementNamed(context, "/edit");
+        Navigator.pushNamed(context, "/edit");
         break;
       case 1:
         //Metodo para apagar os dados da estaçao

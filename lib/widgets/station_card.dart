@@ -51,23 +51,52 @@ class StationCard extends StatelessWidget {
               ]),
           onTap: () {
             // MANDAR PARA OUTRA PÁGINA
-            Navigator.pushReplacementNamed(context, "/data");
+            Navigator.pushNamed(context, "/data");
           }, // Handle your callback
         ));
   }
 }
 
 class StationCardData {
-  final String name;
-  final double temperature;
-  final double wind;
   final double humidity;
+  final int id;
+  final String name;
+  final String phone;
+  final int temperature;
+  final String timestamp;
+  final int wind;
 
-  const StationCardData(
-      {required this.name,
+  StationCardData(
+      {required this.humidity,
+      required this.id,
+      required this.name,
+      required this.phone,
       required this.temperature,
-      required this.wind,
-      required this.humidity});
+      required this.timestamp,
+      required this.wind});
+
+  factory StationCardData.fromJson(Map<String, dynamic> json) {
+    return StationCardData(
+        humidity: json['humidity'],
+        id: json['id'],
+        name: json['name'],
+        phone: json['phone'],
+        temperature: json['temperature'],
+        timestamp: json['timestamp'],
+        wind: json['wind']);
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['humidity'] = humidity;
+    data['id'] = id;
+    data['name'] = name;
+    data['phone'] = phone;
+    data['temperature'] = temperature;
+    data['timestamp'] = timestamp;
+    data['wind'] = wind;
+    return data;
+  }
 }
 
 class ValueIndicator extends StatelessWidget {
