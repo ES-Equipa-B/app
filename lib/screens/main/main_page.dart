@@ -1,5 +1,7 @@
-import 'package:flutter/material.dart';
+import 'dart:convert';
 
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:app_sys_eng/widgets/station_card.dart';
 
 class MainPage extends StatefulWidget {
@@ -10,19 +12,34 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  static const List<StationCardData> dummyData = [
-    StationCardData(
-        name: "Porto", temperature: 37.1, wind: 21, humidity: 58.7),
-    StationCardData(
-        name: "Braga", temperature: 32.0, wind: 15, humidity: 79.0),
-    StationCardData(
-        name: "Lisboa", temperature: 30.9, wind: 8, humidity: 31.5),
-    StationCardData(
-        name: "Fafe", temperature: 31.2, wind: 6, humidity: 42.3)
-  ];
+  
 
-  List<StationCardData> stations = dummyData;
+  late Future<List<StationCardData>> stations;
+  String searchQuery = "";
 
+  Future<List<StationCardData>> fetchStations() async {
+    final response =
+        await http.get(Uri.parse("http://campheimdall.ddns.net:5000/stations"));
+
+    if (response.statusCode == 200) {
+      // If the server did return a 200 OK response,
+      // then parse the JSON.
+      Iterable list = jsonDecode(response.body);
+      return list.map((e) => StationCardData.fromJson(e)).toList();
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to load album');
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    stations = fetchStations();
+  }
+
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,10 +54,7 @@ class _MainPageState extends State<MainPage> {
             prefixIcon: Icon(Icons.search),
           ),
           onChanged: (value) => setState(() {
-            stations = dummyData
-                .where((element) =>
-                    element.name.toLowerCase().contains(value.toLowerCase()))
-                .toList();
+            searchQuery = value;
           }),
         )),
         actions: [
@@ -52,19 +66,32 @@ class _MainPageState extends State<MainPage> {
               icon: const Icon(Icons.settings_outlined))
         ],
       ),
-      body: RefreshIndicator(
+      body: FutureBuilder<List<StationCardData>>(
+        future: stations,
+        builder: (context, snapshot) {
+          if(snapshot.hasData) {
+      return RefreshIndicator(
         child: GridView.count(
             crossAxisCount: 2,
             mainAxisSpacing: 16,
             crossAxisSpacing: 16,
             childAspectRatio: 1.6,
             padding: const EdgeInsets.all(16),
-            children: stations.map((e) => StationCard(data: e)).toList()),
+            children: snapshot.data!
+                            .where((element) => element.name
+                                .toLowerCase()
+                                .contains(searchQuery.toLowerCase()))
+                            .map((e) => StationCard(data: e))
+                            .toList()),
         onRefresh: () => Future.sync(() => setState(() => {
-              stations.add(StationCardData(
+              snapshot.data!.add(StationCardData(
                   name: "Setubal", temperature: 20, wind: 3, humidity: 14))
-            })),
-      ),
+            })));
+          } else if(snapshot.hasError) {
+            return Text ("${snapshot.error}");
+          }
+          return const CircularProgressIndicator();
+        }),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.pushReplacementNamed(context, "/newstation");

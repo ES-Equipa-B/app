@@ -1,6 +1,7 @@
 import 'dart:ffi';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class StationCard extends StatelessWidget {
   final StationCardData data;
@@ -37,7 +38,7 @@ class StationCard extends StatelessWidget {
                       value: "${data.wind.toStringAsFixed(0)} m/s"),
                   ValueIndicator(
                       icon: Icons.water_drop_outlined,
-                      value: "${data.humidity.toStringAsFixed(0)}%")
+                      value: "${(100*data.humidity).toStringAsFixed(0)}%")
                 ],
               )
             ]),
@@ -59,6 +60,14 @@ class StationCardData {
       required this.temperature,
       required this.wind,
       required this.humidity});
+
+      factory StationCardData.fromJson(Map<String, dynamic> json) {
+    return StationCardData(
+        name: json["name"],
+        temperature: json["temperature"].toDouble(),
+        wind: json["wind"].toDouble(),
+        humidity: json["humidity"].toDouble());
+  }
 }
 
 class ValueIndicator extends StatelessWidget {
