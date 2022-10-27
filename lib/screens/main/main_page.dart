@@ -51,40 +51,39 @@ class _MainPageState extends State<MainPage> {
           )
         ],
       ),
-      body: FutureBuilder<StationCardData>(
-        future: futureStation,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return RefreshIndicator(
-              child: Padding(
-                padding: const EdgeInsets.only(top: 30.0),
-                child: GridView.count(
-                    crossAxisCount: 2,
-                    mainAxisSpacing: 16,
-                    crossAxisSpacing: 16,
-                    childAspectRatio: 1.6,
-                    padding: const EdgeInsets.all(16),
-                    children:
-                        stations.map((e) => StationCard(data: e)).toList()),
-              ),
-              onRefresh: () => Future.sync(() => setState(() => {})),
-            );
-          } else if (snapshot.hasError) {
-            return Text('${snapshot.error}');
-          }
-          return const CircularProgressIndicator();
-        },
-      ),
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.only(right: 10, bottom: 55),
-        child: FloatingActionButton(
-          onPressed: () {
-            Navigator.pushNamed(context, "/newstation");
+      body: Center(
+        child: FutureBuilder<StationCardData>(
+          future: futureStation,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return RefreshIndicator(
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 30.0),
+                  child: GridView.count(
+                      crossAxisCount: 2,
+                      mainAxisSpacing: 16,
+                      crossAxisSpacing: 16,
+                      childAspectRatio: 1.6,
+                      padding: const EdgeInsets.all(16),
+                      children:
+                          stations.map((e) => StationCard(data: e)).toList()),
+                ),
+                onRefresh: () => Future.sync(() => setState(() => {})),
+              );
+            } else if (snapshot.hasError) {
+              return Text('${snapshot.error}');
+            }
+            return const CircularProgressIndicator();
           },
-          backgroundColor: const Color.fromARGB(255, 255, 192, 192),
-          foregroundColor: const Color.fromARGB(255, 54, 6, 6),
-          child: const Icon(Icons.add),
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.pushNamed(context, "/newstation");
+        },
+        backgroundColor: const Color.fromARGB(255, 255, 192, 192),
+        foregroundColor: const Color.fromARGB(255, 54, 6, 6),
+        child: const Icon(Icons.add),
       ),
     );
   }
