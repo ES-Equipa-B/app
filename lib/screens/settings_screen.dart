@@ -44,11 +44,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             onTap: () {
               //TROCAR SPLASH PELO ROUTE DO MAIN DO PEDRO
               //Navigator.pushReplacementNamed(context, "/splash");
-<<<<<<< HEAD:lib/screens/settings_screen.dart
-              Navigator.pop(context);
-=======
-              Navigator.pushReplacementNamed(context, "/main");
->>>>>>> 6d38e98 (Colors and paddings fixed):lib/screens/settings/settings_page.dart
+              Navigator.pushNamed(context, "/main");
             },
           ),
         ),

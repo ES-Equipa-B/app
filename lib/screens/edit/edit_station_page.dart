@@ -24,7 +24,7 @@ class EditStationPage extends StatelessWidget {
             ),
             onTap: () {
               //change this, put here the screen of data
-              Navigator.pushReplacementNamed(context, "/data");
+              Navigator.pushNamed(context, "/data");
             },
           ),
         ),
