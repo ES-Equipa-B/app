@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:app_sys_eng/widgets/station_card.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 
 class DataPage extends StatefulWidget {
   const DataPage({super.key});
@@ -98,7 +97,8 @@ class _DataPageState extends State<DataPage> {
                                       fontWeight: FontWeight.bold)),
                             ),
                             Padding(
-                              padding: const EdgeInsets.only(left: 10.0),
+                              padding:
+                                  const EdgeInsets.only(left: 10.0, bottom: 5),
                               child: Text("Updated $time s ago",
                                   style: const TextStyle(
                                     color: Color(0xff534341),
@@ -106,12 +106,10 @@ class _DataPageState extends State<DataPage> {
                                   )),
                             ),
                             Padding(
-                              padding: const EdgeInsets.only(
-                                  top: 15.0, right: 8, left: 8),
+                              padding: const EdgeInsets.symmetric(vertical: 5),
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceAround,
-                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: const [
                                   Text("Temperature",
                                       style: TextStyle(
@@ -132,12 +130,10 @@ class _DataPageState extends State<DataPage> {
                               ),
                             ),
                             Padding(
-                              padding: const EdgeInsets.only(
-                                  top: 5.0, right: 8, left: 8),
+                              padding: const EdgeInsets.symmetric(vertical: 5),
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceAround,
-                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: const [
                                   Icon(Icons.thermostat),
                                   Icon(Icons.air),
@@ -146,11 +142,11 @@ class _DataPageState extends State<DataPage> {
                               ),
                             ),
                             Padding(
-                              padding: const EdgeInsets.only(top: 10.0),
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 0.0),
                               child: Row(
                                 mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                                    MainAxisAlignment.spaceAround,
                                 children: [
                                   CircularPercentIndicator(
                                     radius: 43.0,
