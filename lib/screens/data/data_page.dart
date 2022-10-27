@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:intl/intl.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:app_sys_eng/widgets/station_card.dart';
 import 'package:flutter/material.dart';
@@ -22,12 +23,26 @@ class _DataPageState extends State<DataPage> {
       wind: 21,
       humidity: 58.7,
       phone: '123456789',
-      timestamp: "a");
+      timestamp: "2022-10-27T23:30:01.408083");
+  late final StationCardData d;
+
+  int readTimestamp() {
+    DateTime now = DateTime.now();
+
+    String formattedDate = DateFormat('yyyy-MM-ddTHH:mm:ss').format(now);
+
+    DateTime date = DateTime.parse(data.timestamp);
+
+    int diff = DateTime.parse(formattedDate).difference(date).inSeconds;
+
+    return diff;
+  }
 
   var time = 0;
 
   @override
   Widget build(BuildContext context) {
+    int i = readTimestamp();
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
@@ -99,7 +114,7 @@ class _DataPageState extends State<DataPage> {
                             Padding(
                               padding:
                                   const EdgeInsets.only(left: 10.0, bottom: 5),
-                              child: Text("Updated $time s ago",
+                              child: Text("Updated $i s ago",
                                   style: const TextStyle(
                                     color: Color(0xff534341),
                                     fontSize: 11,
