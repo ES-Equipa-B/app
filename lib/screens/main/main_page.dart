@@ -12,12 +12,12 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  late Future<StationCardData> futureStation;
-  late List<StationCardData> stations;
+  late Future<List<StationCardData>> stations;
+  String searchQuery = "";
   @override
   void initState() {
     super.initState();
-    futureStation = getData();
+    stations = fetchStations();
   }
 
   @override
@@ -35,10 +35,7 @@ class _MainPageState extends State<MainPage> {
             prefixIcon: Icon(Icons.search),
           ),
           onChanged: (value) => setState(() {
-            stations = stations
-                .where((element) =>
-                    element.name.toLowerCase().startsWith(value.toLowerCase()))
-                .toList();
+            searchQuery = value;
           }),
         ),
         actions: [
@@ -52,8 +49,8 @@ class _MainPageState extends State<MainPage> {
         ],
       ),
       body: Center(
-        child: FutureBuilder<StationCardData>(
-          future: futureStation,
+        child: FutureBuilder<List<StationCardData>>(
+          future: stations,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               return RefreshIndicator(
@@ -65,8 +62,12 @@ class _MainPageState extends State<MainPage> {
                       crossAxisSpacing: 16,
                       childAspectRatio: 1.6,
                       padding: const EdgeInsets.all(16),
-                      children:
-                          stations.map((e) => StationCard(data: e)).toList()),
+                      children: snapshot.data!
+                          .where((element) => element.name
+                              .toLowerCase()
+                              .contains(searchQuery.toLowerCase()))
+                          .map((e) => StationCard(data: e))
+                          .toList()),
                 ),
                 onRefresh: () => Future.sync(() => setState(() => {})),
               );
@@ -88,18 +89,15 @@ class _MainPageState extends State<MainPage> {
     );
   }
 
-  Future<StationCardData> getData() async {
+  Future<List<StationCardData>> fetchStations() async {
     final response =
-        await http.get(Uri.http('campheimdall.ddns.net:5000', '/stations'));
+        await http.get(Uri.parse("http://campheimdall.ddns.net:5000/stations"));
 
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,
       // then parse the JSON.
-      List<dynamic> body = jsonDecode(response.body);
-      stations =
-          body.map((dynamic item) => StationCardData.fromJson(item)).toList();
-      setState(() {});
-      return StationCardData.fromJson(body[0]);
+      Iterable list = jsonDecode(response.body);
+      return list.map((e) => StationCardData.fromJson(e)).toList();
     } else {
       // If the server did not return a 200 OK response,
       // then throw an exception.
