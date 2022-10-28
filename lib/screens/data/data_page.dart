@@ -33,7 +33,7 @@ class _DataPageState extends State<DataPage> {
 
     DateTime date = DateTime.parse(data.timestamp);
 
-    int diff = DateTime.parse(formattedDate).difference(date).inSeconds;
+    int diff = DateTime.parse(formattedDate).difference(date).inMinutes;
 
     return diff;
   }
@@ -114,7 +114,7 @@ class _DataPageState extends State<DataPage> {
                             Padding(
                               padding:
                                   const EdgeInsets.only(left: 10.0, bottom: 5),
-                              child: Text("Updated $i s ago",
+                              child: Text("Updated $i minutes ago",
                                   style: const TextStyle(
                                     color: Color(0xff534341),
                                     fontSize: 11,
