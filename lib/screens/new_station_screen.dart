@@ -1,3 +1,5 @@
+import 'package:app_sys_eng/api/post_station.dart';
+import 'package:app_sys_eng/screens/main_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -51,7 +53,7 @@ class _NewStationScreen extends State<NewStationScreen> {
       return ErrorMessage().name = 'Phone can\'t be empty';
     } else if (text2.length < 9) {
       phoneBool = true;
-      return ErrorMessage().name = 'too short';
+      return ErrorMessage().name = 'Too short';
     }
     phoneBool = false;
 
@@ -91,66 +93,77 @@ class _NewStationScreen extends State<NewStationScreen> {
           },
         ),
       ),
-      body: SingleChildScrollView(
+      body: GestureDetector(
+        onTap: () {
+          //here
+          FocusScope.of(context).unfocus();
+          TextEditingController().clear();
+        },
+        child: SingleChildScrollView(
           child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 30),
-        child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(top: 4),
-                child: TextField(
-                  controller: _text,
-                  keyboardType: TextInputType.name,
-                  decoration: InputDecoration(
-                      labelText: 'Name',
-                      errorText: _errorText,
-                      border: const OutlineInputBorder()),
-                  onChanged: (text) => setState(() => _texto),
+            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 30),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.only(top: 4),
+                  child: TextField(
+                    controller: _text,
+                    keyboardType: TextInputType.name,
+                    decoration: InputDecoration(
+                        labelText: 'Name',
+                        errorText: _errorText,
+                        border: const OutlineInputBorder()),
+                    onChanged: (text) => setState(() => _texto),
+                  ),
                 ),
-              ),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16),
-                child: Text(
-                  "The stations's identifier name (ex: Porto)",
-                  style: TextStyle(color: Color(0xff534341), fontSize: 12),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  child: Text(
+                    "The stations's identifier name (ex: Porto)",
+                    style: TextStyle(color: Color(0xff534341), fontSize: 12),
+                  ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 10),
-                child: TextField(
-                  controller: _text2,
-                  inputFormatters: <TextInputFormatter>[
-                    LengthLimitingTextInputFormatter(9),
-                    FilteringTextInputFormatter.digitsOnly,
-                  ],
-                  decoration: InputDecoration(
-                      labelText: 'Phone Number',
-                      errorText: _errorText2,
-                      border: const OutlineInputBorder()),
-                  onChanged: (text) => setState(() => _texto2),
+                Padding(
+                  padding: const EdgeInsets.only(top: 10),
+                  child: TextField(
+                    controller: _text2,
+                    inputFormatters: <TextInputFormatter>[
+                      LengthLimitingTextInputFormatter(9),
+                      FilteringTextInputFormatter.digitsOnly,
+                    ],
+                    decoration: InputDecoration(
+                        labelText: 'Phone Number',
+                        errorText: _errorText2,
+                        border: const OutlineInputBorder()),
+                    onChanged: (text) => setState(() => _texto2),
+                  ),
                 ),
-              ),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16),
-                child: Text(
-                  "The stations's phone number (ex: 123456789)",
-                  style: TextStyle(color: Color(0xff534341), fontSize: 12),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  child: Text(
+                    "The stations's phone number (ex: 123456789)",
+                    style: TextStyle(color: Color(0xff534341), fontSize: 12),
+                  ),
                 ),
-              ),
-              const SizedBox(
-                width: 20,
-                height: 370,
-              ),
-            ]),
-      )),
+                const SizedBox(
+                  width: 20,
+                  height: 370,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
       floatingActionButton: FloatingActionButton.extended(
         backgroundColor: const Color.fromARGB(255, 255, 192, 192),
         foregroundColor: Colors.black,
         onPressed: () {
           // Respond to button press
           if (nameBool == false && phoneBool == false) {
-            _showDialog(context);
+            _showDialog(context, _text.value.text, _text2.value.text);
+          } else {
+            _erroDialog(context);
           }
         },
         icon: const Icon(Icons.check),
@@ -160,35 +173,72 @@ class _NewStationScreen extends State<NewStationScreen> {
   }
 }
 
-_showDialog(BuildContext context) {
+_showDialog(BuildContext context, String name, String phone) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
-      return Expanded(
-        child: AlertDialog(
-          title: const Text('Are you sure?'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text(
-                'No',
-                style: TextStyle(color: Colors.black),
+      return Column(children: [
+        Expanded(
+          child: AlertDialog(
+            title: const Text('Are you sure?'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text(
+                  'No',
+                  style: TextStyle(color: Colors.black),
+                ),
               ),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text(
-                'Yes',
-                style: TextStyle(color: Colors.black),
+              TextButton(
+                onPressed: () {
+                  createPost(name, phone);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const MainScreen(),
+                    ),
+                  );
+                },
+                child: const Text(
+                  'Yes',
+                  style: TextStyle(color: Colors.black),
+                ),
               ),
+            ],
+          ),
+        )
+      ]);
+    },
+  );
+}
+
+_erroDialog(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return Column(children: [
+        Expanded(
+          child: AlertDialog(
+            title: const Text(
+              'Please, complete de fields first',
+              style: TextStyle(fontSize: 16),
             ),
-          ],
-        ),
-      );
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text(
+                  'OK',
+                  style: TextStyle(color: Colors.black),
+                ),
+              ),
+            ],
+          ),
+        )
+      ]);
     },
   );
 }

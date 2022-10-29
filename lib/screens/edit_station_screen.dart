@@ -1,13 +1,19 @@
+import 'package:app_sys_eng/api/get_station.dart';
+import 'package:app_sys_eng/api/put_station.dart';
+import 'package:app_sys_eng/models/station_card_data.dart';
+import 'package:app_sys_eng/screens/data_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class ErrorMessage {
   String? name = '';
   String? phone = '';
+  int aux = 0;
 }
 
 class EditStationScreen extends StatefulWidget {
-  const EditStationScreen({Key? key}) : super(key: key);
+  final int id;
+  const EditStationScreen({Key? key, required this.id}) : super(key: key);
 
   @override
   State<EditStationScreen> createState() {
@@ -18,6 +24,14 @@ class EditStationScreen extends StatefulWidget {
 class _EditStationScreen extends State<EditStationScreen> {
   final _text = TextEditingController();
   final _text2 = TextEditingController();
+
+  late Future<StationCardData> station;
+  @override
+  void initState() {
+    super.initState();
+    station = getStation(widget.id);
+  }
+
   bool nameBool = true;
   bool phoneBool = true;
   //CORRIGIR
@@ -91,66 +105,78 @@ class _EditStationScreen extends State<EditStationScreen> {
           },
         ),
       ),
-      body: SingleChildScrollView(
-          child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 30),
-        child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(top: 4),
-                child: TextField(
-                  controller: _text,
-                  keyboardType: TextInputType.name,
-                  decoration: InputDecoration(
-                      labelText: 'Name',
-                      errorText: _errorText,
-                      border: const OutlineInputBorder()),
-                  onChanged: (text) => setState(() => _texto),
-                ),
+      body: GestureDetector(
+          onTap: () {
+            //here
+            FocusScope.of(context).unfocus();
+            TextEditingController().clear();
+          },
+          child: SingleChildScrollView(
+            child: Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 30),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(top: 4),
+                    child: TextField(
+                      controller: _text,
+                      keyboardType: TextInputType.name,
+                      decoration: InputDecoration(
+                          labelText: 'Name',
+                          errorText: _errorText,
+                          border: const OutlineInputBorder()),
+                      onChanged: (text) => setState(() => _texto),
+                    ),
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    child: Text(
+                      "The stations's identifier name (ex: Porto)",
+                      style: TextStyle(color: Color(0xff534341), fontSize: 12),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: TextField(
+                      controller: _text2,
+                      inputFormatters: <TextInputFormatter>[
+                        LengthLimitingTextInputFormatter(9),
+                        FilteringTextInputFormatter.digitsOnly,
+                      ],
+                      decoration: InputDecoration(
+                          labelText: 'Phone Number',
+                          errorText: _errorText2,
+                          border: const OutlineInputBorder()),
+                      onChanged: (text) => setState(() => _texto2),
+                    ),
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    child: Text(
+                      "The stations's phone number (ex: 123456789)",
+                      style: TextStyle(color: Color(0xff534341), fontSize: 12),
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 20,
+                    height: 370,
+                  ),
+                ],
               ),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16),
-                child: Text(
-                  "The stations's identifier name (ex: Porto)",
-                  style: TextStyle(color: Color(0xff534341), fontSize: 12),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 10),
-                child: TextField(
-                  controller: _text2,
-                  inputFormatters: <TextInputFormatter>[
-                    LengthLimitingTextInputFormatter(9),
-                    FilteringTextInputFormatter.digitsOnly,
-                  ],
-                  decoration: InputDecoration(
-                      labelText: 'Phone Number',
-                      errorText: _errorText2,
-                      border: const OutlineInputBorder()),
-                  onChanged: (text) => setState(() => _texto2),
-                ),
-              ),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16),
-                child: Text(
-                  "The stations's phone number (ex: 123456789)",
-                  style: TextStyle(color: Color(0xff534341), fontSize: 12),
-                ),
-              ),
-              const SizedBox(
-                width: 20,
-                height: 370,
-              ),
-            ]),
-      )),
+            ),
+          )),
       floatingActionButton: FloatingActionButton.extended(
         backgroundColor: const Color.fromARGB(255, 255, 192, 192),
         foregroundColor: Colors.black,
         onPressed: () {
           // Respond to button press
           if (nameBool == false && phoneBool == false) {
-            _showDialog(context);
+            _showDialog(
+                context, _text.value.text, _text2.value.text, widget.id);
+          } else {
+            _erroDialog(context);
           }
         },
         icon: const Icon(Icons.check),
@@ -160,7 +186,7 @@ class _EditStationScreen extends State<EditStationScreen> {
   }
 }
 
-_showDialog(BuildContext context) {
+_showDialog(BuildContext context, String name, String phone, int id) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
@@ -179,7 +205,13 @@ _showDialog(BuildContext context) {
             ),
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => DataScreen(id: id),
+                  ),
+                );
+                changePut(name, phone, id);
               },
               child: const Text(
                 'Yes',
@@ -189,6 +221,35 @@ _showDialog(BuildContext context) {
           ],
         ),
       );
+    },
+  );
+}
+
+_erroDialog(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return Column(children: [
+        Expanded(
+          child: AlertDialog(
+            title: const Text(
+              'Please, complete de fields first',
+              style: TextStyle(fontSize: 16),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text(
+                  'OK',
+                  style: TextStyle(color: Colors.black),
+                ),
+              ),
+            ],
+          ),
+        )
+      ]);
     },
   );
 }

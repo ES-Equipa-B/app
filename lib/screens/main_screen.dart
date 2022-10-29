@@ -50,34 +50,44 @@ class _MainScreenState extends State<MainScreen> {
         ],
       ),
       body: Center(
-        child: FutureBuilder<List<StationCardData>>(
-          future: stations,
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return RefreshIndicator(
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 30.0),
-                  child: GridView.count(
-                      crossAxisCount: 2,
-                      mainAxisSpacing: 16,
-                      crossAxisSpacing: 16,
-                      childAspectRatio: 1.6,
-                      padding: const EdgeInsets.all(16),
-                      children: snapshot.data!
-                          .where((element) => element.name
-                              .toLowerCase()
-                              .contains(searchQuery.toLowerCase()))
-                          .map((e) => StationCard(data: e))
-                          .toList()),
-                ),
-                onRefresh: () => Future.sync(
-                    () => setState(() => {stations = fetchStations()})),
-              );
-            } else if (snapshot.hasError) {
-              return Text('${snapshot.error}');
-            }
-            return const CircularProgressIndicator();
+        child: GestureDetector(
+          onTap: () {
+            //here
+            FocusScope.of(context).unfocus();
+            TextEditingController().clear();
           },
+          child: FutureBuilder<List<StationCardData>>(
+            future: stations,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return RefreshIndicator(
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 30.0),
+                    child: GridView.count(
+                        crossAxisCount: 2,
+                        mainAxisSpacing: 16,
+                        crossAxisSpacing: 16,
+                        childAspectRatio: 1.6,
+                        padding: const EdgeInsets.all(16),
+                        children: snapshot.data!
+                            .where((element) => element.name
+                                .toLowerCase()
+                                .contains(searchQuery.toLowerCase()))
+                            .map((e) => StationCard(data: e))
+                            .toList()),
+                  ),
+                  onRefresh: () => Future.sync(
+                      () => setState(() => {stations = fetchStations()})),
+                );
+              } else if (snapshot.hasError) {
+                return Text('${snapshot.error}');
+              }
+              return const Center(
+                  child: CircularProgressIndicator(
+                color: Colors.blue,
+              ));
+            },
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton(

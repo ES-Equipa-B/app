@@ -104,7 +104,7 @@ class StationDetailCard extends StatelessWidget {
                   radius: 43.0,
                   lineWidth: 5.0,
                   percent: 1.0,
-                  center: Text("${data.humidity}%"),
+                  center: Text("${100 * data.humidity}%"),
                   progressColor: const Color.fromARGB(255, 58, 66, 183),
                 ),
               ],

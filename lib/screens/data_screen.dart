@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'package:app_sys_eng/api/get_station.dart';
+import 'package:app_sys_eng/screens/edit_station_screen.dart';
 import 'package:app_sys_eng/widgets/station_detail_card.dart';
-import 'package:percent_indicator/percent_indicator.dart';
-import 'package:app_sys_eng/widgets/station_card.dart';
+
 import 'package:flutter/material.dart';
 
 import '../models/station_card_data.dart';
@@ -17,7 +17,7 @@ class DataScreen extends StatefulWidget {
 
 class _DataScreenState extends State<DataScreen> {
   late Future<StationCardData> station;
-
+  late StationCardData data;
   @override
   void initState() {
     super.initState();
@@ -33,80 +33,90 @@ class _DataScreenState extends State<DataScreen> {
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           StationCardData data = snapshot.data!;
-          return Scaffold(
-            backgroundColor: Colors.white,
-            appBar: AppBar(
-              elevation: 0,
-              title: Text(
-                data.name,
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
+          return Center(
+            child: Scaffold(
+              backgroundColor: Colors.white,
+              appBar: AppBar(
+                elevation: 0,
+                title: Text(
+                  data.name,
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ),
-              leading: GestureDetector(
-                child: const Icon(
-                  Icons.arrow_back_rounded,
-                  color: Colors.black,
+                leading: GestureDetector(
+                  child: const Icon(
+                    Icons.arrow_back_rounded,
+                    color: Colors.black,
+                  ),
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
                 ),
-                onTap: () {
-                  Navigator.pop(context);
-                },
+                actions: [
+                  PopupMenuButton(
+                    itemBuilder: (context) => [
+                      const PopupMenuItem<int>(
+                        value: 0,
+                        child: Text("Edit",
+                            style: TextStyle(color: Color(0xff534341))),
+                      ),
+                      const PopupMenuItem<int>(
+                        value: 1,
+                        child: Text("Wipe Data",
+                            style: TextStyle(color: Color(0xff534341))),
+                      ),
+                      const PopupMenuItem<int>(
+                        value: 2,
+                        child: Text("Delete",
+                            style: TextStyle(color: Color(0xff534341))),
+                      ),
+                    ],
+                    onSelected: (item) => selecteditem(context, item, data),
+                  )
+                ],
               ),
-              actions: [
-                PopupMenuButton(
-                  itemBuilder: (context) => [
-                    const PopupMenuItem<int>(
-                      value: 0,
-                      child: Text("Edit",
-                          style: TextStyle(color: Color(0xff534341))),
-                    ),
-                    const PopupMenuItem<int>(
-                      value: 1,
-                      child: Text("Wipe Data",
-                          style: TextStyle(color: Color(0xff534341))),
-                    ),
-                    const PopupMenuItem<int>(
-                      value: 2,
-                      child: Text("Delete",
-                          style: TextStyle(color: Color(0xff534341))),
+              body: RefreshIndicator(
+                triggerMode: RefreshIndicatorTriggerMode.anywhere,
+                onRefresh: () => Future.sync(
+                    () => setState(() => {station = getStation(widget.id)})),
+                child: Stack(
+                  children: [
+                    ListView(
+                      children: [
+                        Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: StationDetailCard(
+                              data: data,
+                            ))
+                      ],
                     ),
                   ],
-                  onSelected: (item) => selecteditem(context, item),
-                )
-              ],
-            ),
-            body: RefreshIndicator(
-              triggerMode: RefreshIndicatorTriggerMode.anywhere,
-              onRefresh: () => Future.sync(
-                  () => setState(() => {station = getStation(widget.id)})),
-              child: Stack(
-                children: [
-                  ListView(
-                    children: [
-                      Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: StationDetailCard(
-                            data: data,
-                          ))
-                    ],
-                  ),
-                ],
+                ),
               ),
             ),
           );
         } else if (snapshot.hasError) {
           return Text('${snapshot.error}');
         }
-        return const CircularProgressIndicator();
+        return const Center(
+            child: CircularProgressIndicator(
+          color: Colors.blue,
+        ));
       },
     );
   }
 
-  selecteditem(BuildContext context, int item) {
+  selecteditem(BuildContext context, int item, StationCardData data) {
     switch (item) {
       case 0:
-        Navigator.pushNamed(context, "/edit");
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => EditStationScreen(id: data.id),
+          ),
+        );
         break;
       case 1:
         //Metodo para apagar os dados da estaçao
