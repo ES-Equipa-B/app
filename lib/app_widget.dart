@@ -1,8 +1,8 @@
-import 'package:app_sys_eng/screens/edit/edit_station_page.dart';
-import 'package:app_sys_eng/screens/main/main_page.dart';
-import 'package:app_sys_eng/screens/settings/settings_page.dart';
-import 'package:app_sys_eng/screens/splash/splash_page.dart';
-import 'package:app_sys_eng/screens/new_station/new_station_page.dart';
+import 'package:app_sys_eng/screens/edit_station_screen.dart';
+import 'package:app_sys_eng/screens/main_screen.dart';
+import 'package:app_sys_eng/screens/settings_screen.dart';
+import 'package:app_sys_eng/screens/splash_screen.dart';
+import 'package:app_sys_eng/screens/new_station_screen.dart';
 
 import 'package:flutter/material.dart';
 
@@ -15,11 +15,11 @@ class AppWidget extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: "/splash",
       routes: {
-        "/splash": (context) => const SplashPageState(),
-        "/main": (context) => const MainPage(),
-        "/newstation": (context) => const NewStationPage(),
-        "/settings": (context) => const Settings(),
-        "/edit": (context) => const EditStationPage()
+        "/splash": (context) => const SplashScreenState(),
+        "/main": (context) => const MainScreen(),
+        "/newstation": (context) => const NewStationScreen(),
+        "/settings": (context) => const SettingsScreen(),
+        "/edit": (context) => const EditStationScreen()
       },
       theme: ThemeData(
         useMaterial3: true,

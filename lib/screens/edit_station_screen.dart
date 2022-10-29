@@ -6,16 +6,16 @@ class ErrorMessage {
   String? phone = '';
 }
 
-class EditStationPage extends StatefulWidget {
-  const EditStationPage({Key? key}) : super(key: key);
+class EditStationScreen extends StatefulWidget {
+  const EditStationScreen({Key? key}) : super(key: key);
 
   @override
-  State<EditStationPage> createState() {
-    return _EditStationPage();
+  State<EditStationScreen> createState() {
+    return _EditStationScreen();
   }
 }
 
-class _EditStationPage extends State<EditStationPage> {
+class _EditStationScreen extends State<EditStationScreen> {
   final _text = TextEditingController();
   final _text2 = TextEditingController();
   bool nameBool = true;

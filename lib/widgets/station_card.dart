@@ -1,18 +1,12 @@
-import 'package:app_sys_eng/screens/data/data_page.dart';
+import 'package:app_sys_eng/screens/data_screen.dart';
 import 'package:flutter/material.dart';
+
+import '../models/station_card_data.dart';
 
 //FAZER UMA CLASSE PARA GUARDAR AS INFORMAÇÔES DA»O CARD SELECIONADO
 
 class StationCard extends StatelessWidget {
   final StationCardData data;
-  late final Function loadData;
-  void _loadData() {
-    loadData(data.name);
-    loadData(data.temperature);
-    loadData(data.humidity);
-    loadData(data.wind);
-    loadData(data.timestamp);
-  }
 
   StationCard({super.key, required this.data});
 
@@ -51,64 +45,15 @@ class StationCard extends StatelessWidget {
                 )
               ]),
           onTap: () {
-            // MANDAR PARA OUTRA PÁGINA
-
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => DataPage(
-                    name: data.name,
-                    temp: data.temperature.toString(),
-                    wind: data.wind.toString(),
-                    hum: data.humidity.toString(),
-                    timestamp: data.timestamp,
+                  builder: (context) => DataScreen(
+                    id: data.id,
                   ),
                 ));
-            _loadData();
           }, // Handle your callback
         ));
-  }
-}
-
-class StationCardData {
-  final double humidity;
-  final int id;
-  final String name;
-  final String phone;
-  final int temperature;
-  final String timestamp;
-  final int wind;
-
-  StationCardData(
-      {required this.humidity,
-      required this.id,
-      required this.name,
-      required this.phone,
-      required this.temperature,
-      required this.timestamp,
-      required this.wind});
-
-  factory StationCardData.fromJson(Map<String, dynamic> json) {
-    return StationCardData(
-        humidity: json['humidity'],
-        id: json['id'],
-        name: json['name'],
-        phone: json['phone'],
-        temperature: json['temperature'],
-        timestamp: json['timestamp'],
-        wind: json['wind']);
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['humidity'] = humidity;
-    data['id'] = id;
-    data['name'] = name;
-    data['phone'] = phone;
-    data['temperature'] = temperature;
-    data['timestamp'] = timestamp;
-    data['wind'] = wind;
-    return data;
   }
 }
 

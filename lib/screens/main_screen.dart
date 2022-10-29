@@ -1,35 +1,19 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:app_sys_eng/widgets/station_card.dart';
 
-class MainPage extends StatefulWidget {
-  const MainPage({super.key});
+import '../api/fetch_stations.dart';
+import '../models/station_card_data.dart';
+
+class MainScreen extends StatefulWidget {
+  const MainScreen({super.key});
 
   @override
-  State<MainPage> createState() => _MainPageState();
+  State<MainScreen> createState() => _MainScreenState();
 }
 
-class _MainPageState extends State<MainPage> {
+class _MainScreenState extends State<MainScreen> {
   late Future<List<StationCardData>> stations;
   String searchQuery = "";
-
-  Future<List<StationCardData>> fetchStations() async {
-    final response =
-        await http.get(Uri.parse("http://campheimdall.ddns.net:5000/stations"));
-
-    if (response.statusCode == 200) {
-      // If the server did return a 200 OK response,
-      // then parse the JSON.
-      Iterable list = jsonDecode(response.body);
-      return list.map((e) => StationCardData.fromJson(e)).toList();
-    } else {
-      // If the server did not return a 200 OK response,
-      // then throw an exception.
-      throw Exception('Failed to load album');
-    }
-  }
 
   @override
   void initState() {
@@ -86,7 +70,8 @@ class _MainPageState extends State<MainPage> {
                           .map((e) => StationCard(data: e))
                           .toList()),
                 ),
-                onRefresh: () => Future.sync(() => setState(() => {})),
+                onRefresh: () => Future.sync(
+                    () => setState(() => {stations = fetchStations()})),
               );
             } else if (snapshot.hasError) {
               return Text('${snapshot.error}');

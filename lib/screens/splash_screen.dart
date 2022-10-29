@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class SplashPageState extends StatefulWidget {
-  const SplashPageState({Key? key}) : super(key: key);
+class SplashScreenState extends StatefulWidget {
+  const SplashScreenState({Key? key}) : super(key: key);
 
   @override
-  State<SplashPageState> createState() => _SplashPageState();
+  State<SplashScreenState> createState() => _SplashScreenState();
 }
 
-class _SplashPageState extends State<SplashPageState> {
+class _SplashScreenState extends State<SplashScreenState> {
   void initializeSplash() async {
     await Future.delayed(const Duration(seconds: 2));
     if (!mounted) return;
