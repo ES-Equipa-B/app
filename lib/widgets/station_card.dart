@@ -1,6 +1,5 @@
 import 'package:app_sys_eng/screens/data/data_page.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 
 //FAZER UMA CLASSE PARA GUARDAR AS INFORMAÇÔES DA»O CARD SELECIONADO
 

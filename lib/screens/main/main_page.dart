@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 
 import 'package:app_sys_eng/widgets/station_card.dart';
-import 'package:http/http.dart' as http;
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -105,21 +104,5 @@ class _MainPageState extends State<MainPage> {
         child: const Icon(Icons.add),
       ),
     );
-  }
-
-  Future<List<StationCardData>> fetchStations() async {
-    final response =
-        await http.get(Uri.parse("http://campheimdall.ddns.net:5000/stations"));
-
-    if (response.statusCode == 200) {
-      // If the server did return a 200 OK response,
-      // then parse the JSON.
-      Iterable list = jsonDecode(response.body);
-      return list.map((e) => StationCardData.fromJson(e)).toList();
-    } else {
-      // If the server did not return a 200 OK response,
-      // then throw an exception.
-      throw Exception('Failed to load album');
-    }
   }
 }
