@@ -1,54 +1,50 @@
 import 'dart:async';
-import 'package:intl/intl.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:app_sys_eng/widgets/station_card.dart';
 import 'package:flutter/material.dart';
 
 class DataPage extends StatefulWidget {
-  const DataPage({super.key});
+  final String name, temp, hum, wind, timestamp;
+  const DataPage(
+      {Key? key,
+      required this.name,
+      required this.temp,
+      required this.hum,
+      required this.wind,
+      required this.timestamp})
+      : super(key: key);
 
   @override
   State<DataPage> createState() => _DataPageState();
 }
 
-////////////////////////////////////
-//VER O REFRESH E OS VALORES P DATA/
-///////////////////////////////////
 class _DataPageState extends State<DataPage> {
-  //MUDAR ISSOOOOOOOOOOOO, UMA MERDA
-  final StationCardData data = StationCardData(
-      id: 1,
-      name: "Porto",
-      temperature: 37,
-      wind: 21,
-      humidity: 58.7,
-      phone: '123456789',
-      timestamp: "2022-10-27T23:30:01.408083");
   late final StationCardData d;
 
-  int readTimestamp() {
+  String readTimestamp() {
     DateTime now = DateTime.now();
-
-    String formattedDate = DateFormat('yyyy-MM-ddTHH:mm:ss').format(now);
-
-    DateTime date = DateTime.parse(data.timestamp);
-
-    int diff = DateTime.parse(formattedDate).difference(date).inMinutes;
-
-    return diff;
+    DateTime date = DateTime.parse(widget.timestamp);
+    int diff = now.difference(date).inMinutes;
+    if (diff < 1) {
+      return 'less then 1 minute ago';
+    } else if (diff == 1) {
+      return '$diff minute ago';
+    } else {
+      return '$diff minutes ago';
+    }
   }
 
   var time = 0;
 
   @override
   Widget build(BuildContext context) {
-    int i = readTimestamp();
+    String lastUpdated = readTimestamp();
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
           elevation: 0,
           title: Text(
-            Dummy().name,
+            widget.name,
             style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
@@ -60,7 +56,7 @@ class _DataPageState extends State<DataPage> {
               color: Colors.black,
             ),
             onTap: () {
-              Navigator.pushNamed(context, "/main");
+              Navigator.pop(context);
             },
           ),
           actions: [
@@ -114,7 +110,7 @@ class _DataPageState extends State<DataPage> {
                             Padding(
                               padding:
                                   const EdgeInsets.only(left: 10.0, bottom: 5),
-                              child: Text("Updated $i minutes ago",
+                              child: Text("Updated $lastUpdated",
                                   style: const TextStyle(
                                     color: Color(0xff534341),
                                     fontSize: 11,
@@ -167,8 +163,7 @@ class _DataPageState extends State<DataPage> {
                                     radius: 43.0,
                                     lineWidth: 5.0,
                                     percent: 1.0,
-                                    center: Text(
-                                        "${data.temperature.toStringAsFixed(0)} ºC"),
+                                    center: Text("${widget.temp} ºC"),
                                     progressColor:
                                         const Color.fromARGB(255, 247, 94, 94),
                                   ),
@@ -176,8 +171,7 @@ class _DataPageState extends State<DataPage> {
                                     radius: 43.0,
                                     lineWidth: 5.0,
                                     percent: 1.0,
-                                    center: Text(
-                                        "${StationCard(data: data).data.wind.toStringAsFixed(0)} m/s"),
+                                    center: Text("${widget.wind} m/s"),
                                     progressColor: const Color.fromARGB(
                                         255, 122, 222, 126),
                                   ),
@@ -185,8 +179,7 @@ class _DataPageState extends State<DataPage> {
                                     radius: 43.0,
                                     lineWidth: 5.0,
                                     percent: 1.0,
-                                    center: Text(
-                                        "${StationCard(data: data).data.humidity.toStringAsFixed(0)}%"),
+                                    center: Text("${widget.hum}%"),
                                     progressColor:
                                         const Color.fromARGB(255, 58, 66, 183),
                                   ),
