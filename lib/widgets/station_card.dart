@@ -8,7 +8,7 @@ import '../models/station_card_data.dart';
 class StationCard extends StatelessWidget {
   final StationCardData data;
 
-  const StationCard({super.key, required this.data});
+  StationCard({super.key, required this.data});
 
   @override
   Widget build(BuildContext context) {

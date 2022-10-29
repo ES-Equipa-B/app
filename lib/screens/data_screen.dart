@@ -1,7 +1,8 @@
 import 'dart:async';
 import 'package:app_sys_eng/api/get_station.dart';
 import 'package:app_sys_eng/widgets/station_detail_card.dart';
-
+import 'package:percent_indicator/percent_indicator.dart';
+import 'package:app_sys_eng/widgets/station_card.dart';
 import 'package:flutter/material.dart';
 
 import '../models/station_card_data.dart';
