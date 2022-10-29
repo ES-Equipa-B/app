@@ -87,7 +87,7 @@ class _NewStationPage extends State<NewStationPage> {
             color: Colors.black,
           ),
           onTap: () {
-            Navigator.pushNamed(context, "/main");
+            Navigator.pop(context);
           },
         ),
       ),
