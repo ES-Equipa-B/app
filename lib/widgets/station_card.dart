@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-//FAZER UMA CLASSE PARA GUARDAR AS INFORMAÇÔES DA»O CARD SELECIONADO
+import 'package:http/http.dart' as http;
 
 class Dummy {
   String name = 'Porto';
@@ -35,7 +34,6 @@ class StationCard extends StatelessWidget {
                 Text(data.name, textAlign: TextAlign.left),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     ValueIndicator(
                         icon: Icons.thermostat,
@@ -45,13 +43,12 @@ class StationCard extends StatelessWidget {
                         value: "${data.wind.toStringAsFixed(0)} m/s"),
                     ValueIndicator(
                         icon: Icons.water_drop_outlined,
-                        value: "${data.humidity.toStringAsFixed(0)}%")
+                        value: "${(100 * data.humidity).toStringAsFixed(0)}%")
                   ],
                 )
               ]),
           onTap: () {
-            // MANDAR PARA OUTRA PÁGINA
-            Navigator.pushReplacementNamed(context, "/data");
+            print("Clicaste no container"); // MANDAR PARA OUTRA PÁGINA
           }, // Handle your callback
         ));
   }
@@ -68,6 +65,14 @@ class StationCardData {
       required this.temperature,
       required this.wind,
       required this.humidity});
+
+  factory StationCardData.fromJson(Map<String, dynamic> json) {
+    return StationCardData(
+        name: json["name"],
+        temperature: json["temperature"].toDouble(),
+        wind: json["wind"].toDouble(),
+        humidity: json["humidity"].toDouble());
+  }
 }
 
 class ValueIndicator extends StatelessWidget {
