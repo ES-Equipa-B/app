@@ -1,8 +1,8 @@
 import 'package:app_sys_eng/screens/new_station/container/insert_station.dart';
 import 'package:flutter/material.dart';
 
-class NewStationPage extends StatelessWidget {
-  const NewStationPage({Key? key}) : super(key: key);
+class EditStationPage extends StatelessWidget {
+  const EditStationPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -11,7 +11,7 @@ class NewStationPage extends StatelessWidget {
         appBar: AppBar(
           elevation: 0,
           title: const Text(
-            "New Station",
+            "Edit Station",
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
@@ -23,7 +23,8 @@ class NewStationPage extends StatelessWidget {
               color: Colors.black,
             ),
             onTap: () {
-              Navigator.pushReplacementNamed(context, "/main");
+              //change this, put here the screen of data
+              Navigator.pushReplacementNamed(context, "/data");
             },
           ),
         ),

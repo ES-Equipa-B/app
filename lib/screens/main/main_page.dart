@@ -12,8 +12,6 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  
-
   late Future<List<StationCardData>> stations;
   String searchQuery = "";
 
@@ -39,16 +37,16 @@ class _MainPageState extends State<MainPage> {
     stations = fetchStations();
   }
 
-  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         shadowColor: Colors.transparent,
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        title: Container(
-            child: TextField(
+        title: TextField(
           decoration: const InputDecoration(
+            hintText: "Search Station",
+            hintStyle: TextStyle(fontSize: 15),
             border: OutlineInputBorder(),
             isDense: true,
             prefixIcon: Icon(Icons.search),
@@ -56,42 +54,44 @@ class _MainPageState extends State<MainPage> {
           onChanged: (value) => setState(() {
             searchQuery = value;
           }),
-        )),
+        ),
         actions: [
           IconButton(
               color: Theme.of(context).iconTheme.color,
-              onPressed: () => {
-                Navigator.pushReplacementNamed(context, "/settings")
-              },
+              onPressed: () =>
+                  {Navigator.pushReplacementNamed(context, "/settings")},
               icon: const Icon(Icons.settings_outlined))
         ],
       ),
       body: FutureBuilder<List<StationCardData>>(
-        future: stations,
-        builder: (context, snapshot) {
-          if(snapshot.hasData) {
-      return RefreshIndicator(
-        child: GridView.count(
-            crossAxisCount: 2,
-            mainAxisSpacing: 16,
-            crossAxisSpacing: 16,
-            childAspectRatio: 1.6,
-            padding: const EdgeInsets.all(16),
-            children: snapshot.data!
-                            .where((element) => element.name
-                                .toLowerCase()
-                                .contains(searchQuery.toLowerCase()))
-                            .map((e) => StationCard(data: e))
-                            .toList()),
-        onRefresh: () => Future.sync(() => setState(() => {
-              snapshot.data!.add(StationCardData(
-                  name: "Setubal", temperature: 20, wind: 3, humidity: 14))
-            })));
-          } else if(snapshot.hasError) {
-            return Text ("${snapshot.error}");
-          }
-          return const CircularProgressIndicator();
-        }),
+          future: stations,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return RefreshIndicator(
+                  child: GridView.count(
+                      crossAxisCount: 2,
+                      mainAxisSpacing: 16,
+                      crossAxisSpacing: 16,
+                      childAspectRatio: 1.6,
+                      padding: const EdgeInsets.all(16),
+                      children: snapshot.data!
+                          .where((element) => element.name
+                              .toLowerCase()
+                              .contains(searchQuery.toLowerCase()))
+                          .map((e) => StationCard(data: e))
+                          .toList()),
+                  onRefresh: () => Future.sync(() => setState(() => {
+                        snapshot.data!.add(StationCardData(
+                            name: "Setubal",
+                            temperature: 20,
+                            wind: 3,
+                            humidity: 14))
+                      })));
+            } else if (snapshot.hasError) {
+              return Text("${snapshot.error}");
+            }
+            return const CircularProgressIndicator();
+          }),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.pushReplacementNamed(context, "/newstation");
