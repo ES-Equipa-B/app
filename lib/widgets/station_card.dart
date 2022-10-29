@@ -47,7 +47,7 @@ class StationCard extends StatelessWidget {
                         value: "${data.wind.toStringAsFixed(0)} m/s"),
                     ValueIndicator(
                         icon: Icons.water_drop_outlined,
-                        value: "${data.humidity.toStringAsFixed(1)}%")
+                        value: "${(100 * data.humidity).toStringAsFixed(0)}%")
                   ],
                 )
               ]),
