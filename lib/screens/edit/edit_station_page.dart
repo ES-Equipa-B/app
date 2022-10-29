@@ -87,7 +87,7 @@ class _EditStationPage extends State<EditStationPage> {
             color: Colors.black,
           ),
           onTap: () {
-            Navigator.pushNamed(context, "/main");
+            Navigator.pop(context);
           },
         ),
       ),
