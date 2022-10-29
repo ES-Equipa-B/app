@@ -37,7 +37,6 @@ class StationCard extends StatelessWidget {
                 Text(data.name, textAlign: TextAlign.left),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     ValueIndicator(
                         icon: Icons.thermostat,
@@ -47,7 +46,7 @@ class StationCard extends StatelessWidget {
                         value: "${data.wind.toStringAsFixed(0)} m/s"),
                     ValueIndicator(
                         icon: Icons.water_drop_outlined,
-                        value: "${data.humidity.toStringAsFixed(1)}%")
+                        value: "${(100 * data.humidity).toStringAsFixed(0)}%")
                   ],
                 )
               ]),
