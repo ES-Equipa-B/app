@@ -21,7 +21,10 @@ class AppWidget extends StatelessWidget {
         "/settings": (context) => const Settings(),
         "/edit": (context) => const EditStationPage()
       },
-      theme: ThemeData(useMaterial3: true),
+      theme: ThemeData(
+        useMaterial3: true,
+        colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.red),
+      ),
     );
   }
 }
