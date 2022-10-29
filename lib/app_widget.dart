@@ -1,4 +1,3 @@
-import 'package:app_sys_eng/screens/data/data_page.dart';
 import 'package:app_sys_eng/screens/edit/edit_station_page.dart';
 import 'package:app_sys_eng/screens/main/main_page.dart';
 import 'package:app_sys_eng/screens/settings/settings_page.dart';
@@ -20,8 +19,7 @@ class AppWidget extends StatelessWidget {
         "/main": (context) => const MainPage(),
         "/newstation": (context) => const NewStationPage(),
         "/settings": (context) => const Settings(),
-        "/edit": (context) => const EditStationPage(),
-        "/data": (context) => const DataPage(),
+        "/edit": (context) => const EditStationPage()
       },
       theme: ThemeData(
         useMaterial3: true,

@@ -1,16 +1,20 @@
+import 'package:app_sys_eng/screens/data/data_page.dart';
 import 'package:flutter/material.dart';
 
-class Dummy {
-  String name = 'Porto';
-  int hum = 0;
-  int temp = 0;
-  int wind = 0;
-}
+//FAZER UMA CLASSE PARA GUARDAR AS INFORMAÇÔES DA»O CARD SELECIONADO
 
 class StationCard extends StatelessWidget {
   final StationCardData data;
+  late final Function loadData;
+  void _loadData() {
+    loadData(data.name);
+    loadData(data.temperature);
+    loadData(data.humidity);
+    loadData(data.wind);
+    loadData(data.timestamp);
+  }
 
-  const StationCard({super.key, required this.data});
+  StationCard({super.key, required this.data});
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +52,19 @@ class StationCard extends StatelessWidget {
               ]),
           onTap: () {
             // MANDAR PARA OUTRA PÁGINA
-            Navigator.pushNamed(context, "/data");
+
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => DataPage(
+                    name: data.name,
+                    temp: data.temperature.toString(),
+                    wind: data.wind.toString(),
+                    hum: data.humidity.toString(),
+                    timestamp: data.timestamp,
+                  ),
+                ));
+            _loadData();
           }, // Handle your callback
         ));
   }
