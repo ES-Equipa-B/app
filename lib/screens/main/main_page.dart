@@ -56,18 +56,23 @@ class _MainPageState extends State<MainPage> {
           }),
         ),
         actions: [
-          IconButton(
-              color: Theme.of(context).iconTheme.color,
-              onPressed: () =>
-                  {Navigator.pushReplacementNamed(context, "/settings")},
-              icon: const Icon(Icons.settings_outlined))
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: IconButton(
+                color: Theme.of(context).iconTheme.color,
+                onPressed: () => {Navigator.pushNamed(context, "/settings")},
+                icon: const Icon(Icons.settings)),
+          )
         ],
       ),
-      body: FutureBuilder<List<StationCardData>>(
+      body: Center(
+        child: FutureBuilder<List<StationCardData>>(
           future: stations,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               return RefreshIndicator(
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 30.0),
                   child: GridView.count(
                       crossAxisCount: 2,
                       mainAxisSpacing: 16,
@@ -80,26 +85,23 @@ class _MainPageState extends State<MainPage> {
                               .contains(searchQuery.toLowerCase()))
                           .map((e) => StationCard(data: e))
                           .toList()),
-                  onRefresh: () => Future.sync(() => setState(() => {
-                        snapshot.data!.add(StationCardData(
-                            name: "Setubal",
-                            temperature: 20,
-                            wind: 3,
-                            humidity: 14))
-                      })));
+                ),
+                onRefresh: () => Future.sync(() => setState(() => {})),
+              );
             } else if (snapshot.hasError) {
-              return Text("${snapshot.error}");
+              return Text('${snapshot.error}');
             }
             return const CircularProgressIndicator();
-          }),
+          },
+        ),
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.pushReplacementNamed(context, "/newstation");
-          // Add your onPressed code here!
+          Navigator.pushNamed(context, "/newstation");
         },
+        backgroundColor: const Color.fromARGB(255, 255, 192, 192),
+        foregroundColor: const Color.fromARGB(255, 54, 6, 6),
         child: const Icon(Icons.add),
-        backgroundColor: Color.fromARGB(188, 255, 218, 212),
-        foregroundColor: Color.fromARGB(255, 54, 6, 6),
       ),
     );
   }

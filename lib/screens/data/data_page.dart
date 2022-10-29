@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:intl/intl.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:app_sys_eng/widgets/station_card.dart';
 import 'package:flutter/material.dart';
@@ -15,13 +16,33 @@ class DataPage extends StatefulWidget {
 ///////////////////////////////////
 class _DataPageState extends State<DataPage> {
   //MUDAR ISSOOOOOOOOOOOO, UMA MERDA
-  final StationCardData data = const StationCardData(
-      name: "Porto", temperature: 37.1, wind: 21, humidity: 58.7);
+  final StationCardData data = StationCardData(
+      id: 1,
+      name: "Porto",
+      temperature: 37,
+      wind: 21,
+      humidity: 58.7,
+      phone: '123456789',
+      timestamp: "2022-10-27T23:30:01.408083");
+  late final StationCardData d;
+
+  int readTimestamp() {
+    DateTime now = DateTime.now();
+
+    String formattedDate = DateFormat('yyyy-MM-ddTHH:mm:ss').format(now);
+
+    DateTime date = DateTime.parse(data.timestamp);
+
+    int diff = DateTime.parse(formattedDate).difference(date).inMinutes;
+
+    return diff;
+  }
 
   var time = 0;
 
   @override
   Widget build(BuildContext context) {
+    int i = readTimestamp();
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
@@ -39,7 +60,7 @@ class _DataPageState extends State<DataPage> {
               color: Colors.black,
             ),
             onTap: () {
-              Navigator.pushReplacementNamed(context, "/main");
+              Navigator.pop(context);
             },
           ),
           actions: [
@@ -91,20 +112,19 @@ class _DataPageState extends State<DataPage> {
                                       fontWeight: FontWeight.bold)),
                             ),
                             Padding(
-                              padding: const EdgeInsets.only(left: 10.0),
-                              child: Text("Updated $time s ago",
+                              padding:
+                                  const EdgeInsets.only(left: 10.0, bottom: 5),
+                              child: Text("Updated $i minutes ago",
                                   style: const TextStyle(
                                     color: Color(0xff534341),
                                     fontSize: 11,
                                   )),
                             ),
                             Padding(
-                              padding: const EdgeInsets.only(
-                                  top: 15.0, right: 8, left: 8),
+                              padding: const EdgeInsets.symmetric(vertical: 5),
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceAround,
-                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: const [
                                   Text("Temperature",
                                       style: TextStyle(
@@ -125,12 +145,10 @@ class _DataPageState extends State<DataPage> {
                               ),
                             ),
                             Padding(
-                              padding: const EdgeInsets.only(
-                                  top: 5.0, right: 8, left: 8),
+                              padding: const EdgeInsets.symmetric(vertical: 5),
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceAround,
-                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: const [
                                   Icon(Icons.thermostat),
                                   Icon(Icons.air),
@@ -139,11 +157,11 @@ class _DataPageState extends State<DataPage> {
                               ),
                             ),
                             Padding(
-                              padding: const EdgeInsets.only(top: 10.0),
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 0.0),
                               child: Row(
                                 mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                                    MainAxisAlignment.spaceAround,
                                 children: [
                                   CircularPercentIndicator(
                                     radius: 43.0,
@@ -186,7 +204,7 @@ class _DataPageState extends State<DataPage> {
   selecteditem(BuildContext context, int item) {
     switch (item) {
       case 0:
-        Navigator.pushReplacementNamed(context, "/edit");
+        Navigator.pushNamed(context, "/edit");
         break;
       case 1:
         //Metodo para apagar os dados da estaçao

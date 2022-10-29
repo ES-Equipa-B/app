@@ -4,6 +4,7 @@ import 'package:app_sys_eng/screens/main/main_page.dart';
 import 'package:app_sys_eng/screens/settings/settings_page.dart';
 import 'package:app_sys_eng/screens/splash/splash_page.dart';
 import 'package:app_sys_eng/screens/new_station/new_station_page.dart';
+
 import 'package:flutter/material.dart';
 
 class AppWidget extends StatelessWidget {
@@ -22,7 +23,10 @@ class AppWidget extends StatelessWidget {
         "/edit": (context) => const EditStationPage(),
         "/data": (context) => const DataPage(),
       },
-      theme: ThemeData(useMaterial3: true),
+      theme: ThemeData(
+        useMaterial3: true,
+        colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.red),
+      ),
     );
   }
 }

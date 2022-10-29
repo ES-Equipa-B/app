@@ -11,7 +11,8 @@ class _SettingsState extends State<Settings> {
   bool val1 = true;
   int? value = 1;
   String val = '';
-  onChangedFunction1(bool newValue1) {
+
+  onChangedFunction1(bool newValue1) async {
     setState(() {
       val1 = newValue1;
     });
@@ -43,7 +44,7 @@ class _SettingsState extends State<Settings> {
             onTap: () {
               //TROCAR SPLASH PELO ROUTE DO MAIN DO PEDRO
               //Navigator.pushReplacementNamed(context, "/splash");
-              Navigator.pushReplacementNamed(context, "/main");
+              Navigator.pop(context);
             },
           ),
         ),

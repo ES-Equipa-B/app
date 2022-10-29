@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 
 class Dummy {
   String name = 'Porto';
@@ -48,30 +47,52 @@ class StationCard extends StatelessWidget {
                 )
               ]),
           onTap: () {
-            print("Clicaste no container"); // MANDAR PARA OUTRA PÁGINA
+            // MANDAR PARA OUTRA PÁGINA
+            Navigator.pushNamed(context, "/data");
           }, // Handle your callback
         ));
   }
 }
 
 class StationCardData {
-  final String name;
-  final double temperature;
-  final double wind;
   final double humidity;
+  final int id;
+  final String name;
+  final String phone;
+  final int temperature;
+  final String timestamp;
+  final int wind;
 
-  const StationCardData(
-      {required this.name,
+  StationCardData(
+      {required this.humidity,
+      required this.id,
+      required this.name,
+      required this.phone,
       required this.temperature,
-      required this.wind,
-      required this.humidity});
+      required this.timestamp,
+      required this.wind});
 
   factory StationCardData.fromJson(Map<String, dynamic> json) {
     return StationCardData(
-        name: json["name"],
-        temperature: json["temperature"].toDouble(),
-        wind: json["wind"].toDouble(),
-        humidity: json["humidity"].toDouble());
+        humidity: json['humidity'],
+        id: json['id'],
+        name: json['name'],
+        phone: json['phone'],
+        temperature: json['temperature'],
+        timestamp: json['timestamp'],
+        wind: json['wind']);
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['humidity'] = humidity;
+    data['id'] = id;
+    data['name'] = name;
+    data['phone'] = phone;
+    data['temperature'] = temperature;
+    data['timestamp'] = timestamp;
+    data['wind'] = wind;
+    return data;
   }
 }
 
