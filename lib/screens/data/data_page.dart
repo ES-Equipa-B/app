@@ -60,7 +60,7 @@ class _DataPageState extends State<DataPage> {
               color: Colors.black,
             ),
             onTap: () {
-              Navigator.pushNamed(context, "/main");
+              Navigator.pop(context);
             },
           ),
           actions: [

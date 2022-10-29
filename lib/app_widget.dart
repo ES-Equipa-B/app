@@ -23,7 +23,10 @@ class AppWidget extends StatelessWidget {
         "/edit": (context) => const EditStationPage(),
         "/data": (context) => const DataPage(),
       },
-      theme: ThemeData(useMaterial3: true),
+      theme: ThemeData(
+        useMaterial3: true,
+        colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.red),
+      ),
     );
   }
 }
