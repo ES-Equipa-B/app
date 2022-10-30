@@ -84,7 +84,7 @@ class _MainScreenState extends State<MainScreen> {
               }
               return const Center(
                   child: CircularProgressIndicator(
-                color: Colors.blue,
+                color: Color.fromARGB(255, 255, 192, 192),
               ));
             },
           ),
