@@ -22,6 +22,7 @@ class StationDetailCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String lastUpdated = readTimestamp(data.timestamp);
+
     return Container(
       height: 240,
       width: 390,
