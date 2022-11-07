@@ -1,4 +1,6 @@
+import 'package:app_sys_eng/widgets/settings_options.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -8,29 +10,62 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  bool val1 = true;
-  int? value = 1;
-  String val = '';
+  bool val1 = false;
+  int unit = 1;
+  String unitName = '';
 
-  onChangedFunction1(bool newValue1) async {
+  @override
+  void initState() {
+    loadVal();
+    super.initState();
+  }
+
+  void loadVal() async {
+    final pref = await SharedPreferences.getInstance();
+    final prefUnit = await SharedPreferences.getInstance();
     setState(() {
-      val1 = newValue1;
+      val1 = pref.getBool('val') ?? false;
+      unit = prefUnit.getInt('unit') ?? 1;
     });
+  }
+
+  void _setState(bool newValue) {
+    setState(() {
+      val1 = newValue;
+      saveValue();
+    });
+  }
+
+  void _setStateUnit(int newValue) {
+    setState(() {
+      unit = newValue;
+      saveValueUnit();
+    });
+  }
+
+  void saveValue() async {
+    final pref = await SharedPreferences.getInstance();
+    pref.setBool('val', val1);
+  }
+
+  void saveValueUnit() async {
+    final pref = await SharedPreferences.getInstance();
+    pref.setInt('unit', unit);
   }
 
   @override
   Widget build(BuildContext context) {
-    if (value == 1) {
-      val = 'Metric';
+    if (unit == 1) {
+      unitName = 'Metric';
     } else {
-      val = 'Imperial';
+      unitName = 'Imperial';
     }
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
           elevation: 0,
           title: const Text(
-            "SettingsScreen",
+            "Settings",
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
@@ -42,8 +77,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
               color: Colors.black,
             ),
             onTap: () {
-              //TROCAR SPLASH PELO ROUTE DO MAIN DO PEDRO
-              //Navigator.pushReplacementNamed(context, "/splash");
               Navigator.pop(context);
             },
           ),
@@ -60,47 +93,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  customSwitch(
-                      'Main Station',
-                      'Make this device a main station',
-                      val1,
-                      onChangedFunction1),
+                  const SettingsOptions().customSwitch('Main Station',
+                      'Make this device a main station', val1, _setState),
                   const Padding(
                     padding: EdgeInsets.symmetric(horizontal: 16),
                   ),
                   Padding(
                       padding:
                           const EdgeInsets.only(left: 16, top: 15, right: 30),
-                      child: DropdownButtonHideUnderline(
-                          child: DropdownButton(
-                        isExpanded: true,
-                        hint: const Text(
-                          "Measurement Unit",
-                          style: TextStyle(
-                              fontSize: 20,
-                              color: Colors.black,
-                              fontWeight: FontWeight.normal),
-                        ),
-                        items: const [
-                          DropdownMenuItem(
-                            value: 1,
-                            child: Text('Metric'),
-                          ),
-                          DropdownMenuItem(
-                            value: 2,
-                            child: Text('Imperial'),
-                          ),
-                        ],
-                        onChanged: (newValue) {
-                          setState(() {
-                            value = newValue;
-                          });
-                        },
-                      ))),
+                      child: const SettingsOptions()
+                          .dropDown("Measurement Unit", unit, _setStateUnit)),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Text(
-                      val,
+                      unitName,
                       style: const TextStyle(
                           color: Color(0xff534341), fontSize: 12),
                     ),
@@ -111,39 +117,4 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
         ));
   }
-}
-
-Widget customSwitch(
-    String text, String def, bool val, Function onChangedMethod) {
-  return Padding(
-    padding: const EdgeInsets.only(left: 16, right: 16),
-    child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                text,
-                style: const TextStyle(
-                  fontSize: 20,
-                  color: Colors.black,
-                ),
-              ),
-              Text(
-                def,
-                style: const TextStyle(color: Color(0xff534341), fontSize: 12),
-              ),
-            ],
-          ),
-          const Spacer(),
-          Switch(
-              activeColor: const Color.fromARGB(255, 255, 192, 192),
-              value: val,
-              onChanged: (newValue) {
-                onChangedMethod(newValue);
-              }),
-        ]),
-  );
 }

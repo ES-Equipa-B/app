@@ -1,4 +1,3 @@
-import 'package:app_sys_eng/screens/edit_station_screen.dart';
 import 'package:app_sys_eng/screens/main_screen.dart';
 import 'package:app_sys_eng/screens/settings_screen.dart';
 import 'package:app_sys_eng/screens/splash_screen.dart';
@@ -19,7 +18,6 @@ class AppWidget extends StatelessWidget {
         "/main": (context) => const MainScreen(),
         "/newstation": (context) => const NewStationScreen(),
         "/settings": (context) => const SettingsScreen(),
-        "/edit": (context) => const EditStationScreen()
       },
       theme: ThemeData(
         useMaterial3: true,

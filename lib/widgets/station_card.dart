@@ -3,12 +3,10 @@ import 'package:flutter/material.dart';
 
 import '../models/station_card_data.dart';
 
-//FAZER UMA CLASSE PARA GUARDAR AS INFORMAÇÔES DA»O CARD SELECIONADO
-
 class StationCard extends StatelessWidget {
   final StationCardData data;
 
-  StationCard({super.key, required this.data});
+  const StationCard({super.key, required this.data});
 
   @override
   Widget build(BuildContext context) {
