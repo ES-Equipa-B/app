@@ -4,7 +4,7 @@ import '../models/station_card_data.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-Future<StationCardData> changePut(String name, String phone, int id) async {
+void changePut(String name, String phone, int id) async {
   final response = await http.put(
       Uri.parse(apiURL + apiGetStation + id.toString()),
       headers: <String, String>{
@@ -12,8 +12,7 @@ Future<StationCardData> changePut(String name, String phone, int id) async {
       },
       body: jsonEncode(<String, String>{'name': name, 'phone': phone}));
 
-  if (response.statusCode == 200) {
-    return StationCardData.fromJson(json.decode(response.body));
+  if (response.statusCode != 200) {
+    throw Exception("Put Error");
   }
-  throw Exception("Put Error");
 }

@@ -86,10 +86,11 @@ class _DataScreenState extends State<DataScreen> {
                     ListView(
                       children: [
                         Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: StationDetailCard(
-                              data: data,
-                            ))
+                          padding: const EdgeInsets.all(16.0),
+                          child: StationDetailCard(
+                            data: data,
+                          ),
+                        )
                       ],
                     ),
                   ],

@@ -228,7 +228,7 @@ _erroDialog(BuildContext context) {
             actions: [
               TextButton(
                 onPressed: () {
-                  Navigator.of(context).pop();
+                  Navigator.of(context).pop(true);
                 },
                 child: const Text(
                   'OK',

@@ -99,12 +99,22 @@ class _MainScreenState extends State<MainScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.pushNamed(context, "/newstation");
+          navigateNewStation(context);
         },
         backgroundColor: const Color.fromARGB(255, 255, 192, 192),
         foregroundColor: const Color.fromARGB(255, 54, 6, 6),
         child: const Icon(Icons.add),
       ),
     );
+  }
+
+  Future<void> navigateNewStation(BuildContext context) async {
+    final result = await Navigator.pushNamed(context, "/newstation");
+
+    if (!mounted) return;
+
+    if (result == true) {
+      setState(() => {stations = fetchStations()});
+    }
   }
 }
