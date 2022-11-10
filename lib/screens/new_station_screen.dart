@@ -1,5 +1,4 @@
 import 'package:app_sys_eng/api/post_station.dart';
-import 'package:app_sys_eng/screens/main_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -194,12 +193,9 @@ _showDialog(BuildContext context, String name, String phone) {
               TextButton(
                 onPressed: () {
                   createPost(name, phone);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const MainScreen(),
-                    ),
-                  );
+                  Navigator.of(context).popUntil((route) {
+                    return route.settings.name == '/main';
+                  });
                 },
                 child: const Text(
                   'Yes',

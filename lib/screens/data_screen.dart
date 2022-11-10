@@ -112,12 +112,7 @@ class _DataScreenState extends State<DataScreen> {
   selecteditem(BuildContext context, int item, StationCardData data) {
     switch (item) {
       case 0:
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => EditStationScreen(id: data.id),
-          ),
-        );
+        navigateEditStation(context, data);
         break;
       case 1:
         //Metodo para apagar os dados da estaçao
@@ -126,6 +121,23 @@ class _DataScreenState extends State<DataScreen> {
         //Metodo para apagar a estação
         break;
       default:
+    }
+  }
+
+  Future<void> navigateEditStation(
+      BuildContext context, StationCardData d) async {
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) =>
+            EditStationScreen(id: d.id, name: d.name, phone: d.phone),
+      ),
+    );
+
+    if (!mounted) return;
+
+    if (result == "/data") {
+      setState(() => {station = getStation(widget.id)});
     }
   }
 }

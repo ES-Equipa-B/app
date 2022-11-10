@@ -13,7 +13,10 @@ class ErrorMessage {
 
 class EditStationScreen extends StatefulWidget {
   final int id;
-  const EditStationScreen({Key? key, required this.id}) : super(key: key);
+  final String name, phone;
+  const EditStationScreen(
+      {Key? key, required this.id, required this.name, required this.phone})
+      : super(key: key);
 
   @override
   State<EditStationScreen> createState() {
@@ -30,6 +33,8 @@ class _EditStationScreen extends State<EditStationScreen> {
   void initState() {
     super.initState();
     station = getStation(widget.id);
+    _text.text = widget.name;
+    _text2.text = widget.phone;
   }
 
   bool nameBool = true;
@@ -65,7 +70,7 @@ class _EditStationScreen extends State<EditStationScreen> {
       return ErrorMessage().name = 'Phone can\'t be empty';
     } else if (text2.length < 9) {
       phoneBool = true;
-      return ErrorMessage().name = 'too short';
+      return ErrorMessage().name = 'Too short';
     }
     phoneBool = false;
 
@@ -205,12 +210,10 @@ _showDialog(BuildContext context, String name, String phone, int id) {
             ),
             TextButton(
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => DataScreen(id: id),
-                  ),
-                );
+                Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => DataScreen(id: id)),
+                    (route) => false);
                 changePut(name, phone, id);
               },
               child: const Text(
@@ -239,7 +242,7 @@ _erroDialog(BuildContext context) {
             actions: [
               TextButton(
                 onPressed: () {
-                  Navigator.of(context).pop();
+                  Navigator.of(context).pop(true);
                 },
                 child: const Text(
                   'OK',
