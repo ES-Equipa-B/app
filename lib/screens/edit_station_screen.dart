@@ -209,9 +209,15 @@ _showDialog(BuildContext context, String name, String phone, int id) {
             ),
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop();
-                Navigator.of(context).pop(true);
-                changePut(name, phone, id);
+                updateStation(id, name, phone).whenComplete(() {
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop(true);
+                }).onError((error, stackTrace) {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text("Error: $error"),
+                  ));
+                  return false;
+                });
               },
               child: const Text(
                 'Yes',
