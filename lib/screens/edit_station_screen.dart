@@ -184,8 +184,8 @@ class _EditStationScreen extends State<EditStationScreen> {
             _erroDialog(context);
           }
         },
-        icon: const Icon(Icons.check),
-        label: const Text("Edit"),
+        icon: const Icon(Icons.save),
+        label: const Text("Save"),
       ),
     );
   }
