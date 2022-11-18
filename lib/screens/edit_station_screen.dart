@@ -183,8 +183,8 @@ class _EditStationScreen extends State<EditStationScreen> {
             _erroDialog(context);
           }
         },
-        icon: const Icon(Icons.check),
-        label: const Text("Edit"),
+        icon: const Icon(Icons.save),
+        label: const Text("Save"),
       ),
     );
   }
@@ -209,9 +209,15 @@ _showDialog(BuildContext context, String name, String phone, int id) {
             ),
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop();
-                Navigator.of(context).pop(true);
-                changePut(name, phone, id);
+                updateStation(id, name, phone).whenComplete(() {
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop(true);
+                }).onError((error, stackTrace) {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text("Error: $error"),
+                  ));
+                  return false;
+                });
               },
               child: const Text(
                 'Yes',
