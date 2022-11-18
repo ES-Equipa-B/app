@@ -49,7 +49,6 @@ class StationCard extends StatelessWidget {
                   builder: (context) => DataScreen(
                     id: data.id,
                   ),
-                  settings: const RouteSettings(name: "/data"),
                 ));
           }, // Handle your callback
         ));

@@ -185,7 +185,7 @@ class _EditStationScreen extends State<EditStationScreen> {
           }
         },
         icon: const Icon(Icons.check),
-        label: const Text("Create"),
+        label: const Text("Edit"),
       ),
     );
   }
@@ -210,11 +210,9 @@ _showDialog(BuildContext context, String name, String phone, int id) {
             ),
             TextButton(
               onPressed: () {
-                Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(builder: (context) => DataScreen(id: id)),
-                    (route) => false);
                 changePut(name, phone, id);
+                Navigator.of(context).pop();
+                Navigator.of(context).pop(true);
               },
               child: const Text(
                 'Yes',

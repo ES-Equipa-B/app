@@ -113,7 +113,7 @@ class _MainScreenState extends State<MainScreen> {
 
     if (!mounted) return;
 
-    if (result == '/main') {
+    if (result == true) {
       setState(() => {stations = fetchStations()});
     }
   }

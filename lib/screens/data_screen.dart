@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:app_sys_eng/api/get_station.dart';
 import 'package:app_sys_eng/screens/edit_station_screen.dart';
+import 'package:app_sys_eng/widgets/graph_card.dart';
 import 'package:app_sys_eng/widgets/station_detail_card.dart';
 
 import 'package:flutter/material.dart';
@@ -90,6 +91,11 @@ class _DataScreenState extends State<DataScreen> {
                           child: StationDetailCard(
                             data: data,
                           ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              left: 16.0, right: 16.0, top: 5),
+                          child: GraphCard(data: data),
                         )
                       ],
                     ),
@@ -136,7 +142,7 @@ class _DataScreenState extends State<DataScreen> {
 
     if (!mounted) return;
 
-    if (result == "/data") {
+    if (result == true) {
       setState(() => {station = getStation(widget.id)});
     }
   }
