@@ -184,8 +184,8 @@ class _EditStationScreen extends State<EditStationScreen> {
             _erroDialog(context);
           }
         },
-        icon: const Icon(Icons.check),
-        label: const Text("Create"),
+        icon: const Icon(Icons.save),
+        label: const Text("Save"),
       ),
     );
   }
@@ -210,11 +210,13 @@ _showDialog(BuildContext context, String name, String phone, int id) {
             ),
             TextButton(
               onPressed: () {
-                Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(builder: (context) => DataScreen(id: id)),
-                    (route) => false);
                 changePut(name, phone, id);
+                Navigator.of(context).pop();
+                Navigator.of(context).pop(true);
+                // Navigator.pushAndRemoveUntil(
+                //     context,
+                //     MaterialPageRoute(builder: (context) => DataScreen(id: id)),
+                //     (route) => false);
               },
               child: const Text(
                 'Yes',
