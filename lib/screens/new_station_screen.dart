@@ -192,9 +192,9 @@ _showDialog(BuildContext context, String name, String phone) {
               ),
               TextButton(
                 onPressed: () {
-                  createPost(name, phone);
                   Navigator.of(context).pop();
                   Navigator.of(context).pop(true);
+                  createPost(name, phone);
                 },
                 child: const Text(
                   'Yes',

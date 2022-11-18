@@ -1,7 +1,6 @@
 import 'package:app_sys_eng/api/get_station.dart';
 import 'package:app_sys_eng/api/put_station.dart';
 import 'package:app_sys_eng/models/station_card_data.dart';
-import 'package:app_sys_eng/screens/data_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -210,9 +209,9 @@ _showDialog(BuildContext context, String name, String phone, int id) {
             ),
             TextButton(
               onPressed: () {
-                changePut(name, phone, id);
                 Navigator.of(context).pop();
                 Navigator.of(context).pop(true);
+                changePut(name, phone, id);
               },
               child: const Text(
                 'Yes',
