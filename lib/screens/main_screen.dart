@@ -1,3 +1,4 @@
+import 'package:app_sys_eng/screens/new_station_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:app_sys_eng/widgets/station_card.dart';
 
@@ -109,11 +110,13 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   Future<void> navigateNewStation(BuildContext context) async {
-    final result = await Navigator.pushNamed(context, "/newstation");
+    bool? result = await Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => const NewStationScreen(),
+      ),
+    );
 
-    if (!mounted) return;
-
-    if (result == '/main') {
+    if (result == true) {
       setState(() => {stations = fetchStations()});
     }
   }

@@ -210,13 +210,15 @@ _showDialog(BuildContext context, String name, String phone, int id) {
             ),
             TextButton(
               onPressed: () {
-                changePut(name, phone, id);
-                Navigator.of(context).pop();
-                Navigator.of(context).pop(true);
-                // Navigator.pushAndRemoveUntil(
-                //     context,
-                //     MaterialPageRoute(builder: (context) => DataScreen(id: id)),
-                //     (route) => false);
+                updateStation(id, name, phone).whenComplete(() {
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop(true);
+                }).onError((error, stackTrace) {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text("Error: $error"),
+                  ));
+                  return false;
+                });
               },
               child: const Text(
                 'Yes',

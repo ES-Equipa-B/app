@@ -126,16 +126,16 @@ class _DataScreenState extends State<DataScreen> {
 
   Future<void> navigateEditStation(
       BuildContext context, StationCardData d) async {
-    bool result = await Navigator.push(
+    bool? result = await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) =>
             EditStationScreen(id: d.id, name: d.name, phone: d.phone),
       ),
     );
-    if (!mounted) return;
+    // if (!mounted) return;
 
-    if (result) {
+    if (result == true) {
       setState(() => {station = getStation(widget.id)});
     }
   }

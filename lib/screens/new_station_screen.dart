@@ -1,5 +1,7 @@
 import 'package:app_sys_eng/api/post_station.dart';
 import 'package:flutter/material.dart';
+
+import 'dart:developer' as developer;
 import 'package:flutter/services.dart';
 
 class ErrorMessage {
@@ -192,9 +194,15 @@ _showDialog(BuildContext context, String name, String phone) {
               ),
               TextButton(
                 onPressed: () {
-                  createPost(name, phone);
-                  Navigator.of(context).popUntil((route) {
-                    return route.settings.name == '/main';
+                  developer.log("Pressed!", name: "app.es");
+                  createStation(name, phone).whenComplete(() {
+                    Navigator.of(context).pop();
+                    Navigator.of(context).pop(true);
+                  }).onError((error, stackTrace) {
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text("Error: $error"),
+                    ));
+                    return false;
                   });
                 },
                 child: const Text(
