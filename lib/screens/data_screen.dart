@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:app_sys_eng/api/delete_station.dart';
 import 'package:app_sys_eng/api/get_station.dart';
 import 'package:app_sys_eng/screens/edit_station_screen.dart';
 import 'package:app_sys_eng/widgets/graph_card.dart';
@@ -121,10 +122,10 @@ class _DataScreenState extends State<DataScreen> {
         navigateEditStation(context, data);
         break;
       case 1:
-        //Metodo para apagar os dados da estaçao
+        _showDialogWipe(context, widget.id);
         break;
       case 2:
-        //Metodo para apagar a estação
+        _showDialogDelete(context, widget.id);
         break;
       default:
     }
@@ -145,4 +146,85 @@ class _DataScreenState extends State<DataScreen> {
       setState(() => {station = getStation(widget.id)});
     }
   }
+}
+
+_showDialogDelete(BuildContext context, int id) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return Expanded(
+        child: AlertDialog(
+          title: const Text('Are you sure?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text(
+                'No',
+                style: TextStyle(color: Colors.black),
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                deleteStation(id).whenComplete(() {
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop(true);
+                }).onError((error, stackTrace) {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text("Error: $error"),
+                  ));
+                  return false;
+                });
+              },
+              child: const Text(
+                'Yes',
+                style: TextStyle(color: Colors.black),
+              ),
+            ),
+          ],
+        ),
+      );
+    },
+  );
+}
+
+_showDialogWipe(BuildContext context, int id) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return Expanded(
+        child: AlertDialog(
+          title: const Text('Are you sure?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text(
+                'No',
+                style: TextStyle(color: Colors.black),
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                deleteStation(id).whenComplete(() {
+                  Navigator.of(context).pop();
+                }).onError((error, stackTrace) {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text("Error: $error"),
+                  ));
+                  return false;
+                });
+              },
+              child: const Text(
+                'Yes',
+                style: TextStyle(color: Colors.black),
+              ),
+            ),
+          ],
+        ),
+      );
+    },
+  );
 }
