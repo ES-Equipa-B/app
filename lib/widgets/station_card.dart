@@ -5,8 +5,9 @@ import '../models/station_card_data.dart';
 
 class StationCard extends StatelessWidget {
   final StationCardData data;
+  final Function refresh;
 
-  const StationCard({super.key, required this.data});
+  const StationCard({super.key, required this.data, required this.refresh});
 
   @override
   Widget build(BuildContext context) {
@@ -50,6 +51,7 @@ class StationCard extends StatelessWidget {
                     id: data.id,
                   ),
                 ));
+            refresh(data);
           }, // Handle your callback
         ));
   }

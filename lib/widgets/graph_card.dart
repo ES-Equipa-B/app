@@ -32,31 +32,35 @@ class _GraphCard extends State<GraphCard> {
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5),
           color: const Color.fromARGB(255, 255, 242, 240)),
-      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const Padding(
-              padding: EdgeInsets.all(10.0),
-              child: Text("Weather History",
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold)),
-            ),
-            DropdownButtonHideUnderline(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Padding(
+                padding: EdgeInsets.all(10.0),
+                child: Text("Weather History",
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold)),
+              ),
+              DropdownButtonHideUnderline(
                 child: DropdownButton(
-              value: selectedValue,
-              items: dropdownItems,
-              onChanged: (String? newValue) {
-                setState(() {
-                  selectedValue = newValue!;
-                });
-              },
-            ))
-          ],
-        ),
-      ]),
+                  value: selectedValue,
+                  items: dropdownItems,
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      selectedValue = newValue!;
+                    });
+                  },
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

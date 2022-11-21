@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:app_sys_eng/api/delete_station.dart';
 import 'package:app_sys_eng/api/get_station.dart';
+import 'package:app_sys_eng/api/wipe_data_station.dart';
 import 'package:app_sys_eng/screens/edit_station_screen.dart';
 import 'package:app_sys_eng/widgets/graph_card.dart';
 import 'package:app_sys_eng/widgets/station_detail_card.dart';
@@ -208,7 +209,7 @@ _showDialogWipe(BuildContext context, int id) {
             ),
             TextButton(
               onPressed: () {
-                deleteStation(id).whenComplete(() {
+                wipeData(id).whenComplete(() {
                   Navigator.of(context).pop();
                 }).onError((error, stackTrace) {
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
