@@ -6,7 +6,10 @@ import '../api/fetch_stations.dart';
 import '../models/station_card_data.dart';
 
 class MainScreen extends StatefulWidget {
-  const MainScreen({super.key});
+   final Stream<List<StationCardData>> stations;
+  final Function refreshStations;
+
+  const MainScreen(this.stations, this.refreshStations, {super.key});
 
   @override
   State<MainScreen> createState() => _MainScreenState();
