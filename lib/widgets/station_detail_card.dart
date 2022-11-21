@@ -24,7 +24,7 @@ class StationDetailCard extends StatelessWidget {
     String lastUpdated = readTimestamp(data.timestamp);
 
     return Container(
-      height: 240,
+      height: 220,
       width: 390,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5),
@@ -49,68 +49,64 @@ class StationDetailCard extends StatelessWidget {
                 )),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 5),
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: const [
-                Text("Temperature",
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold)),
-                Text("Wind Speed",
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold)),
-                Text("Humidity",
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold))
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 5),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: const [
-                Icon(Icons.thermostat),
-                Icon(Icons.air),
-                Icon(Icons.water_drop_outlined)
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 0.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                CircularPercentIndicator(
-                  radius: 43.0,
-                  lineWidth: 5.0,
-                  percent: 1.0,
-                  center: Text("${data.temperature} ºC"),
-                  progressColor: const Color.fromARGB(255, 247, 94, 94),
+                Column(
+                  children: [
+                    const Text("Temperature",
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold)),
+                    const Icon(Icons.thermostat),
+                    CircularPercentIndicator(
+                      radius: 43.0,
+                      lineWidth: 5.0,
+                      percent: 1.0,
+                      center: Text("${data.temperature} ºC"),
+                      progressColor: const Color.fromARGB(255, 247, 94, 94),
+                    )
+                  ],
                 ),
-                CircularPercentIndicator(
-                  radius: 43.0,
-                  lineWidth: 5.0,
-                  percent: 1.0,
-                  center: Text("${data.wind} m/s"),
-                  progressColor: const Color.fromARGB(255, 122, 222, 126),
+                Column(
+                  children: [
+                    const Text("Wind Speed",
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold)),
+                    const Icon(Icons.air),
+                    CircularPercentIndicator(
+                      radius: 43.0,
+                      lineWidth: 5.0,
+                      percent: 1.0,
+                      center: Text("${data.wind} m/s"),
+                      progressColor: const Color.fromARGB(255, 122, 222, 126),
+                    ),
+                  ],
                 ),
-                CircularPercentIndicator(
-                  radius: 43.0,
-                  lineWidth: 5.0,
-                  percent: 1.0,
-                  center: Text("${100 * data.humidity}%"),
-                  progressColor: const Color.fromARGB(255, 58, 66, 183),
+                Column(
+                  children: [
+                    const Text("Humidity",
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold)),
+                    const Icon(Icons.water_drop_outlined),
+                    CircularPercentIndicator(
+                      radius: 43.0,
+                      lineWidth: 5.0,
+                      percent: 1.0,
+                      center: Text("${100 * data.humidity}%"),
+                      progressColor: const Color.fromARGB(255, 58, 66, 183),
+                    ),
+                  ],
                 ),
               ],
             ),
-          )
+          ),
         ],
       ),
     );
