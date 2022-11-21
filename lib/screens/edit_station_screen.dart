@@ -1,7 +1,6 @@
 import 'package:app_sys_eng/api/get_station.dart';
 import 'package:app_sys_eng/api/put_station.dart';
 import 'package:app_sys_eng/models/station_card_data.dart';
-import 'package:app_sys_eng/screens/data_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -13,7 +12,10 @@ class ErrorMessage {
 
 class EditStationScreen extends StatefulWidget {
   final int id;
-  const EditStationScreen({Key? key, required this.id}) : super(key: key);
+  final String name, phone;
+  const EditStationScreen(
+      {Key? key, required this.id, required this.name, required this.phone})
+      : super(key: key);
 
   @override
   State<EditStationScreen> createState() {
@@ -30,6 +32,8 @@ class _EditStationScreen extends State<EditStationScreen> {
   void initState() {
     super.initState();
     station = getStation(widget.id);
+    _text.text = widget.name;
+    _text2.text = widget.phone;
   }
 
   bool nameBool = true;
@@ -65,7 +69,7 @@ class _EditStationScreen extends State<EditStationScreen> {
       return ErrorMessage().name = 'Phone can\'t be empty';
     } else if (text2.length < 9) {
       phoneBool = true;
-      return ErrorMessage().name = 'too short';
+      return ErrorMessage().name = 'Too short';
     }
     phoneBool = false;
 
@@ -179,8 +183,8 @@ class _EditStationScreen extends State<EditStationScreen> {
             _erroDialog(context);
           }
         },
-        icon: const Icon(Icons.check),
-        label: const Text("Create"),
+        icon: const Icon(Icons.save),
+        label: const Text("Save"),
       ),
     );
   }
@@ -205,13 +209,15 @@ _showDialog(BuildContext context, String name, String phone, int id) {
             ),
             TextButton(
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => DataScreen(id: id),
-                  ),
-                );
-                changePut(name, phone, id);
+                updateStation(id, name, phone).whenComplete(() {
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop(true);
+                }).onError((error, stackTrace) {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text("Error: $error"),
+                  ));
+                  return false;
+                });
               },
               child: const Text(
                 'Yes',
@@ -239,7 +245,7 @@ _erroDialog(BuildContext context) {
             actions: [
               TextButton(
                 onPressed: () {
-                  Navigator.of(context).pop();
+                  Navigator.of(context).pop(true);
                 },
                 child: const Text(
                   'OK',

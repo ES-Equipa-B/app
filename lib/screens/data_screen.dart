@@ -1,6 +1,9 @@
 import 'dart:async';
+import 'package:app_sys_eng/api/delete_station.dart';
 import 'package:app_sys_eng/api/get_station.dart';
+import 'package:app_sys_eng/api/wipe_data_station.dart';
 import 'package:app_sys_eng/screens/edit_station_screen.dart';
+import 'package:app_sys_eng/widgets/graph_card.dart';
 import 'package:app_sys_eng/widgets/station_detail_card.dart';
 
 import 'package:flutter/material.dart';
@@ -90,6 +93,11 @@ class _DataScreenState extends State<DataScreen> {
                           child: StationDetailCard(
                             data: data,
                           ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              left: 16.0, right: 16.0, top: 5),
+                          child: GraphCard(data: data),
                         )
                       ],
                     ),
@@ -112,20 +120,112 @@ class _DataScreenState extends State<DataScreen> {
   selecteditem(BuildContext context, int item, StationCardData data) {
     switch (item) {
       case 0:
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => EditStationScreen(id: data.id),
-          ),
-        );
+        navigateEditStation(context, data);
         break;
       case 1:
-        //Metodo para apagar os dados da estaçao
+        _showDialogWipe(context, widget.id);
         break;
       case 2:
-        //Metodo para apagar a estação
+        _showDialogDelete(context, widget.id);
         break;
       default:
     }
   }
+
+  Future<void> navigateEditStation(
+      BuildContext context, StationCardData d) async {
+    bool? result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) =>
+            EditStationScreen(id: d.id, name: d.name, phone: d.phone),
+      ),
+    );
+    // if (!mounted) return;
+
+    if (result == true) {
+      setState(() => {station = getStation(widget.id)});
+    }
+  }
+}
+
+_showDialogDelete(BuildContext context, int id) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return Expanded(
+        child: AlertDialog(
+          title: const Text('Are you sure?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text(
+                'No',
+                style: TextStyle(color: Colors.black),
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                deleteStation(id).whenComplete(() {
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop(true);
+                }).onError((error, stackTrace) {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text("Error: $error"),
+                  ));
+                  return false;
+                });
+              },
+              child: const Text(
+                'Yes',
+                style: TextStyle(color: Colors.black),
+              ),
+            ),
+          ],
+        ),
+      );
+    },
+  );
+}
+
+_showDialogWipe(BuildContext context, int id) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return Expanded(
+        child: AlertDialog(
+          title: const Text('Are you sure?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text(
+                'No',
+                style: TextStyle(color: Colors.black),
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                wipeData(id).whenComplete(() {
+                  Navigator.of(context).pop();
+                }).onError((error, stackTrace) {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text("Error: $error"),
+                  ));
+                  return false;
+                });
+              },
+              child: const Text(
+                'Yes',
+                style: TextStyle(color: Colors.black),
+              ),
+            ),
+          ],
+        ),
+      );
+    },
+  );
 }
