@@ -38,7 +38,7 @@ dependencies:
   time: "^2.1.3"
   flutter_launcher_icons: ^0.10.0
   fl_chart: ^0.55.2
-  
+  collection: ^1.16.0
   
 
   
