@@ -1,4 +1,5 @@
 import 'package:app_sys_eng/models/station_card_data.dart';
+import 'package:app_sys_eng/widgets/get_data_graph.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
@@ -27,6 +28,9 @@ class _GraphCard extends State<GraphCard> {
 
   @override
   Widget build(BuildContext context) {
+    var tempChart = showChartTemp(selectedValue);
+    var windChart = showChartWind(selectedValue);
+    var humChart = showChartHum(selectedValue);
     return Container(
       height: 420,
       width: 390,
@@ -71,7 +75,15 @@ class _GraphCard extends State<GraphCard> {
                 titlesData: FlTitlesData(
                     topTitles: AxisTitles(), rightTitles: AxisTitles()),
                 lineBarsData: [
-                  LineChartBarData(spots: showChart(selectedValue)),
+                  LineChartBarData(
+                      spots: tempChart[0],
+                      color: const Color.fromARGB(255, 247, 94, 94)),
+                  LineChartBarData(
+                      spots: windChart[0],
+                      color: const Color.fromARGB(255, 122, 222, 126)),
+                  LineChartBarData(
+                      spots: humChart[0],
+                      color: const Color.fromARGB(255, 58, 66, 183)),
                 ],
               ),
             ),
@@ -135,11 +147,11 @@ class _GraphCard extends State<GraphCard> {
                         ],
                       ),
                       const SizedBox(height: 15),
-                      const Text('data'),
+                      Text(tempChart[1]),
                       const SizedBox(height: 15),
-                      const Text('data'),
+                      Text(tempChart[2]),
                       const SizedBox(height: 15),
-                      const Text('data')
+                      Text(tempChart[3])
                     ],
                   ),
                 ),
@@ -160,11 +172,11 @@ class _GraphCard extends State<GraphCard> {
                         ],
                       ),
                       const SizedBox(height: 15),
-                      const Text('data'),
+                      Text(windChart[1]),
                       const SizedBox(height: 15),
-                      const Text('data'),
+                      Text(windChart[2]),
                       const SizedBox(height: 15),
-                      const Text('data')
+                      Text(windChart[3])
                     ],
                   ),
                 ),
@@ -185,11 +197,11 @@ class _GraphCard extends State<GraphCard> {
                         ],
                       ),
                       const SizedBox(height: 15),
-                      const Text('data'),
+                      Text(humChart[1]),
                       const SizedBox(height: 15),
-                      const Text('data'),
+                      Text(humChart[2]),
                       const SizedBox(height: 15),
-                      const Text('data')
+                      Text(humChart[3])
                     ],
                   ),
                 )
@@ -199,82 +211,5 @@ class _GraphCard extends State<GraphCard> {
         ],
       ),
     );
-  }
-}
-
-//dummy data
-showChart(String selectedValue) {
-  if (selectedValue == "Last hour") {
-    return <FlSpot>[
-      const FlSpot(0, 1),
-      const FlSpot(1, 3),
-      const FlSpot(2, 10),
-      const FlSpot(3, 7),
-      const FlSpot(4, 12),
-      const FlSpot(5, 13),
-      const FlSpot(6, 17),
-      const FlSpot(7, 15),
-      const FlSpot(8, 20)
-    ];
-  } else if (selectedValue == 'Last 6 hours') {
-    return <FlSpot>[
-      const FlSpot(0, 12),
-      const FlSpot(1, 11),
-      const FlSpot(2, 10),
-      const FlSpot(3, 7),
-      const FlSpot(4, 6),
-      const FlSpot(5, 3),
-      const FlSpot(6, 11),
-      const FlSpot(7, 15),
-      const FlSpot(8, 8)
-    ];
-  } else if (selectedValue == 'Last 24 hours') {
-    return <FlSpot>[
-      const FlSpot(0, 11),
-      const FlSpot(1, 11),
-      const FlSpot(2, 11),
-      const FlSpot(3, 17),
-      const FlSpot(4, 18),
-      const FlSpot(5, 11),
-      const FlSpot(6, 10),
-      const FlSpot(7, 15),
-      const FlSpot(8, 8)
-    ];
-  } else if (selectedValue == 'Last 7 days') {
-    return <FlSpot>[
-      const FlSpot(0, 12),
-      const FlSpot(1, 11),
-      const FlSpot(2, 11),
-      const FlSpot(3, 11),
-      const FlSpot(4, 16),
-      const FlSpot(5, 17),
-      const FlSpot(6, 17),
-      const FlSpot(7, 15),
-      const FlSpot(8, 8)
-    ];
-  } else if (selectedValue == 'Last month') {
-    return <FlSpot>[
-      const FlSpot(0, 12),
-      const FlSpot(1, 11),
-      const FlSpot(2, 10),
-      const FlSpot(3, 7),
-      const FlSpot(4, 6),
-      const FlSpot(5, 3),
-      const FlSpot(6, 11),
-      const FlSpot(7, 15),
-      const FlSpot(8, 8)
-    ];
-  } else {
-    return <FlSpot>[
-      const FlSpot(0, 14),
-      const FlSpot(1, 1),
-      const FlSpot(2, 10),
-      const FlSpot(3, 15),
-      const FlSpot(4, 16),
-      const FlSpot(5, 17),
-      const FlSpot(6, 10),
-      const FlSpot(7, 11),
-      const FlSpot(8, 8)
-    ];
   }
 }
