@@ -1,4 +1,5 @@
 import 'package:app_sys_eng/models/station_card_data.dart';
+import 'package:app_sys_eng/screens/graph_zoom_screen.dart';
 import 'package:app_sys_eng/widgets/get_data_graph.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
@@ -66,7 +67,7 @@ class _GraphCard extends State<GraphCard> {
           ),
           Container(
             padding: const EdgeInsets.only(top: 10, right: 10),
-            width: 310,
+            width: double.infinity,
             height: 190,
             child: LineChart(
               LineChartData(
@@ -102,26 +103,38 @@ class _GraphCard extends State<GraphCard> {
               children: [
                 Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const [
-                    Text(' '),
-                    SizedBox(height: 15),
-                    Text(
+                  children: [
+                    GestureDetector(
+                        child: const Icon(
+                          Icons.fullscreen,
+                        ),
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => GraphFullScreen(
+                                        selectedValue: selectedValue,
+                                        data: widget.data,
+                                      )));
+                        }),
+                    const SizedBox(height: 15),
+                    const Text(
                       'Average:',
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(height: 15),
-                    Text(
+                    const SizedBox(height: 15),
+                    const Text(
                       'Maximum:',
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(height: 15),
-                    Text(
+                    const SizedBox(height: 15),
+                    const Text(
                       'Minimum:',
                       style: TextStyle(
                         fontSize: 14,
