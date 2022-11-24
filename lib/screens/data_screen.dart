@@ -20,6 +20,7 @@ class DataScreen extends StatefulWidget {
 
 class _DataScreenState extends State<DataScreen> {
   late Future<StationCardData> station;
+  late Future<List<StationCardData>> stations;
   late StationCardData data;
   @override
   void initState() {

@@ -5,9 +5,10 @@ import '../models/station_card_data.dart';
 
 class StationCard extends StatelessWidget {
   final StationCardData data;
-  final Function refresh;
+  final Function requestRefresh;
 
-  const StationCard({super.key, required this.data, required this.refresh});
+  const StationCard(
+      {super.key, required this.data, required this.requestRefresh});
 
   String get temperature {
     if (data.temperature == null) {
@@ -68,15 +69,15 @@ class StationCard extends StatelessWidget {
                   ],
                 )
               ]),
-          onTap: () {
-            Navigator.push(
+          onTap: () async {
+            await Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => DataScreen(
                     id: data.id,
                   ),
                 ));
-            refresh(data);
+            requestRefresh();
           }, // Handle your callback
         ));
   }
