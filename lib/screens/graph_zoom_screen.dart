@@ -48,6 +48,8 @@ class _GraphFullScreenState extends State<GraphFullScreen> {
           onTap: () {
             Navigator.pop(context);
             SystemChrome.setPreferredOrientations([
+              DeviceOrientation.landscapeRight,
+              DeviceOrientation.landscapeLeft,
               DeviceOrientation.portraitDown,
               DeviceOrientation.portraitUp,
             ]);
