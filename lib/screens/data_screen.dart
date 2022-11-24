@@ -148,85 +148,90 @@ class _DataScreenState extends State<DataScreen> {
       setState(() => {station = getStation(widget.id)});
     }
   }
-}
 
-_showDialogDelete(BuildContext context, int id) {
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return Expanded(
-        child: AlertDialog(
-          title: const Text('Are you sure?'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text(
-                'No',
-                style: TextStyle(color: Colors.black),
-              ),
-            ),
-            TextButton(
-              onPressed: () {
-                deleteStation(id).whenComplete(() {
+  _showDialogDelete(BuildContext context, int id) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Expanded(
+          child: AlertDialog(
+            title: const Text('Are you sure?'),
+            actions: [
+              TextButton(
+                onPressed: () {
                   Navigator.of(context).pop();
-                  Navigator.of(context).pop(true);
-                }).onError((error, stackTrace) {
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    content: Text("Error: $error"),
-                  ));
-                  return false;
-                });
-              },
-              child: const Text(
-                'Yes',
-                style: TextStyle(color: Colors.black),
+                },
+                child: const Text(
+                  'No',
+                  style: TextStyle(color: Colors.black),
+                ),
               ),
-            ),
-          ],
-        ),
-      );
-    },
-  );
-}
+              TextButton(
+                onPressed: () {
+                  deleteStation(id).whenComplete(() {
+                    Navigator.of(context).pop();
+                    Navigator.of(context).pop(true);
+                  }).onError((error, stackTrace) {
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text("Error: $error"),
+                    ));
+                    return false;
+                  });
+                },
+                child: const Text(
+                  'Yes',
+                  style: TextStyle(color: Colors.black),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
 
-_showDialogWipe(BuildContext context, int id) {
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return Expanded(
-        child: AlertDialog(
-          title: const Text('Are you sure?'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text(
-                'No',
-                style: TextStyle(color: Colors.black),
-              ),
-            ),
-            TextButton(
-              onPressed: () {
-                wipeData(id).whenComplete(() {
+  _showDialogWipe(BuildContext context, int id) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Expanded(
+          child: AlertDialog(
+            title: const Text('Wipe all data?'),
+            content: const Text(
+                'All the weather data from this station will be permanently deleted'),
+            actions: [
+              TextButton(
+                onPressed: () {
                   Navigator.of(context).pop();
-                }).onError((error, stackTrace) {
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    content: Text("Error: $error"),
-                  ));
-                  return false;
-                });
-              },
-              child: const Text(
-                'Yes',
-                style: TextStyle(color: Colors.black),
+                },
+                child: const Text(
+                  'Cancel',
+                  style: TextStyle(color: Colors.black),
+                ),
               ),
-            ),
-          ],
-        ),
-      );
-    },
-  );
+              TextButton(
+                onPressed: () {
+                  wipeData(id).whenComplete(() {
+                    Navigator.of(context).pop();
+                    setState(() {
+                      station = getStation(widget.id);
+                    });
+                  }).onError((error, stackTrace) {
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text("Error: $error"),
+                    ));
+                    return false;
+                  });
+                },
+                child: const Text(
+                  'Wipe',
+                  style: TextStyle(color: Colors.black),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
 }

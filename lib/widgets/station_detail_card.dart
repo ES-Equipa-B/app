@@ -1,3 +1,4 @@
+import 'package:app_sys_eng/models/measurement_unit.dart';
 import 'package:app_sys_eng/models/station_card_data.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
@@ -5,30 +6,6 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 class StationDetailCard extends StatelessWidget {
   final StationCardData data;
   const StationDetailCard({super.key, required this.data});
-
-  String get temperature {
-    if (data.temperature == null) {
-      return "-";
-    } else {
-      return "${data.temperature!.toStringAsFixed(0)} ºC";
-    }
-  }
-
-  String get wind {
-    if (data.wind == null) {
-      return "-";
-    } else {
-      return "${data.wind!.toStringAsFixed(0)} m/s";
-    }
-  }
-
-  String get humidity {
-    if (data.humidity == null) {
-      return "-";
-    } else {
-      return "${(100 * data.humidity!).toStringAsFixed(0)}%";
-    }
-  }
 
   String readTimestamp(String timestamp) {
     DateTime now = DateTime.now();
@@ -89,7 +66,8 @@ class StationDetailCard extends StatelessWidget {
                       radius: 43.0,
                       lineWidth: 5.0,
                       percent: 1.0,
-                      center: Text(temperature),
+                      center: Text(
+                          data.temperatureWithUnit(MeasurementUnit.metric)),
                       progressColor: const Color.fromARGB(255, 247, 94, 94),
                     )
                   ],
@@ -106,7 +84,7 @@ class StationDetailCard extends StatelessWidget {
                       radius: 43.0,
                       lineWidth: 5.0,
                       percent: 1.0,
-                      center: Text(wind),
+                      center: Text(data.windWithUnit(MeasurementUnit.metric)),
                       progressColor: const Color.fromARGB(255, 122, 222, 126),
                     ),
                   ],
@@ -123,7 +101,8 @@ class StationDetailCard extends StatelessWidget {
                       radius: 43.0,
                       lineWidth: 5.0,
                       percent: 1.0,
-                      center: Text(humidity),
+                      center:
+                          Text(data.humidityWithUnit(MeasurementUnit.metric)),
                       progressColor: const Color.fromARGB(255, 58, 66, 183),
                     ),
                   ],

@@ -1,7 +1,8 @@
-import 'package:app_sys_eng/screens/data_screen.dart';
 import 'package:flutter/material.dart';
 
-import '../models/station_card_data.dart';
+import 'package:app_sys_eng/models/measurement_unit.dart';
+import 'package:app_sys_eng/screens/data_screen.dart';
+import 'package:app_sys_eng/models/station_card_data.dart';
 
 class StationCard extends StatelessWidget {
   final StationCardData data;
@@ -9,30 +10,6 @@ class StationCard extends StatelessWidget {
 
   const StationCard(
       {super.key, required this.data, required this.requestRefresh});
-
-  String get temperature {
-    if (data.temperature == null) {
-      return "-";
-    } else {
-      return "${data.temperature!.toStringAsFixed(0)} ºC";
-    }
-  }
-
-  String get wind {
-    if (data.wind == null) {
-      return "-";
-    } else {
-      return "${data.wind!.toStringAsFixed(0)} m/s";
-    }
-  }
-
-  String get humidity {
-    if (data.humidity == null) {
-      return "-";
-    } else {
-      return "${(100 * data.humidity!).toStringAsFixed(0)}%";
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,14 +35,16 @@ class StationCard extends StatelessWidget {
                   children: [
                     ValueIndicator(
                       icon: Icons.thermostat,
-                      value: temperature,
+                      value: data.temperatureWithUnit(MeasurementUnit.metric),
                     ),
                     ValueIndicator(
                       icon: Icons.air,
-                      value: wind,
+                      value: data.windWithUnit(MeasurementUnit.metric),
                     ),
                     ValueIndicator(
-                        icon: Icons.water_drop_outlined, value: humidity),
+                      icon: Icons.water_drop_outlined,
+                      value: data.humidityWithUnit(MeasurementUnit.metric),
+                    ),
                   ],
                 )
               ]),
@@ -91,6 +70,10 @@ class ValueIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: [Icon(icon), Text(value)]);
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [Icon(icon), Text(value)],
+    );
   }
 }

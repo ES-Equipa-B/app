@@ -1,3 +1,5 @@
+import 'package:app_sys_eng/models/measurement_unit.dart';
+
 class StationCardData {
   final int id;
   final String name;
@@ -15,6 +17,30 @@ class StationCardData {
       required this.temperature,
       required this.timestamp,
       required this.wind});
+
+  String temperatureWithUnit(MeasurementUnit unit) {
+    if (temperature == null) {
+      return "-";
+    } else {
+      return "${temperature!.toStringAsFixed(0)} ºC";
+    }
+  }
+
+  String windWithUnit(MeasurementUnit unit) {
+    if (wind == null) {
+      return "-";
+    } else {
+      return "${wind!.toStringAsFixed(0)} m/s";
+    }
+  }
+
+  String humidityWithUnit(MeasurementUnit unit) {
+    if (humidity == null) {
+      return "-";
+    } else {
+      return "${(100 * humidity!).toStringAsFixed(0)}%";
+    }
+  }
 
   factory StationCardData.fromJson(Map<String, dynamic> json) {
     return StationCardData(
