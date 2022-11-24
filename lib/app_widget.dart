@@ -38,18 +38,16 @@ class _AppWidgetState extends State<AppWidget> {
       SmsMessage sms, List<StationCardData> stations) async {
     if (sms.address == null || sms.body == null) {
       return;
-
-    
     }
 
     final address = sms.address!;
     final body = sms.body!;
-    //if (body.length != 14) return;
+    if (body.length != 140) return;
 
     final station = stations.singleWhere((element) => element.phone == address);
 
-  DateTime inferDate(int hour, int minute) {
-  final now = DateTime.now();
+  DateTime inferDate(sms, int hour, int minute) {
+  final now = DateTime.fromMillisecondsSinceEpoch(sms.dateSent ?? 0);
   final date = DateTime(now.year, now.month, now.day, hour, minute);
 
   if (now.difference(date).isNegative) {
@@ -61,20 +59,27 @@ class _AppWidgetState extends State<AppWidget> {
   return date;
 }
     // HHmmWWWWHHHTTT, com: HH:mm, WWW.W, HHH, TT.T
-    final timestamp = inferDate(int.parse(body.substring(0, 2)), int.parse(body.substring(2, 4)));
+    int j = 0;
+    for(int i = 0; i < 10; i++)
+    {
+    final timestamp = inferDate( sms , int.parse(body.substring(j+0, j+2)), int.parse(body.substring(j+2, j+4)));
     final data = {
-      "wind": double.parse(body.substring(4, 8)) / 10.0,
-      "humidity": double.parse(body.substring(8, 11)),
-      "temperature": double.parse(body.substring(11, 14)) / 10.0,
-      "timestamp": DateTime.now().toIso8601String()
+      "wind": double.parse(body.substring(j+4, j+8)) / 10.0,
+      "humidity": double.parse(body.substring(j+8, j+11)),
+      "temperature": double.parse(body.substring(j+11, j+14)) / 10.0,
+      "timestamp": timestamp.toIso8601String()
     };
 
     var jsonData = json.encode(data);
+    
     print(jsonData);
+    
+    j += 14;
     /*final response = await http.post(
         Uri.parse(
             "http://campheimdall.ddns.net:5000/stations/${station.id}/readings"),
         body: jsonData);*/
+    }
   }
 
   Future<List<StationCardData>> synchronize() async {
@@ -93,10 +98,10 @@ class _AppWidgetState extends State<AppWidget> {
     }
     final inbox = await Telephony.instance.getInboxSms(
         filter: filter.and(SmsColumn.ID).greaterThan(lastId.toString()),
-        sortOrder: [OrderBy(SmsColumn.ID, sort: Sort.ASC)]);
+        sortOrder: [OrderBy(SmsColumn.ID, sort: Sort.ASC)], columns: [ SmsColumn.ID, SmsColumn.ADDRESS, SmsColumn.BODY, SmsColumn.DATE, SmsColumn.DATE_SENT ]);
     for (var sms in inbox) {
+      if((sms.id ?? 0) > lastId) await processSms(sms, stations);
       lastId = max(lastId, sms.id ?? 0);
-      await processSms(sms, stations);
     }
     return await fetchStations();
   }
@@ -108,7 +113,7 @@ class _AppWidgetState extends State<AppWidget> {
     Telephony.instance.listenIncomingSms(
         onNewMessage: (message) => listenController.add(null),
        listenInBackground: false);
-
+   
     listenController.add(null);
   }
 
