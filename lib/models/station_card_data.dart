@@ -1,11 +1,11 @@
 class StationCardData {
-  final double humidity;
   final int id;
   final String name;
   final String phone;
-  final int temperature;
+  final double? temperature;
+  final double? humidity;
+  final double? wind;
   final String timestamp;
-  final int wind;
 
   StationCardData(
       {required this.humidity,

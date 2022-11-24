@@ -9,6 +9,30 @@ class StationCard extends StatelessWidget {
 
   const StationCard({super.key, required this.data, required this.refresh});
 
+  String get temperature {
+    if (data.temperature == null) {
+      return "-";
+    } else {
+      return "${data.temperature!.toStringAsFixed(0)} ºC";
+    }
+  }
+
+  String get wind {
+    if (data.wind == null) {
+      return "-";
+    } else {
+      return "${data.wind!.toStringAsFixed(0)} m/s";
+    }
+  }
+
+  String get humidity {
+    if (data.humidity == null) {
+      return "-";
+    } else {
+      return "${(100 * data.humidity!).toStringAsFixed(0)}%";
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -32,14 +56,15 @@ class StationCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     ValueIndicator(
-                        icon: Icons.thermostat,
-                        value: "${data.temperature.toStringAsFixed(0)} ºC"),
+                      icon: Icons.thermostat,
+                      value: temperature,
+                    ),
                     ValueIndicator(
-                        icon: Icons.air,
-                        value: "${data.wind.toStringAsFixed(0)} m/s"),
+                      icon: Icons.air,
+                      value: wind,
+                    ),
                     ValueIndicator(
-                        icon: Icons.water_drop_outlined,
-                        value: "${(100 * data.humidity).toStringAsFixed(0)}%")
+                        icon: Icons.water_drop_outlined, value: humidity),
                   ],
                 )
               ]),

@@ -6,6 +6,30 @@ class StationDetailCard extends StatelessWidget {
   final StationCardData data;
   const StationDetailCard({super.key, required this.data});
 
+  String get temperature {
+    if (data.temperature == null) {
+      return "-";
+    } else {
+      return "${data.temperature!.toStringAsFixed(0)} ºC";
+    }
+  }
+
+  String get wind {
+    if (data.wind == null) {
+      return "-";
+    } else {
+      return "${data.wind!.toStringAsFixed(0)} m/s";
+    }
+  }
+
+  String get humidity {
+    if (data.humidity == null) {
+      return "-";
+    } else {
+      return "${(100 * data.humidity!).toStringAsFixed(0)}%";
+    }
+  }
+
   String readTimestamp(String timestamp) {
     DateTime now = DateTime.now();
     DateTime date = DateTime.parse(timestamp);
@@ -65,7 +89,7 @@ class StationDetailCard extends StatelessWidget {
                       radius: 43.0,
                       lineWidth: 5.0,
                       percent: 1.0,
-                      center: Text("${data.temperature} ºC"),
+                      center: Text(temperature),
                       progressColor: const Color.fromARGB(255, 247, 94, 94),
                     )
                   ],
@@ -82,7 +106,7 @@ class StationDetailCard extends StatelessWidget {
                       radius: 43.0,
                       lineWidth: 5.0,
                       percent: 1.0,
-                      center: Text("${data.wind} m/s"),
+                      center: Text(wind),
                       progressColor: const Color.fromARGB(255, 122, 222, 126),
                     ),
                   ],
@@ -99,7 +123,7 @@ class StationDetailCard extends StatelessWidget {
                       radius: 43.0,
                       lineWidth: 5.0,
                       percent: 1.0,
-                      center: Text("${100 * data.humidity}%"),
+                      center: Text(humidity),
                       progressColor: const Color.fromARGB(255, 58, 66, 183),
                     ),
                   ],
