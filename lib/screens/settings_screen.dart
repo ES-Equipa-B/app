@@ -86,7 +86,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             padding: const EdgeInsets.only(top: 30.0),
             child: Container(
               height: 650,
-              width: 390,
+              width: double.infinity,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5),
               ),
