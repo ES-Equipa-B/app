@@ -86,7 +86,11 @@ class _MainScreenState extends State<MainScreen> {
                                 .contains(searchQuery.toLowerCase()))
                             .map((e) => StationCard(
                                 data: e,
-                                refresh: () => stations = fetchStations()))
+                                requestRefresh: () => setState(
+                                      () {
+                                        stations = fetchStations();
+                                      },
+                                    )))
                             .toList()),
                   ),
                   onRefresh: () => Future.sync(

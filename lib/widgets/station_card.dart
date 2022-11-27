@@ -1,13 +1,15 @@
-import 'package:app_sys_eng/screens/data_screen.dart';
 import 'package:flutter/material.dart';
 
-import '../models/station_card_data.dart';
+import 'package:app_sys_eng/models/measurement_unit.dart';
+import 'package:app_sys_eng/screens/data_screen.dart';
+import 'package:app_sys_eng/models/station_card_data.dart';
 
 class StationCard extends StatelessWidget {
   final StationCardData data;
-  final Function refresh;
+  final Function requestRefresh;
 
-  const StationCard({super.key, required this.data, required this.refresh});
+  const StationCard(
+      {super.key, required this.data, required this.requestRefresh});
 
   @override
   Widget build(BuildContext context) {
@@ -32,26 +34,29 @@ class StationCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     ValueIndicator(
-                        icon: Icons.thermostat,
-                        value: "${data.temperature.toStringAsFixed(0)} ºC"),
+                      icon: Icons.thermostat,
+                      value: data.temperatureWithUnit(MeasurementUnit.metric),
+                    ),
                     ValueIndicator(
-                        icon: Icons.air,
-                        value: "${data.wind.toStringAsFixed(0)} m/s"),
+                      icon: Icons.air,
+                      value: data.windWithUnit(MeasurementUnit.metric),
+                    ),
                     ValueIndicator(
-                        icon: Icons.water_drop_outlined,
-                        value: "${(100 * data.humidity).toStringAsFixed(0)}%")
+                      icon: Icons.water_drop_outlined,
+                      value: data.humidityWithUnit(MeasurementUnit.metric),
+                    ),
                   ],
                 )
               ]),
-          onTap: () {
-            Navigator.push(
+          onTap: () async {
+            await Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => DataScreen(
                     id: data.id,
                   ),
                 ));
-            refresh(data);
+            requestRefresh();
           }, // Handle your callback
         ));
   }
@@ -65,6 +70,10 @@ class ValueIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: [Icon(icon), Text(value)]);
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [Icon(icon), Text(value)],
+    );
   }
 }

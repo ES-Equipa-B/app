@@ -1,3 +1,4 @@
+import 'package:app_sys_eng/models/measurement_unit.dart';
 import 'package:app_sys_eng/models/station_card_data.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
@@ -65,7 +66,8 @@ class StationDetailCard extends StatelessWidget {
                       radius: 43.0,
                       lineWidth: 5.0,
                       percent: 1.0,
-                      center: Text("${data.temperature} ºC"),
+                      center: Text(
+                          data.temperatureWithUnit(MeasurementUnit.metric)),
                       progressColor: const Color.fromARGB(255, 247, 94, 94),
                     )
                   ],
@@ -82,7 +84,7 @@ class StationDetailCard extends StatelessWidget {
                       radius: 43.0,
                       lineWidth: 5.0,
                       percent: 1.0,
-                      center: Text("${data.wind} m/s"),
+                      center: Text(data.windWithUnit(MeasurementUnit.metric)),
                       progressColor: const Color.fromARGB(255, 122, 222, 126),
                     ),
                   ],
@@ -99,7 +101,8 @@ class StationDetailCard extends StatelessWidget {
                       radius: 43.0,
                       lineWidth: 5.0,
                       percent: 1.0,
-                      center: Text("${100 * data.humidity}%"),
+                      center:
+                          Text(data.humidityWithUnit(MeasurementUnit.metric)),
                       progressColor: const Color.fromARGB(255, 58, 66, 183),
                     ),
                   ],
