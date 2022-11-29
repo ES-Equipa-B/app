@@ -1,4 +1,4 @@
-import 'package:app_sys_eng/models/station_card_data.dart';
+import 'package:app_sys_eng/models/station.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:app_sys_eng/widgets/get_data_graph.dart';
@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 
 class GraphFullScreen extends StatefulWidget {
   final String selectedValue;
-  final StationCardData data;
+  final Station data;
   const GraphFullScreen(
       {super.key, required this.selectedValue, required this.data});
 

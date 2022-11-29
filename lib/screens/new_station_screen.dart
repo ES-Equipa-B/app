@@ -1,4 +1,5 @@
-import 'package:app_sys_eng/api/post_station.dart';
+import 'package:app_sys_eng/api/station_api_provider.dart';
+import 'package:app_sys_eng/blocs/station_list_bloc.dart';
 import 'package:flutter/material.dart';
 
 import 'dart:developer' as developer;
@@ -195,9 +196,12 @@ _showDialog(BuildContext context, String name, String phone) {
               TextButton(
                 onPressed: () {
                   developer.log("Pressed!", name: "app.es");
-                  createStation(name, phone).whenComplete(() {
+                  StationApiProvider()
+                      .createStation(name, phone)
+                      .whenComplete(() {
+                    stationListBloc.fetchAllStations();
                     Navigator.of(context).pop();
-                    Navigator.of(context).pop(true);
+                    Navigator.of(context).pop();
                   }).onError((error, stackTrace) {
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                       content: Text("Error: $error"),

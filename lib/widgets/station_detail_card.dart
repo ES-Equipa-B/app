@@ -1,16 +1,15 @@
 import 'package:app_sys_eng/models/measurement_unit.dart';
-import 'package:app_sys_eng/models/station_card_data.dart';
+import 'package:app_sys_eng/models/station.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
 class StationDetailCard extends StatelessWidget {
-  final StationCardData data;
+  final Station data;
   const StationDetailCard({super.key, required this.data});
 
-  String readTimestamp(String timestamp) {
+  String get lastUpdated {
     DateTime now = DateTime.now();
-    DateTime date = DateTime.parse(timestamp);
-    int diff = now.difference(date).inMinutes;
+    int diff = now.difference(data.timestamp).inMinutes;
     if (diff < 1) {
       return 'less then 1 minute ago';
     } else if (diff == 1) {
@@ -22,8 +21,6 @@ class StationDetailCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String lastUpdated = readTimestamp(data.timestamp);
-
     return Container(
       height: 220,
       width: 390,

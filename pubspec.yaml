@@ -40,14 +40,8 @@ dependencies:
   fl_chart: ^0.55.2
   collection: ^1.16.0
   telephony: ^0.2.0
-  
-
-  
-
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.2
-  flutter_background_service: ^2.4.5
+  flutter_background: ^1.1.0
+  rxdart: ^0.27.7
 
 dev_dependencies:
   flutter_test:

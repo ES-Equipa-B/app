@@ -1,14 +1,14 @@
 import 'dart:async';
-import 'package:app_sys_eng/api/delete_station.dart';
-import 'package:app_sys_eng/api/get_station.dart';
-import 'package:app_sys_eng/api/wipe_data_station.dart';
+import 'package:app_sys_eng/api/readings_api_provider.dart';
+import 'package:app_sys_eng/api/station_api_provider.dart';
+import 'package:app_sys_eng/blocs/station_bloc.dart';
 import 'package:app_sys_eng/screens/edit_station_screen.dart';
 import 'package:app_sys_eng/widgets/graph_card.dart';
 import 'package:app_sys_eng/widgets/station_detail_card.dart';
 
 import 'package:flutter/material.dart';
 
-import '../models/station_card_data.dart';
+import '../models/station.dart';
 
 class DataScreen extends StatefulWidget {
   final int id;
@@ -19,24 +19,30 @@ class DataScreen extends StatefulWidget {
 }
 
 class _DataScreenState extends State<DataScreen> {
-  late Future<StationCardData> station;
-  late Future<List<StationCardData>> stations;
-  late StationCardData data;
+  StationBloc bloc = StationBloc();
+
   @override
-  void initState() {
-    super.initState();
-    station = getStation(widget.id);
+  void didChangeDependencies() {
+    bloc = StationBloc();
+    bloc.fetchStation(widget.id);
+    super.didChangeDependencies();
+  }
+
+  @override
+  void dispose() {
+    bloc.dispose();
+    super.dispose();
   }
 
   var time = 0;
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<StationCardData>(
-      future: station,
+    return StreamBuilder<Station>(
+      stream: bloc.station,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          StationCardData data = snapshot.data!;
+          Station data = snapshot.data!;
           return Center(
             child: Scaffold(
               backgroundColor: Colors.white,
@@ -83,8 +89,8 @@ class _DataScreenState extends State<DataScreen> {
               ),
               body: RefreshIndicator(
                 triggerMode: RefreshIndicatorTriggerMode.anywhere,
-                onRefresh: () => Future.sync(
-                    () => setState(() => {station = getStation(widget.id)})),
+                onRefresh: () =>
+                    Future.sync(() => bloc.fetchStation(widget.id)),
                 child: Stack(
                   children: [
                     ListView(
@@ -118,23 +124,22 @@ class _DataScreenState extends State<DataScreen> {
     );
   }
 
-  selecteditem(BuildContext context, int item, StationCardData data) {
+  selecteditem(BuildContext context, int item, Station data) {
     switch (item) {
       case 0:
         navigateEditStation(context, data);
         break;
       case 1:
-        _showDialogWipe(context, widget.id);
+        _showDialogWipe(context);
         break;
       case 2:
-        _showDialogDelete(context, widget.id);
+        _showDialogDelete(context);
         break;
       default:
     }
   }
 
-  Future<void> navigateEditStation(
-      BuildContext context, StationCardData d) async {
+  Future<void> navigateEditStation(BuildContext context, Station d) async {
     bool? result = await Navigator.push(
       context,
       MaterialPageRoute(
@@ -145,11 +150,11 @@ class _DataScreenState extends State<DataScreen> {
     // if (!mounted) return;
 
     if (result == true) {
-      setState(() => {station = getStation(widget.id)});
+      bloc.fetchStation(widget.id);
     }
   }
 
-  _showDialogDelete(BuildContext context, int id) {
+  _showDialogDelete(BuildContext context) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -168,7 +173,9 @@ class _DataScreenState extends State<DataScreen> {
               ),
               TextButton(
                 onPressed: () {
-                  deleteStation(id).whenComplete(() {
+                  StationApiProvider()
+                      .deleteStation(widget.id)
+                      .whenComplete(() {
                     Navigator.of(context).pop();
                     Navigator.of(context).pop(true);
                   }).onError((error, stackTrace) {
@@ -190,7 +197,7 @@ class _DataScreenState extends State<DataScreen> {
     );
   }
 
-  _showDialogWipe(BuildContext context, int id) {
+  _showDialogWipe(BuildContext context) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -211,11 +218,9 @@ class _DataScreenState extends State<DataScreen> {
               ),
               TextButton(
                 onPressed: () {
-                  wipeData(id).whenComplete(() {
+                  ReadingsApiProvider().wipeData(widget.id).whenComplete(() {
                     Navigator.of(context).pop();
-                    setState(() {
-                      station = getStation(widget.id);
-                    });
+                    bloc.fetchStation(widget.id);
                   }).onError((error, stackTrace) {
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                       content: Text("Error: $error"),

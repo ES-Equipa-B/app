@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 import 'package:app_sys_eng/models/measurement_unit.dart';
 import 'package:app_sys_eng/screens/data_screen.dart';
-import 'package:app_sys_eng/models/station_card_data.dart';
+import 'package:app_sys_eng/models/station.dart';
 
 class StationCard extends StatelessWidget {
-  final StationCardData data;
+  final Station data;
   final Function requestRefresh;
 
   const StationCard(
