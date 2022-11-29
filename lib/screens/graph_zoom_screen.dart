@@ -71,13 +71,16 @@ class _GraphFullScreenState extends State<GraphFullScreen> {
               lineBarsData: [
                 LineChartBarData(
                     spots: tempChart[0],
-                    color: const Color.fromARGB(255, 247, 94, 94)),
+                    color: const Color.fromARGB(255, 247, 94, 94),
+                    isCurved: true),
                 LineChartBarData(
                     spots: windChart[0],
-                    color: const Color.fromARGB(255, 122, 222, 126)),
+                    color: const Color.fromARGB(255, 122, 222, 126),
+                    isCurved: true),
                 LineChartBarData(
                     spots: humChart[0],
-                    color: const Color.fromARGB(255, 58, 66, 183)),
+                    color: const Color.fromARGB(255, 58, 66, 183),
+                    isCurved: true),
               ],
             ),
           ),

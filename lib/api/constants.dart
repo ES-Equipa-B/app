@@ -4,3 +4,4 @@ const String apiGetStation = "/stations/";
 const String apiPostStation = "/stations";
 const String apiDeleteStation = "/stations/";
 const String readings = "/readings";
+const String read = "/readings?timeframe=";
