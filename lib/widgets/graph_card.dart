@@ -89,6 +89,20 @@ class _GraphCard extends State<GraphCard> {
                         onChanged: (String? newValue) {
                           setState(() {
                             selectedValue = newValue!;
+                            if (selectedValue == 'Last hour') {
+                              apiVal = 'hour';
+                            } else if (selectedValue == 'Last 6 hours') {
+                              apiVal = 'sixhour';
+                            } else if (selectedValue == 'Last 24 hours') {
+                              apiVal = 'day';
+                            } else if (selectedValue == 'Last 7 days') {
+                              apiVal = 'week';
+                            } else if (selectedValue == 'Last month') {
+                              apiVal = 'month';
+                            } else if (selectedValue == 'Last year') {
+                              apiVal = 'year';
+                            }
+                            station = getReadings(widget.data.id, apiVal);
                           });
                         },
                       ),
@@ -195,11 +209,11 @@ class _GraphCard extends State<GraphCard> {
                               ],
                             ),
                             const SizedBox(height: 15),
-                            Text(val.avgTempUnit(MeasurementUnit.metric)),
+                            Text(val.avgTempUnit(MeasurementUnit.metric, val)),
                             const SizedBox(height: 15),
-                            Text(val.maxTempUnit(MeasurementUnit.metric)),
+                            Text(val.maxTempUnit(MeasurementUnit.metric, val)),
                             const SizedBox(height: 15),
-                            Text(val.minTempUnit(MeasurementUnit.metric))
+                            Text(val.minTempUnit(MeasurementUnit.metric, val))
                           ],
                         ),
                       ),
@@ -220,11 +234,11 @@ class _GraphCard extends State<GraphCard> {
                               ],
                             ),
                             const SizedBox(height: 15),
-                            Text(val.avgWindUnit(MeasurementUnit.metric)),
+                            Text(val.avgWindUnit(MeasurementUnit.metric, val)),
                             const SizedBox(height: 15),
-                            Text(val.maxWindUnit(MeasurementUnit.metric)),
+                            Text(val.maxWindUnit(MeasurementUnit.metric, val)),
                             const SizedBox(height: 15),
-                            Text(val.minWindUnit(MeasurementUnit.metric))
+                            Text(val.minWindUnit(MeasurementUnit.metric, val))
                           ],
                         ),
                       ),
@@ -245,11 +259,11 @@ class _GraphCard extends State<GraphCard> {
                               ],
                             ),
                             const SizedBox(height: 15),
-                            Text(val.avgHumUnit(MeasurementUnit.metric)),
+                            Text(val.avgHumUnit(MeasurementUnit.metric, val)),
                             const SizedBox(height: 15),
-                            Text(val.maxHumUnit(MeasurementUnit.metric)),
+                            Text(val.maxHumUnit(MeasurementUnit.metric, val)),
                             const SizedBox(height: 15),
-                            Text(val.minHumUnit(MeasurementUnit.metric))
+                            Text(val.minHumUnit(MeasurementUnit.metric, val))
                           ],
                         ),
                       )

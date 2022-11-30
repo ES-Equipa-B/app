@@ -8,6 +8,7 @@ Future<GraphReadings> getReadings(int id, String timeframe) async {
   final response = await http.get(
     Uri.parse(apiURL + apiGetStation + id.toString() + read + timeframe),
   );
+  print(response.body);
   switch (response.statusCode) {
     case 200:
       Map<String, dynamic> data = jsonDecode(response.body);

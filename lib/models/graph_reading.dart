@@ -8,6 +8,7 @@ class GraphReadings {
   final Map<String, dynamic>? max;
   final Map<String, dynamic>? min;
   final Map<String, dynamic>? avg;
+  Map<String, dynamic>? a;
 
   GraphReadings({
     required this.max,
@@ -27,75 +28,75 @@ class GraphReadings {
     }
   }
 
-  String avgTempUnit(MeasurementUnit unit) {
-    if (avg?[2] == null) {
+  String avgTempUnit(MeasurementUnit unit, GraphReadings val) {
+    if (val.avg!["temperature"] == null) {
       return "-";
     } else {
-      return "${avg![2].toStringAsFixed(0)} ºC";
+      return "${val.avg!["temperature"].toStringAsFixed(1)} ºC";
     }
   }
 
-  String maxTempUnit(MeasurementUnit unit) {
-    if (max?[2] == null) {
+  String maxTempUnit(MeasurementUnit unit, GraphReadings val) {
+    if (val.max!["temperature"] == null) {
       return "-";
     } else {
-      return "${max![2].toStringAsFixed(0)} ºC";
+      return "${val.max!["temperature"].toStringAsFixed(1)} ºC";
     }
   }
 
-  String minTempUnit(MeasurementUnit unit) {
-    if (min?[2] == null) {
+  String minTempUnit(MeasurementUnit unit, GraphReadings val) {
+    if (val.min!["temperature"] == null) {
       return "-";
     } else {
-      return "${min![2].toStringAsFixed(0)} ºC";
+      return "${val.min!["temperature"].toStringAsFixed(1)} ºC";
     }
   }
 
-  String avgWindUnit(MeasurementUnit unit) {
-    if (avg?[0] == null) {
+  String avgWindUnit(MeasurementUnit unit, GraphReadings val) {
+    if (val.avg!["wind"] == null) {
       return "-";
     } else {
-      return "${avg![0].toStringAsFixed(0)} m/s";
+      return "${val.avg!["wind"].toStringAsFixed(1)} m/s";
     }
   }
 
-  String maxWindUnit(MeasurementUnit unit) {
-    if (max?[0] == null) {
+  String maxWindUnit(MeasurementUnit unit, GraphReadings val) {
+    if (val.max!["wind"] == null) {
       return "-";
     } else {
-      return "${max![0].toStringAsFixed(0)} m/s";
+      return "${val.max!["wind"].toStringAsFixed(1)} m/s";
     }
   }
 
-  String minWindUnit(MeasurementUnit unit) {
-    if (min?[0] == null) {
+  String minWindUnit(MeasurementUnit unit, GraphReadings val) {
+    if (val.min!["wind"] == null) {
       return "-";
     } else {
-      return "${min![0].toStringAsFixed(0)} m/s";
+      return "${val.min!["wind"].toStringAsFixed(1)} m/s";
     }
   }
 
-  String avgHumUnit(MeasurementUnit unit) {
-    if (avg?[1] == null) {
+  String avgHumUnit(MeasurementUnit unit, GraphReadings val) {
+    if (val.avg!["humidity"] == null) {
       return "-";
     } else {
-      return "${(100 * avg![1]).toStringAsFixed(0)}%";
+      return "${(100 * val.avg!["humidity"]).toStringAsFixed(1)}%";
     }
   }
 
-  String maxHumUnit(MeasurementUnit unit) {
-    if (max?[1] == null) {
+  String maxHumUnit(MeasurementUnit unit, GraphReadings val) {
+    if (val.max!["humidity"] == null) {
       return "-";
     } else {
-      return "${(100 * max![1]).toStringAsFixed(0)}%";
+      return "${(100 * val.max!["humidity"]).toStringAsFixed(1)}%";
     }
   }
 
-  String minHumUnit(MeasurementUnit unit) {
-    if (min?[1] == null) {
+  String minHumUnit(MeasurementUnit unit, GraphReadings val) {
+    if (val.min!["humidity"] == null) {
       return "-";
     } else {
-      return "${(100 * min![1]).toStringAsFixed(0)}%";
+      return "${(100 * val.min!["humidity"]).toStringAsFixed(1)}%";
     }
   }
 
