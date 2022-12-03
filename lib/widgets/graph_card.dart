@@ -1,14 +1,11 @@
-import 'package:app_sys_eng/api/get_readings.dart';
-import 'package:app_sys_eng/models/graph_reading.dart';
-import 'package:app_sys_eng/models/measurement_unit.dart';
-import 'package:app_sys_eng/models/station_card_data.dart';
+import 'package:app_sys_eng/models/station.dart';
 import 'package:app_sys_eng/screens/graph_zoom_screen.dart';
 import 'package:app_sys_eng/widgets/get_data_graph.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
 class GraphCard extends StatefulWidget {
-  final StationCardData data;
+  final Station data;
   const GraphCard({super.key, required this.data});
 
   @override

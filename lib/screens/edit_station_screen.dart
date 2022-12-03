@@ -1,6 +1,5 @@
-import 'package:app_sys_eng/api/get_station.dart';
-import 'package:app_sys_eng/api/put_station.dart';
-import 'package:app_sys_eng/models/station_card_data.dart';
+import 'package:app_sys_eng/api/station_api_provider.dart';
+import 'package:app_sys_eng/models/station.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -27,11 +26,10 @@ class _EditStationScreen extends State<EditStationScreen> {
   final _text = TextEditingController();
   final _text2 = TextEditingController();
 
-  late Future<StationCardData> station;
+  late Future<Station> station;
   @override
   void initState() {
     super.initState();
-    station = getStation(widget.id);
     _text.text = widget.name;
     _text2.text = widget.phone;
   }
@@ -209,7 +207,9 @@ _showDialog(BuildContext context, String name, String phone, int id) {
             ),
             TextButton(
               onPressed: () {
-                updateStation(id, name, phone).whenComplete(() {
+                StationApiProvider()
+                    .updateStation(id, name, phone)
+                    .whenComplete(() {
                   Navigator.of(context).pop();
                   Navigator.of(context).pop(true);
                 }).onError((error, stackTrace) {

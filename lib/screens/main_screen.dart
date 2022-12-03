@@ -1,9 +1,8 @@
+import 'package:app_sys_eng/blocs/station_list_bloc.dart';
+import 'package:app_sys_eng/models/station_list.dart';
 import 'package:app_sys_eng/screens/new_station_screen.dart';
+import 'package:app_sys_eng/widgets/station_card_grid.dart';
 import 'package:flutter/material.dart';
-import 'package:app_sys_eng/widgets/station_card.dart';
-
-import '../api/fetch_stations.dart';
-import '../models/station_card_data.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -13,13 +12,11 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  late Future<List<StationCardData>> stations;
   String searchQuery = "";
 
   @override
   void initState() {
     super.initState();
-    stations = fetchStations();
   }
 
   @override
@@ -60,41 +57,24 @@ class _MainScreenState extends State<MainScreen> {
       body: Center(
         child: GestureDetector(
           onTap: () {
-            //here
             FocusScope.of(context).unfocus();
             TextEditingController().clear();
           },
-          child: FutureBuilder<List<StationCardData>>(
-            future: stations,
-            builder: (context, snapshot) {
+          child: StreamBuilder(
+            stream: stationListBloc.allStations,
+            builder: (context, AsyncSnapshot<StationList> snapshot) {
               if (snapshot.hasData) {
                 return RefreshIndicator(
                   child: Padding(
-                    padding: const EdgeInsets.only(top: 10.0),
-                    child: GridView.count(
-                        crossAxisCount: 2,
-                        mainAxisSpacing: 16,
-                        crossAxisSpacing: 16,
-                        childAspectRatio: 1.4,
-                        padding: const EdgeInsets.all(16),
-                        children: snapshot.data!
-                            .where((element) => element.name
-                                .toLowerCase()
-                                .contains(searchQuery.toLowerCase()))
-                            .map((e) => StationCard(
-                                data: e,
-                                requestRefresh: () => setState(
-                                      () {
-                                        stations = fetchStations();
-                                      },
-                                    )))
-                            .toList()),
+                    padding:
+                        const EdgeInsets.only(top: 10.0, left: 16, right: 16),
+                    child: StationCardGrid(
+                        query: searchQuery, stationList: snapshot.data!),
                   ),
-                  onRefresh: () => Future.sync(
-                      () => setState(() => {stations = fetchStations()})),
+                  onRefresh: () => stationListBloc.fetchAllStations(),
                 );
               } else if (snapshot.hasError) {
-                return Text('${snapshot.error}');
+                return Text(snapshot.error.toString());
               }
               return const Center(
                   child: CircularProgressIndicator(
@@ -116,14 +96,10 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   Future<void> navigateNewStation(BuildContext context) async {
-    bool? result = await Navigator.of(context).push(
+    await Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => const NewStationScreen(),
       ),
     );
-
-    if (result == true) {
-      setState(() => {stations = fetchStations()});
-    }
   }
 }

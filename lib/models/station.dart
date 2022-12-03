@@ -1,15 +1,15 @@
 import 'package:app_sys_eng/models/measurement_unit.dart';
 
-class StationCardData {
+class Station {
   final int id;
   final String name;
   final String phone;
   final double? temperature;
   final double? humidity;
   final double? wind;
-  final String timestamp;
+  final DateTime timestamp;
 
-  StationCardData(
+  Station(
       {required this.humidity,
       required this.id,
       required this.name,
@@ -42,14 +42,14 @@ class StationCardData {
     }
   }
 
-  factory StationCardData.fromJson(Map<String, dynamic> json) {
-    return StationCardData(
+  factory Station.fromJson(Map<String, dynamic> json) {
+    return Station(
         humidity: json['humidity'],
         id: json['id'],
         name: json['name'],
         phone: json['phone'],
         temperature: json['temperature'],
-        timestamp: json['timestamp'],
+        timestamp: DateTime.parse(json['timestamp']),
         wind: json['wind']);
   }
 
