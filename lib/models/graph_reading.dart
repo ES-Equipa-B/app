@@ -1,32 +1,16 @@
 import 'package:app_sys_eng/models/measurement_unit.dart';
 
 class GraphReadings {
-  final double? wind;
-  final double? hum;
-  final double? temp;
-  final String? timestamp;
   final Map<String, dynamic>? max;
   final Map<String, dynamic>? min;
   final Map<String, dynamic>? avg;
-  Map<String, dynamic>? a;
+  final List<Map<String, dynamic>>? read;
 
-  GraphReadings({
-    required this.max,
-    required this.min,
-    required this.avg,
-    required this.timestamp,
-    required this.temp,
-    required this.wind,
-    required this.hum,
-  });
-
-  double tempGraph() {
-    if (temp == null) {
-      return 0;
-    } else {
-      return temp!;
-    }
-  }
+  GraphReadings(
+      {required this.max,
+      required this.min,
+      required this.avg,
+      required this.read});
 
   String avgTempUnit(MeasurementUnit unit, GraphReadings val) {
     if (val.avg!["temperature"] == null) {
@@ -105,10 +89,7 @@ class GraphReadings {
         max: json['max'],
         min: json['min'],
         avg: json['avg'],
-        timestamp: json['timestamp'],
-        temp: json['temp'],
-        wind: json['wind'],
-        hum: json['hum']);
+        read: json['read']);
   }
 
   Map<String, dynamic> toJson() {
@@ -116,10 +97,8 @@ class GraphReadings {
     data['max'] = max;
     data['min'] = min;
     data['avg'] = avg;
-    data['timestamp'] = timestamp;
-    data['temp'] = temp;
-    data['wind'] = wind;
-    data['hum'] = hum;
+
+    data['read'] = read;
 
     return data;
   }

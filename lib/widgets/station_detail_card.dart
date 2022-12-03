@@ -11,6 +11,7 @@ class StationDetailCard extends StatelessWidget {
     DateTime now = DateTime.now();
     DateTime date = DateTime.parse(timestamp);
     int diff = now.difference(date).inMinutes;
+
     if (diff < 1) {
       return 'less then 1 minute ago';
     } else if (diff == 1) {

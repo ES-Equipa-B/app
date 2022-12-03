@@ -49,6 +49,7 @@ class _GraphCard extends State<GraphCard> {
     } else if (selectedValue == 'Last year') {
       apiVal = 'year';
     }
+
     station = getReadings(widget.data.id, apiVal);
   }
 
@@ -123,15 +124,15 @@ class _GraphCard extends State<GraphCard> {
                       ),
                       lineBarsData: [
                         LineChartBarData(
-                            spots: tempChart[0],
+                            spots: tempChart,
                             color: const Color.fromARGB(255, 247, 94, 94),
                             isCurved: true),
                         LineChartBarData(
-                            spots: windChart[0],
+                            spots: windChart,
                             color: const Color.fromARGB(255, 122, 222, 126),
                             isCurved: true),
                         LineChartBarData(
-                            spots: humChart[0],
+                            spots: humChart,
                             color: const Color.fromARGB(255, 58, 66, 183),
                             isCurved: true),
                       ],
