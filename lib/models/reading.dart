@@ -19,14 +19,27 @@ class Reading {
     int minute = int.parse(sample.substring(2, 4));
     DateTime timestamp = inferDate(dateTimeSent, hour, minute);
 
-    double wind = int.parse(sample.substring(4, 8)) * 0.1;
-    double humidity = 0;
-    double temperature = 0;
+    double wind = int.parse(sample.substring(4, 8)) / 10;
+    double humidity = double.parse(sample.substring(8, 11)) / 100;
+    double temperature =
+        (sample[11] == '1' ? -1 : 1) * int.parse(sample.substring(12, 15)) / 10;
 
     return Reading(
         temperature: temperature,
         humidity: humidity,
         wind: wind,
         timestamp: timestamp);
+  }
+
+  Map<String, dynamic> toJson() => {
+        'wind': wind,
+        'humidity': humidity,
+        'temperature': temperature,
+        'timestamp': timestamp.toIso8601String()
+      };
+
+  @override
+  String toString() {
+    return "Reading at $timestamp: wind = $wind; humi = $humidity; temp = $temperature";
   }
 }

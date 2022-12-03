@@ -18,9 +18,9 @@ class _AppWidgetState extends State<AppWidget> {
   void initState() {
     super.initState();
     stationListBloc.fetchAllStations();
-    // SMSService.initialize().whenComplete(() {
-    //   SMSService.enable();
-    // });
+    SMSService.initialize().whenComplete(() {
+      SMSService.enable();
+    });
   }
 
   @override

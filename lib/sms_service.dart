@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:developer' as developer;
 
+import 'package:app_sys_eng/api/readings_api_provider.dart';
 import 'package:app_sys_eng/blocs/station_list_bloc.dart';
 import 'package:app_sys_eng/models/reading.dart';
 import 'package:app_sys_eng/models/station_list.dart';
@@ -12,7 +13,8 @@ import 'models/station.dart';
 
 class SMSService {
   static Timer? _timer;
-  static StationList? stationList;
+  static StationList? _stationList;
+  static final ReadingsApiProvider _readingsProvider = ReadingsApiProvider();
 
   static Future<bool> initialize() {
     const androidConfig = FlutterBackgroundAndroidConfig(
@@ -26,7 +28,7 @@ class SMSService {
     );
 
     stationListBloc.allStations.listen((value) {
-      stationList = value;
+      _stationList = value;
     });
 
     return FlutterBackground.initialize(androidConfig: androidConfig);
@@ -35,7 +37,7 @@ class SMSService {
   static Future<bool> enable() {
     return FlutterBackground.enableBackgroundExecution().then((value) {
       _timer =
-          Timer.periodic(const Duration(seconds: 5), (timer) => processSMS());
+          Timer.periodic(const Duration(seconds: 5), (timer) => periodicTask());
       return true;
     });
   }
@@ -47,27 +49,32 @@ class SMSService {
     return FlutterBackground.disableBackgroundExecution();
   }
 
-  static processSMS() async {
+  static periodicTask() async {
     developer.log("Running SMS Service", name: "es:SMSService");
 
-    if (stationList == null) {
+    if (_stationList == null) {
       developer.log("Station List is loading, skiping...",
           name: "es:SMSService");
       return;
     }
 
-    var stations = stationList!.stations;
+    var stations = _stationList!.stations;
 
     var pref = await SharedPreferences.getInstance();
     for (var station in stations) {
+      // developer.log("Checking ${station.phone}", name: "es:SMSService");
       String key = "station.${station.phone}";
       var inbox = await getUnprocessedSMS(station, pref.getInt(key) ?? 0);
+      // developer.log("Last SMS: ${pref.getInt(key)}", name: "es:SMSService");
       if (inbox.isNotEmpty) {
         developer.log("Station ${station.id} has ${inbox.length} new messages",
             name: "es:SMSService");
         for (var message in inbox) {
           if (message.id != null && message.body != null) {
-            developer.log("Message: ${message.body}");
+            var success = processSMS(station, message);
+            developer.log("Message: ${message.body}",
+                name: "es:SMSService",
+                error: !success ? "Message rejected" : null);
             pref.setInt(key, message.id!);
           }
         }
@@ -77,24 +84,31 @@ class SMSService {
 
   // HHmmWWW.WHHH(0/1)TT.T
   // HHmmWWWWHHH0TTT - 15 caracteres
-  // static bool processSMS(Station station, SmsMessage message) {
-  //   String body = message.body!;
-  //   DateTime sent = DateTime.fromMicrosecondsSinceEpoch(message.dateSent!);
-  //   int charsPerSample = 15;
-  //   int samplesPerMessage = 10;
+  static bool processSMS(Station station, SmsMessage message) {
+    String body = message.body!;
+    DateTime sent = DateTime.fromMillisecondsSinceEpoch(message.dateSent!);
+    int charsPerSample = 15;
+    int samplesPerMessage = 10;
 
-  //   if (body.length != charsPerSample * samplesPerMessage) {
-  //     return false;
-  //   }
+    if (body.length != charsPerSample * samplesPerMessage) {
+      return false;
+    }
 
-  //   for (int i = 0; i < samplesPerMessage; i++) {
-  //     String sample =
-  //         body.substring(i * charsPerSample, (i + 1) * charsPerSample);
-  //     Reading reading = Reading.fromString(sample, sent);
-  //   }
-
-  //   return true;
-  // }
+    try {
+      List<Reading> readings = List<Reading>.generate(samplesPerMessage, (i) {
+        String sample =
+            body.substring(i * charsPerSample, (i + 1) * charsPerSample);
+        Reading reading = Reading.fromString(sample, sent);
+        return reading;
+      });
+      developer.log("Readings: $readings", name: "es:SMSService");
+      _readingsProvider.insertReadings(station.id, readings);
+      return true;
+    } catch (e) {
+      developer.log("", error: "Invalid SMS, $e", name: "es:SMSService");
+      return false;
+    }
+  }
 
   static Future<List<SmsMessage>> getUnprocessedSMS(
       Station station, int lastId) {
