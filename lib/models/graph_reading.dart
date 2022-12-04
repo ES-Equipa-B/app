@@ -14,6 +14,7 @@ class GraphReadings {
 
   List<dynamic> valuesGraphTemp() {
     List<dynamic> valGraph = [];
+
     for (var element in readings!) {
       if (element['temperature'] == null) {
         valGraph.add(null);

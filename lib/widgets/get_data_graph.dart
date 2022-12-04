@@ -7,13 +7,12 @@ import 'package:fl_chart/fl_chart.dart';
 showChartTemp(String selectedValue, List<dynamic> valGraph) {
   if (selectedValue == "Last hour") {
     List<FlSpot> p = [];
-    List<int> index = [];
     int i = 0;
     for (var element in valGraph) {
       if (element == null) {
         continue;
       } else {
-        p.insert(i, FlSpot(i.toDouble(), element));
+        p.insert(i, FlSpot(valGraph.indexOf(element).toDouble(), element));
       }
       i++;
     }
@@ -25,7 +24,7 @@ showChartTemp(String selectedValue, List<dynamic> valGraph) {
       if (element == null) {
         continue;
       } else {
-        p.insert(i, FlSpot(i.toDouble(), element));
+        p.insert(i, FlSpot(valGraph.indexOf(element).toDouble(), element));
       }
       i++;
     }
@@ -37,7 +36,7 @@ showChartTemp(String selectedValue, List<dynamic> valGraph) {
       if (element == null) {
         continue;
       } else {
-        p.insert(i, FlSpot(i.toDouble(), element));
+        p.insert(i, FlSpot(valGraph.indexOf(element).toDouble(), element));
       }
       i++;
     }
@@ -49,7 +48,7 @@ showChartTemp(String selectedValue, List<dynamic> valGraph) {
       if (element == null) {
         continue;
       } else {
-        p.insert(i, FlSpot(i.toDouble(), element));
+        p.insert(i, FlSpot(valGraph.indexOf(element).toDouble(), element));
       }
       i++;
     }
@@ -61,7 +60,7 @@ showChartTemp(String selectedValue, List<dynamic> valGraph) {
       if (element == null) {
         continue;
       } else {
-        p.insert(i, FlSpot(i.toDouble(), element));
+        p.insert(i, FlSpot(valGraph.indexOf(element).toDouble(), element));
       }
       i++;
     }
@@ -73,7 +72,7 @@ showChartTemp(String selectedValue, List<dynamic> valGraph) {
       if (element == null) {
         continue;
       } else {
-        p.insert(i, FlSpot(i.toDouble(), element));
+        p.insert(i, FlSpot(valGraph.indexOf(element).toDouble(), element));
       }
       i++;
     }
@@ -93,7 +92,7 @@ showChartWind(String selectedValue, List<dynamic> valGraph) {
       if (element == null) {
         continue;
       } else {
-        p.insert(i, FlSpot(i.toDouble(), element));
+        p.insert(i, FlSpot(valGraph.indexOf(element).toDouble(), element));
       }
       i++;
     }
@@ -105,7 +104,7 @@ showChartWind(String selectedValue, List<dynamic> valGraph) {
       if (element == null) {
         continue;
       } else {
-        p.insert(i, FlSpot(i.toDouble(), element));
+        p.insert(i, FlSpot(valGraph.indexOf(element).toDouble(), element));
       }
       i++;
     }
@@ -117,7 +116,7 @@ showChartWind(String selectedValue, List<dynamic> valGraph) {
       if (element == null) {
         continue;
       } else {
-        p.insert(i, FlSpot(i.toDouble(), element));
+        p.insert(i, FlSpot(valGraph.indexOf(element).toDouble(), element));
       }
       i++;
     }
@@ -129,7 +128,7 @@ showChartWind(String selectedValue, List<dynamic> valGraph) {
       if (element == null) {
         continue;
       } else {
-        p.insert(i, FlSpot(i.toDouble(), element));
+        p.insert(i, FlSpot(valGraph.indexOf(element).toDouble(), element));
       }
       i++;
     }
@@ -141,7 +140,7 @@ showChartWind(String selectedValue, List<dynamic> valGraph) {
       if (element == null) {
         continue;
       } else {
-        p.insert(i, FlSpot(i.toDouble(), element));
+        p.insert(i, FlSpot(valGraph.indexOf(element).toDouble(), element));
       }
       i++;
     }
@@ -153,7 +152,7 @@ showChartWind(String selectedValue, List<dynamic> valGraph) {
       if (element == null) {
         continue;
       } else {
-        p.insert(i, FlSpot(i.toDouble(), element));
+        p.insert(i, FlSpot(valGraph.indexOf(element).toDouble(), element));
       }
       i++;
     }
@@ -173,7 +172,7 @@ showChartHum(String selectedValue, List<dynamic> valGraph) {
       if (element == null) {
         continue;
       } else {
-        p.insert(i, FlSpot(i.toDouble(), element));
+        p.insert(i, FlSpot(valGraph.indexOf(element).toDouble(), element));
       }
       i++;
     }
@@ -185,7 +184,7 @@ showChartHum(String selectedValue, List<dynamic> valGraph) {
       if (element == null) {
         continue;
       } else {
-        p.insert(i, FlSpot(i.toDouble(), element));
+        p.insert(i, FlSpot(valGraph.indexOf(element).toDouble(), element));
       }
       i++;
     }
@@ -197,7 +196,7 @@ showChartHum(String selectedValue, List<dynamic> valGraph) {
       if (element == null) {
         continue;
       } else {
-        p.insert(i, FlSpot(i.toDouble(), element));
+        p.insert(i, FlSpot(valGraph.indexOf(element).toDouble(), element));
       }
       i++;
     }
@@ -209,7 +208,7 @@ showChartHum(String selectedValue, List<dynamic> valGraph) {
       if (element == null) {
         continue;
       } else {
-        p.insert(i, FlSpot(i.toDouble(), element));
+        p.insert(i, FlSpot(valGraph.indexOf(element).toDouble(), element));
       }
       i++;
     }
@@ -221,7 +220,7 @@ showChartHum(String selectedValue, List<dynamic> valGraph) {
       if (element == null) {
         continue;
       } else {
-        p.insert(i, FlSpot(i.toDouble(), element));
+        p.insert(i, FlSpot(valGraph.indexOf(element).toDouble(), element));
       }
       i++;
     }
@@ -233,7 +232,7 @@ showChartHum(String selectedValue, List<dynamic> valGraph) {
       if (element == null) {
         continue;
       } else {
-        p.insert(i, FlSpot(i.toDouble(), element));
+        p.insert(i, FlSpot(valGraph.indexOf(element).toDouble(), element));
       }
       i++;
     }

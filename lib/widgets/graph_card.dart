@@ -33,6 +33,8 @@ class _GraphCard extends State<GraphCard> {
   late GraphReadings val;
   String selectedValue = "Last hour";
   String apiVal = "";
+  double interval = 1;
+  double intervalLeft = 5;
   @override
   void initState() {
     super.initState();
@@ -112,7 +114,10 @@ class _GraphCard extends State<GraphCard> {
                   ],
                 ),
                 Container(
-                  padding: const EdgeInsets.only(top: 10, right: 10),
+                  padding: const EdgeInsets.only(
+                    top: 10,
+                    right: 10,
+                  ),
                   width: double.infinity,
                   height: 190,
                   child: LineChart(
@@ -120,10 +125,12 @@ class _GraphCard extends State<GraphCard> {
                       borderData: FlBorderData(show: false),
                       gridData: FlGridData(show: true),
                       titlesData: FlTitlesData(
-                        topTitles: AxisTitles(),
-                        rightTitles: AxisTitles(),
-                        bottomTitles: AxisTitles(sideTitles: _bottomTitles),
-                      ),
+                          topTitles: AxisTitles(),
+                          rightTitles: AxisTitles(),
+                          bottomTitles: AxisTitles(
+                              sideTitles: _bottomTitles,
+                              axisNameWidget: name(selectedValue)),
+                          leftTitles: AxisTitles(sideTitles: _leftTitles)),
                       lineBarsData: [
                         LineChartBarData(
                           spots: tempChart,
@@ -287,53 +294,106 @@ class _GraphCard extends State<GraphCard> {
     );
   }
 
+  Widget name(String selected) {
+    if (selected == 'Last hour') {
+      return const Text(
+        "Last 60 Minutes",
+        style: TextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.bold,
+        ),
+      );
+    } else if (selected == 'Last 6 hours') {
+      return const Text(
+        "Last 36 Minutes",
+        style: TextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.bold,
+        ),
+      );
+    } else if (selected == 'Last 24 hours') {
+      return const Text(
+        "Last 24 Hours",
+        style: TextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.bold,
+        ),
+      );
+    } else if (selected == 'Last 7 days') {
+      return const Text(
+        "Last 7 Days",
+        style: TextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.bold,
+        ),
+      );
+    } else if (selected == 'Last month') {
+      return const Text(
+        "Last 30 Month Days",
+        style: TextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.bold,
+        ),
+      );
+    } else {
+      return const Text(
+        "Last 12 Months",
+        style: TextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.bold,
+        ),
+      );
+    }
+  }
+
   SideTitles get _bottomTitles => SideTitles(
         showTitles: true,
+        interval: interval,
         getTitlesWidget: (value, meta) {
           String text = '';
-          if (selectedValue == "Last year") {
-            switch (value.toInt()) {
-              case 0:
-                text = 'Jan';
-                break;
-              case 1:
-                text = 'Feb';
-                break;
-              case 2:
-                text = 'Mar';
-                break;
-              case 3:
-                text = 'Apr';
-                break;
-              case 4:
-                text = 'May';
-                break;
-              case 5:
-                text = 'Jun';
-                break;
-              case 8:
-                text = 'Jul';
-                break;
-              case 9:
-                text = 'Aug';
-                break;
-              case 10:
-                text = 'Sep';
-                break;
-              case 11:
-                text = 'Oct';
-                break;
-              case 12:
-                text = 'Nov';
-                break;
-              case 13:
-                text = 'Dec';
-                break;
-            }
+          if (selectedValue == "Last hour") {
+            interval = 1;
+            text = value.toStringAsFixed(0);
+          } else if (selectedValue == "Last 6 hours") {
+            interval = 4;
+            text = value.toStringAsFixed(0);
+          } else if (selectedValue == "Last 24 hours") {
+            interval = 1;
+            text = value.toStringAsFixed(0);
+          } else if (selectedValue == "Last 7 days") {
+            interval = 1;
+            text = value.toStringAsFixed(0);
+          } else if (selectedValue == "Last month") {
+            interval = 2;
+            text = value.toStringAsFixed(0);
+          } else if (selectedValue == "Last year") {
+            interval = 1;
+            text = value.toStringAsFixed(0);
           }
-          if (selectedValue == "Last hour") {}
+          return Transform.rotate(angle: 0, child: Text(text));
+        },
+      );
+  SideTitles get _leftTitles => SideTitles(
+        showTitles: true,
+        reservedSize: 40,
+        interval: intervalLeft,
+        getTitlesWidget: (value, meta) {
+          if (selectedValue == "Last hour") {
+            intervalLeft = 5;
+          } else if (selectedValue == "Last 6 hours") {
+            intervalLeft = 4;
+          } else if (selectedValue == "Last 24 hours") {
+            intervalLeft = 5;
+          } else if (selectedValue == "Last 7 days") {
+            intervalLeft = 5;
+          } else if (selectedValue == "Last month") {
+            intervalLeft = 5;
+          } else if (selectedValue == "Last year") {
+            intervalLeft = 5;
+          }
+          String text = value.toStringAsFixed(1);
 
-          return Transform.rotate(angle: 0.2, child: Text(text));
+          return Text(text);
         },
       );
 }
