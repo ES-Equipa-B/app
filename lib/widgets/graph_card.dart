@@ -55,14 +55,15 @@ class _GraphCard extends State<GraphCard> {
 
   @override
   Widget build(BuildContext context) {
-    var tempChart = showChartTemp(selectedValue);
-    var windChart = showChartWind(selectedValue);
-    var humChart = showChartHum(selectedValue);
     return FutureBuilder<GraphReadings>(
       future: station,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           GraphReadings val = snapshot.data!;
+
+          var tempChart = showChartTemp(selectedValue, val.valuesGraphTemp());
+          var windChart = showChartWind(selectedValue, val.valuesGraphHum());
+          var humChart = showChartHum(selectedValue, val.valuesGraphWind());
           return Container(
             height: 420,
             width: 390,
@@ -121,20 +122,21 @@ class _GraphCard extends State<GraphCard> {
                       titlesData: FlTitlesData(
                         topTitles: AxisTitles(),
                         rightTitles: AxisTitles(),
+                        bottomTitles: AxisTitles(sideTitles: _bottomTitles),
                       ),
                       lineBarsData: [
                         LineChartBarData(
-                            spots: tempChart,
-                            color: const Color.fromARGB(255, 247, 94, 94),
-                            isCurved: true),
+                          spots: tempChart,
+                          color: const Color.fromARGB(255, 247, 94, 94),
+                        ),
                         LineChartBarData(
-                            spots: windChart,
-                            color: const Color.fromARGB(255, 122, 222, 126),
-                            isCurved: true),
+                          spots: windChart,
+                          color: const Color.fromARGB(255, 122, 222, 126),
+                        ),
                         LineChartBarData(
-                            spots: humChart,
-                            color: const Color.fromARGB(255, 58, 66, 183),
-                            isCurved: true),
+                          spots: humChart,
+                          color: const Color.fromARGB(255, 58, 66, 183),
+                        ),
                       ],
                     ),
                   ),
@@ -159,13 +161,13 @@ class _GraphCard extends State<GraphCard> {
                                 Icons.fullscreen,
                               ),
                               onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => GraphFullScreen(
-                                              selectedValue: selectedValue,
-                                              data: widget.data,
-                                            )));
+                                //Navigator.push(
+                                // context,
+                                // MaterialPageRoute(
+                                // builder: //(context) => //GraphFullScreen(
+                                //selectedValue: selectedValue,
+                                //data: widget.data,
+                                // )));
                               }),
                           const SizedBox(height: 15),
                           const Text(
@@ -210,11 +212,11 @@ class _GraphCard extends State<GraphCard> {
                               ],
                             ),
                             const SizedBox(height: 15),
-                            Text(val.avgTempUnit(MeasurementUnit.metric, val)),
+                            Text(val.avgTempUnit(MeasurementUnit.metric)),
                             const SizedBox(height: 15),
-                            Text(val.maxTempUnit(MeasurementUnit.metric, val)),
+                            Text(val.maxTempUnit(MeasurementUnit.metric)),
                             const SizedBox(height: 15),
-                            Text(val.minTempUnit(MeasurementUnit.metric, val))
+                            Text(val.minTempUnit(MeasurementUnit.metric))
                           ],
                         ),
                       ),
@@ -235,11 +237,11 @@ class _GraphCard extends State<GraphCard> {
                               ],
                             ),
                             const SizedBox(height: 15),
-                            Text(val.avgWindUnit(MeasurementUnit.metric, val)),
+                            Text(val.avgWindUnit(MeasurementUnit.metric)),
                             const SizedBox(height: 15),
-                            Text(val.maxWindUnit(MeasurementUnit.metric, val)),
+                            Text(val.maxWindUnit(MeasurementUnit.metric)),
                             const SizedBox(height: 15),
-                            Text(val.minWindUnit(MeasurementUnit.metric, val))
+                            Text(val.minWindUnit(MeasurementUnit.metric))
                           ],
                         ),
                       ),
@@ -260,11 +262,11 @@ class _GraphCard extends State<GraphCard> {
                               ],
                             ),
                             const SizedBox(height: 15),
-                            Text(val.avgHumUnit(MeasurementUnit.metric, val)),
+                            Text(val.avgHumUnit(MeasurementUnit.metric)),
                             const SizedBox(height: 15),
-                            Text(val.maxHumUnit(MeasurementUnit.metric, val)),
+                            Text(val.maxHumUnit(MeasurementUnit.metric)),
                             const SizedBox(height: 15),
-                            Text(val.minHumUnit(MeasurementUnit.metric, val))
+                            Text(val.minHumUnit(MeasurementUnit.metric))
                           ],
                         ),
                       )
@@ -284,4 +286,54 @@ class _GraphCard extends State<GraphCard> {
       },
     );
   }
+
+  SideTitles get _bottomTitles => SideTitles(
+        showTitles: true,
+        getTitlesWidget: (value, meta) {
+          String text = '';
+          if (selectedValue == "Last year") {
+            switch (value.toInt()) {
+              case 0:
+                text = 'Jan';
+                break;
+              case 1:
+                text = 'Feb';
+                break;
+              case 2:
+                text = 'Mar';
+                break;
+              case 3:
+                text = 'Apr';
+                break;
+              case 4:
+                text = 'May';
+                break;
+              case 5:
+                text = 'Jun';
+                break;
+              case 8:
+                text = 'Jul';
+                break;
+              case 9:
+                text = 'Aug';
+                break;
+              case 10:
+                text = 'Sep';
+                break;
+              case 11:
+                text = 'Oct';
+                break;
+              case 12:
+                text = 'Nov';
+                break;
+              case 13:
+                text = 'Dec';
+                break;
+            }
+          }
+          if (selectedValue == "Last hour") {}
+
+          return Transform.rotate(angle: 0.2, child: Text(text));
+        },
+      );
 }
