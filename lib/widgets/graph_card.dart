@@ -168,13 +168,14 @@ class _GraphCard extends State<GraphCard> {
                                 Icons.fullscreen,
                               ),
                               onTap: () {
-                                //Navigator.push(
-                                // context,
-                                // MaterialPageRoute(
-                                // builder: //(context) => //GraphFullScreen(
-                                //selectedValue: selectedValue,
-                                //data: widget.data,
-                                // )));
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => GraphFullScreen(
+                                              selectedValue: selectedValue,
+                                              data: widget.data,
+                                              graph: val,
+                                            )));
                               }),
                           const SizedBox(height: 15),
                           const Text(
@@ -305,7 +306,7 @@ class _GraphCard extends State<GraphCard> {
       );
     } else if (selected == 'Last 6 hours') {
       return const Text(
-        "Last 36 Minutes",
+        "Last 360 Minutes",
         style: TextStyle(
           fontSize: 14,
           fontWeight: FontWeight.bold,
