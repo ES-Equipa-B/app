@@ -1,21 +1,26 @@
+import 'package:app_sys_eng/colors.dart';
+import 'package:app_sys_eng/screens/data_screen.dart';
 import 'package:flutter/material.dart';
 
 import 'package:app_sys_eng/models/measurement_unit.dart';
-import 'package:app_sys_eng/screens/data_screen.dart';
 import 'package:app_sys_eng/models/station.dart';
 
 class StationCard extends StatelessWidget {
-  final Station data;
+  final Station station;
   final Function requestRefresh;
+  final MeasurementUnit unit;
 
   const StationCard(
-      {super.key, required this.data, required this.requestRefresh});
+      {super.key,
+      required this.station,
+      required this.requestRefresh,
+      required this.unit});
 
   @override
   Widget build(BuildContext context) {
     return Container(
         decoration: BoxDecoration(
-            color: const Color.fromARGB(255, 255, 242, 240),
+            color: AppColors.cardBG,
             borderRadius: BorderRadius.circular(10),
             boxShadow: [
               BoxShadow(
@@ -23,27 +28,29 @@ class StationCard extends StatelessWidget {
                   spreadRadius: 1,
                   blurRadius: 1),
             ]),
-        padding: const EdgeInsets.all(8),
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
         child: InkWell(
           child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(data.name, textAlign: TextAlign.left),
+                Text(station.name, textAlign: TextAlign.left),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     ValueIndicator(
                       icon: Icons.thermostat,
-                      value: data.temperatureWithUnit(MeasurementUnit.metric),
+                      value: station.reading
+                          .temperatureWithUnit(unit, round: true),
                     ),
                     ValueIndicator(
                       icon: Icons.air,
-                      value: data.windWithUnit(MeasurementUnit.metric),
+                      value: station.reading.windWithUnit(unit, round: true),
                     ),
                     ValueIndicator(
                       icon: Icons.water_drop_outlined,
-                      value: data.humidityWithUnit(MeasurementUnit.metric),
+                      value:
+                          station.reading.humidityWithUnit(unit, round: true),
                     ),
                   ],
                 )
@@ -53,7 +60,7 @@ class StationCard extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (context) => DataScreen(
-                    id: data.id,
+                    id: station.id,
                   ),
                 ));
             requestRefresh();

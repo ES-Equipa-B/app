@@ -1,4 +1,6 @@
+import 'package:app_sys_eng/blocs/settings_bloc.dart';
 import 'package:app_sys_eng/blocs/station_list_bloc.dart';
+import 'package:app_sys_eng/colors.dart';
 import 'package:app_sys_eng/models/station_list.dart';
 import 'package:app_sys_eng/screens/new_station_screen.dart';
 import 'package:app_sys_eng/widgets/station_card_grid.dart';
@@ -61,26 +63,32 @@ class _MainScreenState extends State<MainScreen> {
             TextEditingController().clear();
           },
           child: StreamBuilder(
-            stream: stationListBloc.allStations,
-            builder: (context, AsyncSnapshot<StationList> snapshot) {
-              if (snapshot.hasData) {
-                return RefreshIndicator(
-                  child: Padding(
-                    padding:
-                        const EdgeInsets.only(top: 10.0, left: 16, right: 16),
-                    child: StationCardGrid(
-                        query: searchQuery, stationList: snapshot.data!),
-                  ),
-                  onRefresh: () => stationListBloc.fetchAllStations(),
-                );
-              } else if (snapshot.hasError) {
-                return Text(snapshot.error.toString());
-              }
-              return const Center(
-                  child: CircularProgressIndicator(
-                color: Color.fromARGB(255, 255, 192, 192),
-              ));
-            },
+            stream: settingsBloc.settings,
+            builder: (context, settings) => StreamBuilder(
+              stream: stationListBloc.allStations,
+              builder: (context, AsyncSnapshot<StationList> snapshot) {
+                if (snapshot.hasData && settings.hasData) {
+                  return RefreshIndicator(
+                    child: Padding(
+                      padding:
+                          const EdgeInsets.only(top: 10.0, left: 16, right: 16),
+                      child: StationCardGrid(
+                        query: searchQuery,
+                        stationList: snapshot.data!,
+                        unit: settings.data!.measurementUnit,
+                      ),
+                    ),
+                    onRefresh: () => stationListBloc.fetchAllStations(),
+                  );
+                } else if (snapshot.hasError) {
+                  return Text(snapshot.error.toString());
+                }
+                return const Center(
+                    child: CircularProgressIndicator(
+                  color: Color.fromARGB(255, 255, 192, 192),
+                ));
+              },
+            ),
           ),
         ),
       ),
@@ -88,8 +96,8 @@ class _MainScreenState extends State<MainScreen> {
         onPressed: () {
           navigateNewStation(context);
         },
-        backgroundColor: const Color.fromARGB(255, 255, 192, 192),
-        foregroundColor: const Color.fromARGB(255, 54, 6, 6),
+        backgroundColor: AppColors.primary,
+        foregroundColor: AppColors.primaryFG,
         child: const Icon(Icons.add),
       ),
     );

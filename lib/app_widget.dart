@@ -1,3 +1,4 @@
+import 'package:app_sys_eng/blocs/settings_bloc.dart';
 import 'package:app_sys_eng/blocs/station_list_bloc.dart';
 import 'package:app_sys_eng/screens/main_screen.dart';
 import 'package:app_sys_eng/screens/settings_screen.dart';
@@ -18,8 +19,16 @@ class _AppWidgetState extends State<AppWidget> {
   void initState() {
     super.initState();
     stationListBloc.fetchAllStations();
-    SMSService.initialize().whenComplete(() {
-      SMSService.enable();
+    settingsBloc.loadFromPreferences();
+
+    settingsBloc.settings.listen((settings) {
+      if (settings.mainStation) {
+        SMSService.initialize().whenComplete(() {
+          SMSService.enable();
+        });
+      } else {
+        SMSService.disable();
+      }
     });
   }
 

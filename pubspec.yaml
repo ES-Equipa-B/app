@@ -42,6 +42,9 @@ dependencies:
   telephony: ^0.2.0
   flutter_background: ^1.1.0
   rxdart: ^0.27.7
+  intl: ^0.18.0
+  timeago: ^3.2.2
+  settings_ui: ^2.0.2
 
 dev_dependencies:
   flutter_test:

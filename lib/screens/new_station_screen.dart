@@ -1,5 +1,6 @@
 import 'package:app_sys_eng/api/station_api_provider.dart';
 import 'package:app_sys_eng/blocs/station_list_bloc.dart';
+import 'package:app_sys_eng/colors.dart';
 import 'package:flutter/material.dart';
 
 import 'dart:developer' as developer;
@@ -158,7 +159,7 @@ class _NewStationScreen extends State<NewStationScreen> {
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        backgroundColor: const Color.fromARGB(255, 255, 192, 192),
+        backgroundColor: AppColors.primary,
         foregroundColor: Colors.black,
         onPressed: () {
           // Respond to button press

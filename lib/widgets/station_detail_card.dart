@@ -1,37 +1,36 @@
+import 'package:app_sys_eng/colors.dart';
 import 'package:app_sys_eng/models/measurement_unit.dart';
 import 'package:app_sys_eng/models/station.dart';
+import 'package:app_sys_eng/widgets/weather_stat.dart';
 import 'package:flutter/material.dart';
-import 'package:percent_indicator/circular_percent_indicator.dart';
+
+import 'package:timeago/timeago.dart' as timeago;
 
 class StationDetailCard extends StatelessWidget {
-  final Station data;
-  const StationDetailCard({super.key, required this.data});
+  final Station station;
+  final MeasurementUnit unit;
 
-  String get lastUpdated {
-    DateTime now = DateTime.now();
-    int diff = now.difference(data.timestamp).inMinutes;
-    if (diff < 1) {
-      return 'less then 1 minute ago';
-    } else if (diff == 1) {
-      return '$diff minute ago';
-    } else {
-      return '$diff minutes ago';
-    }
-  }
+  const StationDetailCard(
+      {super.key, required this.station, required this.unit});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 220,
-      width: 390,
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(5),
-          color: const Color.fromARGB(255, 255, 242, 240)),
+        color: AppColors.cardBG,
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: [
+          BoxShadow(
+              color: Colors.grey.withOpacity(0.5),
+              spreadRadius: 1,
+              blurRadius: 1),
+        ],
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Padding(
-            padding: EdgeInsets.all(10.0),
+            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 12),
             child: Text("Current Weather Information",
                 style: TextStyle(
                     color: Colors.black,
@@ -40,10 +39,13 @@ class StationDetailCard extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.only(left: 10.0, bottom: 5),
-            child: Text("Updated $lastUpdated",
+            child: Text(
+                station.reading.timeStamp != null
+                    ? "Updated ${timeago.format(station.reading.timeStamp!)}"
+                    : "No data available",
                 style: const TextStyle(
                   color: Color(0xff534341),
-                  fontSize: 11,
+                  fontSize: 12,
                 )),
           ),
           Padding(
@@ -51,58 +53,25 @@ class StationDetailCard extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Column(
-                  children: [
-                    const Text("Temperature",
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold)),
-                    const Icon(Icons.thermostat),
-                    CircularPercentIndicator(
-                      radius: 43.0,
-                      lineWidth: 5.0,
-                      percent: 1.0,
-                      center: Text(
-                          data.temperatureWithUnit(MeasurementUnit.metric)),
-                      progressColor: const Color.fromARGB(255, 247, 94, 94),
-                    )
-                  ],
+                WeatherStat(
+                  title: "Temperature",
+                  measurement:
+                      station.reading.temperatureWithUnit(unit, round: true),
+                  icon: Icons.thermostat,
+                  color: AppColors.temperature,
                 ),
-                Column(
-                  children: [
-                    const Text("Wind Speed",
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold)),
-                    const Icon(Icons.air),
-                    CircularPercentIndicator(
-                      radius: 43.0,
-                      lineWidth: 5.0,
-                      percent: 1.0,
-                      center: Text(data.windWithUnit(MeasurementUnit.metric)),
-                      progressColor: const Color.fromARGB(255, 122, 222, 126),
-                    ),
-                  ],
+                WeatherStat(
+                  title: "Wind Speed",
+                  measurement: station.reading.windWithUnit(unit, round: true),
+                  icon: Icons.air,
+                  color: AppColors.wind,
                 ),
-                Column(
-                  children: [
-                    const Text("Humidity",
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold)),
-                    const Icon(Icons.water_drop_outlined),
-                    CircularPercentIndicator(
-                      radius: 43.0,
-                      lineWidth: 5.0,
-                      percent: 1.0,
-                      center:
-                          Text(data.humidityWithUnit(MeasurementUnit.metric)),
-                      progressColor: const Color.fromARGB(255, 58, 66, 183),
-                    ),
-                  ],
+                WeatherStat(
+                  title: "Humidity",
+                  measurement:
+                      station.reading.humidityWithUnit(unit, round: true),
+                  icon: Icons.water_drop_outlined,
+                  color: AppColors.humidity,
                 ),
               ],
             ),

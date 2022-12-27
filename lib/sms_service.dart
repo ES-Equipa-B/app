@@ -112,10 +112,14 @@ class SMSService {
 
   static Future<List<SmsMessage>> getUnprocessedSMS(
       Station station, int lastId) {
+    int epoch = 0;
+    if (station.reading.timeStamp != null) {
+      epoch = station.reading.timeStamp!.millisecondsSinceEpoch;
+    }
     var filter = SmsFilter.where(SmsColumn.ADDRESS)
         .equals(station.phone)
         .and(SmsColumn.DATE_SENT)
-        .greaterThan(station.timestamp.millisecondsSinceEpoch.toString())
+        .greaterThan(epoch.toString())
         .and(SmsColumn.ID)
         .greaterThan(lastId.toString());
 

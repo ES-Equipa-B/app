@@ -1,7 +1,1 @@
-const String apiURL = "http://campheimdall.ddns.net:5000";
-const String apiFetchStations = "/stations";
-const String apiGetStation = "/stations/";
-const String apiPostStation = "/stations";
-const String apiDeleteStation = "/stations/";
-const String readings = "/readings";
-const String read = "/readings?timeframe=";
+const String apiURL = "campheimdall.ddns.net:5000";

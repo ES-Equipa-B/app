@@ -1,3 +1,4 @@
+import 'package:app_sys_eng/colors.dart';
 import 'package:flutter/material.dart';
 
 class SettingsOptions extends StatelessWidget {
@@ -30,7 +31,7 @@ class SettingsOptions extends StatelessWidget {
             ),
             const Spacer(),
             Switch(
-                activeColor: const Color.fromARGB(255, 255, 192, 192),
+                activeColor: AppColors.primary,
                 value: val,
                 onChanged: (newValue) {
                   onChangedMethod(newValue);

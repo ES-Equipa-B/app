@@ -8,7 +8,7 @@ import 'package:app_sys_eng/models/station_list.dart';
 
 class StationApiProvider {
   Future<StationList> fetchAllStations() async {
-    final response = await http.get(Uri.parse(apiURL + apiFetchStations));
+    final response = await http.get(Uri.http(apiURL, '/stations'));
 
     if (response.statusCode == 200) {
       Iterable list = jsonDecode(response.body);
@@ -19,8 +19,7 @@ class StationApiProvider {
   }
 
   Future<Station> getStation(int id) async {
-    final response =
-        await http.get(Uri.parse(apiURL + apiGetStation + id.toString()));
+    final response = await http.get(Uri.http(apiURL, '/stations/$id'));
 
     if (response.statusCode == 200) {
       Map<String, dynamic> data = jsonDecode(response.body);
@@ -32,7 +31,7 @@ class StationApiProvider {
 
   Future<bool> createStation(String name, String phone) async {
     final response = await http.post(
-      Uri.parse(apiURL + apiPostStation),
+      Uri.http(apiURL, '/stations'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8'
       },
@@ -51,7 +50,7 @@ class StationApiProvider {
 
   Future<bool> updateStation(int id, String name, String phone) async {
     final response = await http.put(
-      Uri.parse(apiURL + apiGetStation + id.toString()),
+      Uri.http(apiURL, '/stations/$id'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8'
       },
@@ -70,7 +69,7 @@ class StationApiProvider {
 
   Future<bool> deleteStation(int id) async {
     final response = await http.delete(
-      Uri.parse(apiURL + apiDeleteStation + id.toString()),
+      Uri.http(apiURL, '/stations/$id'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8'
       },
