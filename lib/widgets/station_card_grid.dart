@@ -19,8 +19,9 @@ class StationCardGrid extends StatelessWidget {
 
     return GridView.builder(
       itemCount: stations.length,
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount:
+            MediaQuery.of(context).orientation == Orientation.portrait ? 2 : 3,
         childAspectRatio: 1.3,
         mainAxisSpacing: 16,
         crossAxisSpacing: 16,

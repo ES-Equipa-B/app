@@ -1,7 +1,6 @@
 import 'package:app_sys_eng/blocs/settings_bloc.dart';
 import 'package:app_sys_eng/blocs/station_list_bloc.dart';
 import 'package:app_sys_eng/colors.dart';
-import 'package:app_sys_eng/models/station_list.dart';
 import 'package:app_sys_eng/screens/new_station_screen.dart';
 import 'package:app_sys_eng/widgets/station_card_grid.dart';
 import 'package:flutter/material.dart';
@@ -25,6 +24,8 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        elevation: 0,
+        scrolledUnderElevation: 0,
         toolbarHeight: 90,
         shadowColor: Colors.transparent,
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
