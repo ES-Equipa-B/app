@@ -1,68 +1,45 @@
 import 'dart:async';
 import 'dart:developer' as developer;
 
+import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:app_sys_eng/api/readings_api_provider.dart';
-import 'package:app_sys_eng/blocs/station_list_bloc.dart';
+import 'package:app_sys_eng/api/station_api_provider.dart';
 import 'package:app_sys_eng/models/reading.dart';
-import 'package:app_sys_eng/models/station_list.dart';
-import 'package:flutter_background/flutter_background.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:telephony/telephony.dart';
 
 import 'models/station.dart';
 
 class SMSService {
-  static Timer? _timer;
-  static StationList? _stationList;
   static final ReadingsApiProvider _readingsProvider = ReadingsApiProvider();
 
-  static Future<bool> initialize() {
-    const androidConfig = FlutterBackgroundAndroidConfig(
-      notificationTitle: "Weather Station SMS Service",
-      notificationText:
-          "Background notification for keeping the weather station app running in the background",
-      notificationImportance: AndroidNotificationImportance.Default,
-      notificationIcon:
-          AndroidResource(name: 'background_icon', defType: 'drawable'),
-      enableWifiLock: true,
-    );
-
-    stationListBloc.allStations.listen((value) {
-      _stationList = value;
-    });
-
-    return FlutterBackground.initialize(androidConfig: androidConfig);
-  }
-
-  static Future<bool> enable() {
-    return FlutterBackground.enableBackgroundExecution().then((value) {
-      _timer =
-          Timer.periodic(const Duration(seconds: 5), (timer) => periodicTask());
-      return true;
-    });
+  static Future<bool> enable() async {
+    await Telephony.instance.requestSmsPermissions;
+    developer.log("SMS Service enabled", name: "es:SMSService");
+    return AndroidAlarmManager.periodic(
+        const Duration(minutes: 1), 0, periodicTask,
+        allowWhileIdle: true,
+        exact: true,
+        rescheduleOnReboot: true,
+        wakeup: true,
+        startAt: DateTime.now());
   }
 
   static Future<bool> disable() {
-    if (_timer != null && _timer!.isActive) {
-      _timer!.cancel();
-    }
-    return FlutterBackground.disableBackgroundExecution();
+    developer.log("SMS Service disabled", name: "es:SMSService");
+    return AndroidAlarmManager.cancel(0);
   }
 
+  @pragma('vm:entry-point')
   static periodicTask() async {
-    developer.log("Running SMS Service", name: "es:SMSService");
+    final DateTime now = DateTime.now();
+    developer.log("$now: Running SMS Service", name: "es:SMSService");
 
-    if (_stationList == null) {
-      developer.log("Station List is loading, skiping...",
-          name: "es:SMSService");
-      return;
-    }
-
-    var stations = _stationList!.stations;
+    var stations = (await StationApiProvider().fetchAllStations()).stations;
 
     var pref = await SharedPreferences.getInstance();
     for (var station in stations) {
-      // developer.log("Checking ${station.phone}", name: "es:SMSService");
+      developer.log("Checking ${station.phone}", name: "es:SMSService");
       String key = "station.${station.phone}";
       var inbox = await getUnprocessedSMS(station, pref.getInt(key) ?? 0);
       // developer.log("Last SMS: ${pref.getInt(key)}", name: "es:SMSService");
@@ -101,7 +78,7 @@ class SMSService {
         Reading reading = Reading.fromString(sample, sent);
         return reading;
       });
-      developer.log("Readings: $readings", name: "es:SMSService");
+      // developer.log("Readings: $readings", name: "es:SMSService");
       _readingsProvider.insertReadings(station.id, readings);
       return true;
     } catch (e) {

@@ -144,9 +144,10 @@ class _HistoryCard extends State<HistoryCard> {
             return Text('${snapshot.error}');
           }
           return const Center(
-              child: CircularProgressIndicator(
-            color: Colors.blue,
-          ));
+            child: CircularProgressIndicator(
+              color: AppColors.primary,
+            ),
+          );
         },
       ),
     );

@@ -24,37 +24,31 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(85.0),
-        child: Padding(
-          padding: const EdgeInsets.only(top: 25.0),
-          child: AppBar(
-            shadowColor: Colors.transparent,
-            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-            title: TextField(
-              decoration: const InputDecoration(
-                hintText: "Search Station",
-                hintStyle: TextStyle(fontSize: 15),
-                border: OutlineInputBorder(),
-                isDense: true,
-                prefixIcon: Icon(Icons.search),
-              ),
-              onChanged: (value) => setState(() {
-                searchQuery = value;
-              }),
-            ),
-            actions: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: IconButton(
-                    color: Theme.of(context).iconTheme.color,
-                    onPressed: () =>
-                        {Navigator.pushNamed(context, "/settings")},
-                    icon: const Icon(Icons.settings)),
-              )
-            ],
+      appBar: AppBar(
+        toolbarHeight: 90,
+        shadowColor: Colors.transparent,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        title: TextField(
+          decoration: const InputDecoration(
+            hintText: "Search Station",
+            hintStyle: TextStyle(fontSize: 15),
+            border: OutlineInputBorder(),
+            isDense: true,
+            prefixIcon: Icon(Icons.search),
           ),
+          onChanged: (value) => setState(() {
+            searchQuery = value;
+          }),
         ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: IconButton(
+                color: Theme.of(context).iconTheme.color,
+                onPressed: () => {Navigator.pushNamed(context, "/settings")},
+                icon: const Icon(Icons.settings)),
+          )
+        ],
       ),
       body: Center(
         child: GestureDetector(
@@ -66,7 +60,7 @@ class _MainScreenState extends State<MainScreen> {
             stream: settingsBloc.settings,
             builder: (context, settings) => StreamBuilder(
               stream: stationListBloc.allStations,
-              builder: (context, AsyncSnapshot<StationList> snapshot) {
+              builder: (context, snapshot) {
                 if (snapshot.hasData && settings.hasData) {
                   return RefreshIndicator(
                     child: Padding(
@@ -84,9 +78,10 @@ class _MainScreenState extends State<MainScreen> {
                   return Text(snapshot.error.toString());
                 }
                 return const Center(
-                    child: CircularProgressIndicator(
-                  color: Color.fromARGB(255, 255, 192, 192),
-                ));
+                  child: CircularProgressIndicator(
+                    color: AppColors.primary,
+                  ),
+                );
               },
             ),
           ),
