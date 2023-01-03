@@ -44,59 +44,57 @@ class _HistoryCard extends State<HistoryCard> {
           if (settings.hasData && snapshot.hasData) {
             ReadingList val = snapshot.data!;
 
-            return Container(
-              decoration: BoxDecoration(
-                  color: AppColors.cardBG,
-                  borderRadius: BorderRadius.circular(10),
-                  boxShadow: [
-                    BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
-                        spreadRadius: 1,
-                        blurRadius: 1),
-                  ]),
-              padding: const EdgeInsets.only(
-                  left: 12, right: 12, bottom: 10, top: 2),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        "Weather History",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
+            return Material(
+              color: AppColors.cardBG,
+              type: MaterialType.card,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+                side: BorderSide(color: Colors.grey.withOpacity(0.5), width: 1),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.only(
+                    left: 12, right: 12, bottom: 10, top: 2),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          "Weather History",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      ),
-                      StreamBuilder(
-                        stream: widget.bloc.timeFrame,
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData) {
-                            var selected = snapshot.data!;
-                            return DropdownButtonHideUnderline(
-                              child: DropdownButton(
-                                value: selected,
-                                items: dropdownItems,
-                                onChanged: (TimeFrame? newValue) {
-                                  setState(() {
-                                    if (newValue != null) {
-                                      widget.bloc.changeTimeFrame(newValue);
-                                    }
-                                  });
-                                },
-                              ),
-                            );
-                          } else {
-                            return const Text("Loading...");
-                          }
-                        },
-                      )
-                    ],
-                  ),
-                  StreamBuilder(
+                        StreamBuilder(
+                          stream: widget.bloc.timeFrame,
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              var selected = snapshot.data!;
+                              return DropdownButtonHideUnderline(
+                                child: DropdownButton(
+                                  value: selected,
+                                  items: dropdownItems,
+                                  onChanged: (TimeFrame? newValue) {
+                                    setState(() {
+                                      if (newValue != null) {
+                                        widget.bloc.changeTimeFrame(newValue);
+                                      }
+                                    });
+                                  },
+                                ),
+                              );
+                            } else {
+                              return const Text("Loading...");
+                            }
+                          },
+                        )
+                      ],
+                    ),
+                    StreamBuilder(
                       stream: widget.bloc.timeFrame,
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
@@ -109,35 +107,37 @@ class _HistoryCard extends State<HistoryCard> {
                         } else {
                           return const Text("Loading...");
                         }
-                      }),
-                  const Divider(
-                    color: Color.fromARGB(255, 153, 153, 153),
-                    height: 10,
-                    thickness: 0.5,
-                    indent: 8,
-                    endIndent: 8,
-                  ),
-                  Padding(
-                    padding:
-                        const EdgeInsets.only(top: 5.0, right: 10, left: 10),
-                    child: HistoryTable(
-                      min: val.min,
-                      max: val.max,
-                      avg: val.avg,
-                      unit: settings.data!.measurementUnit,
-                      onTapFullScreen: () async {
-                        await Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                ChartFullScreen(bloc: widget.bloc),
-                          ),
-                        );
-
-                        SystemChrome.setPreferredOrientations([]);
                       },
                     ),
-                  )
-                ],
+                    const Divider(
+                      color: Color.fromARGB(255, 153, 153, 153),
+                      height: 10,
+                      thickness: 0.5,
+                      indent: 8,
+                      endIndent: 8,
+                    ),
+                    Padding(
+                      padding:
+                          const EdgeInsets.only(top: 5.0, right: 10, left: 10),
+                      child: HistoryTable(
+                        min: val.min,
+                        max: val.max,
+                        avg: val.avg,
+                        unit: settings.data!.measurementUnit,
+                        onTapFullScreen: () async {
+                          await Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  ChartFullScreen(bloc: widget.bloc),
+                            ),
+                          );
+
+                          SystemChrome.setPreferredOrientations([]);
+                        },
+                      ),
+                    )
+                  ],
+                ),
               ),
             );
           } else if (snapshot.hasError) {

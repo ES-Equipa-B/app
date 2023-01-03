@@ -65,8 +65,9 @@ class _ChartFullScreenState extends State<ChartFullScreen> {
                     child: HistoryChart(
                       readingList: readings.data!,
                       timeFrame: timeFrame.data!,
-                      height: 400,
+                      height: MediaQuery.of(context).size.height,
                       unit: settings.data!.measurementUnit,
+                      fitInsideVertically: true,
                     ),
                   );
                 } else {

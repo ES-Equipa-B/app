@@ -12,13 +12,16 @@ class HistoryChart extends StatelessWidget {
   final TimeFrame timeFrame;
   final double height;
   final MeasurementUnit unit;
+  final bool fitInsideVertically;
 
-  const HistoryChart(
-      {super.key,
-      required this.readingList,
-      required this.timeFrame,
-      required this.height,
-      required this.unit});
+  const HistoryChart({
+    super.key,
+    required this.readingList,
+    required this.timeFrame,
+    required this.height,
+    required this.unit,
+    this.fitInsideVertically = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +51,8 @@ class HistoryChart extends StatelessWidget {
           lineBarsData: lineChartBarData,
           lineTouchData: LineTouchData(
             touchTooltipData: LineTouchTooltipData(
+              fitInsideVertically: fitInsideVertically,
+              fitInsideHorizontally: true,
               tooltipBgColor: Colors.white,
               tooltipBorder: BorderSide(color: Colors.grey.withOpacity(0.5)),
               getTooltipItems: tooltipItems,

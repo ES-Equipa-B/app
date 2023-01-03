@@ -15,16 +15,12 @@ class StationDetailCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: AppColors.cardBG,
+    return Material(
+      color: AppColors.cardBG,
+      type: MaterialType.card,
+      shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
-        boxShadow: [
-          BoxShadow(
-              color: Colors.grey.withOpacity(0.5),
-              spreadRadius: 1,
-              blurRadius: 1),
-        ],
+        side: BorderSide(color: Colors.grey.withOpacity(0.5), width: 1),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
