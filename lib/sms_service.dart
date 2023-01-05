@@ -5,28 +5,37 @@ import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:app_sys_eng/api/readings_api_provider.dart';
 import 'package:app_sys_eng/api/station_api_provider.dart';
 import 'package:app_sys_eng/models/reading.dart';
+import 'package:disable_battery_optimization/disable_battery_optimization.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:telephony/telephony.dart';
 
 import 'models/station.dart';
 
+@pragma('vm:entry-point')
 class SMSService {
   static final ReadingsApiProvider _readingsProvider = ReadingsApiProvider();
 
   static Future<bool> enable() async {
+    await DisableBatteryOptimization.showDisableAllOptimizationsSettings(
+        "Enable Auto Start",
+        "Follow the steps and enable the auto start of this app",
+        "Your device has additional battery optimization",
+        "Follow the steps and disable the optimizations to allow smooth functioning of this app");
+
     await Telephony.instance.requestSmsPermissions;
-    developer.log("SMS Service enabled", name: "es:SMSService");
+    final DateTime now = DateTime.now();
+    developer.log("$now: SMS Service enabled", name: "es:SMSService");
     return AndroidAlarmManager.periodic(
         const Duration(minutes: 1), 0, periodicTask,
         allowWhileIdle: true,
-        exact: true,
+        exact: false,
         rescheduleOnReboot: true,
-        wakeup: true,
-        startAt: DateTime.now());
+        wakeup: true);
   }
 
   static Future<bool> disable() {
-    developer.log("SMS Service disabled", name: "es:SMSService");
+    final DateTime now = DateTime.now();
+    developer.log("$now: SMS Service disabled", name: "es:SMSService");
     return AndroidAlarmManager.cancel(0);
   }
 
@@ -78,7 +87,7 @@ class SMSService {
         Reading reading = Reading.fromString(sample, sent);
         return reading;
       });
-      // developer.log("Readings: $readings", name: "es:SMSService");
+      developer.log("Readings: $readings", name: "es:SMSService");
       _readingsProvider.insertReadings(station.id, readings);
       return true;
     } catch (e) {

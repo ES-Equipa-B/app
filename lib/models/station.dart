@@ -22,7 +22,9 @@ class Station {
       reading: Reading(
         humidity: json['humidity'],
         temperature: json['temperature'],
-        timestamp: DateTime.parse(json['timestamp']),
+        timestamp: json['timestamp'] == null
+            ? null
+            : DateTime.parse(json['timestamp']),
         wind: json['wind'],
       ),
     );
