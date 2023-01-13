@@ -36,7 +36,7 @@ class WeatherStat extends StatelessWidget {
           center: Text(
             measurement,
             style: TextStyle(
-                color: color, fontWeight: FontWeight.bold, fontSize: 16),
+                color: color, fontWeight: FontWeight.bold, fontSize: 13),
           ),
           progressColor: color,
         ),

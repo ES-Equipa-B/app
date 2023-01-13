@@ -82,7 +82,7 @@ class Reading {
           temp = _temperature! * 9.0 / 5.0 + 32;
           break;
       }
-      return temp.toPrecision(round ? 0 : 1);
+      return temp.toPrecision(round ? 1 : 1);
     }
   }
 
@@ -91,7 +91,7 @@ class Reading {
       return "-";
     } else {
       String val =
-          temperature(unit, round: round)!.toStringAsFixed(round ? 0 : 1);
+          temperature(unit, round: round)!.toStringAsFixed(round ? 1 : 1);
       switch (unit) {
         case MeasurementUnit.metric:
           return "$val ºC";
@@ -114,7 +114,7 @@ class Reading {
           wind = _wind! * 0.6213711922;
           break;
       }
-      return wind.toPrecision(round ? 0 : 1);
+      return wind.toPrecision(round ? 1 : 1);
     }
   }
 
@@ -122,7 +122,7 @@ class Reading {
     if (_wind == null) {
       return "-";
     } else {
-      String val = wind(unit, round: round)!.toStringAsFixed(round ? 0 : 1);
+      String val = wind(unit, round: round)!.toStringAsFixed(round ? 1 : 1);
       switch (unit) {
         case MeasurementUnit.metric:
           return "$val km/h";

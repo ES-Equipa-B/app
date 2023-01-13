@@ -22,9 +22,9 @@ class StationCardGrid extends StatelessWidget {
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount:
             MediaQuery.of(context).orientation == Orientation.portrait ? 2 : 3,
-        childAspectRatio: 1.3,
-        mainAxisSpacing: 16,
-        crossAxisSpacing: 16,
+        childAspectRatio: 1.4,
+        mainAxisSpacing: 12,
+        crossAxisSpacing: 8,
       ),
       itemBuilder: (context, index) {
         final station = stations[index];

@@ -40,6 +40,7 @@ class StationCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   ValueIndicator(
+                    
                     icon: Icons.thermostat,
                     value:
                         station.reading.temperatureWithUnit(unit, round: true),
@@ -83,7 +84,7 @@ class ValueIndicator extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
-      children: [Icon(icon), Text(value)],
+      children: [Icon(icon), Text(value, style: const TextStyle(fontSize: 12),)],
     );
   }
 }
