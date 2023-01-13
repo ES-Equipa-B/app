@@ -76,7 +76,7 @@ class _EditStationScreen extends State<EditStationScreen> {
                   content: Text("Station edited with success"),
                 ),
               );
-              Navigator.of(context).pop();
+              Navigator.of(context).pop(true);
             }).onError(
               (error, stackTrace) {
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
