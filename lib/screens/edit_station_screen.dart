@@ -44,7 +44,7 @@ class _EditStationScreen extends State<EditStationScreen> {
       appBar: AppBar(
         elevation: 0,
         title: const Text(
-          "New Station",
+          "Edit Station",
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
